@@ -6,12 +6,12 @@
 
 body {
     margin: 0;
-	background-color: lightblue;
+	background-color: rgb(255, 208, 0);
     color: black;
 }
 
 #canvas-main {
-	background-color: black;
+	background-color: rgb(255, 0, 0);
 	padding-left: 0;
     padding-right: 0;
 	margin-left: auto;
