@@ -10,13 +10,14 @@ MyGame.objects.Particles = function (spec) {
     image.src = spec.imageSrc;
   
     let sprites = [];
-    let colorIndex = { x: 0, y: 0 };
   
-    function addSprite(pos) {
+    function addSprite(sprite) {
       sprites.push({
-        center: pos,
+        center: sprite.pos,
         lifetime: 0,
-        rotation: 0,
+        decay: sprite.decay,
+        rotation: sprite.rot,
+        speed: sprite.speed,
         subSize: spec.subSize,
       })
     }
@@ -36,7 +37,6 @@ MyGame.objects.Particles = function (spec) {
       get imageReady() { return imageReady; },
       get sprites() { return sprites; },
       get image() { return image; },
-      get index() { return { x: spec.index.x + colorIndex.x, y: spec.index.y + colorIndex.y }; },
       get hitbox() { return spec.hitbox; },
       get subTexture() { return spec.subTexture; }
     };
