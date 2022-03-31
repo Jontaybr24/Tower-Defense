@@ -6,7 +6,7 @@
  - [ ] level 3
  - [ ] level 4
 
-## Tower 2
+## Turret
 - [ ] base
 - [ ] level 2
 - [ ] level 3
