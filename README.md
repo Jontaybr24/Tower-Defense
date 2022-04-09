@@ -2,4 +2,4 @@
 
 This project was created for CS5400 Game Dev
 
-To run the game open index.html in any browser
+To run the game run node server.js
