@@ -1,7 +1,11 @@
 MyGame = {
     systems: {},
     render: {},
-    assets: {}
+    assets: {},
+    screens: {},
+    input: {},
+    objects: {},
+    sounds: {},
 };
 
 //------------------------------------------------------------------
@@ -12,37 +16,50 @@ MyGame = {
 // loaded.
 //
 //------------------------------------------------------------------
-MyGame.loader = (function() {
+MyGame.loader = (function () {
     'use strict';
     let scriptOrder = [{
-            scripts: ['random'],
-            message: 'Random number generator loaded',
-            onComplete: null
-        }, {
-            scripts: ['systems/particle-system'],
-            message: 'Particle system model loaded',
-            onComplete: null
-        }, {
-            scripts: ['Render/core'],
-            message: 'Rendering core loaded',
-            onComplete: null
-        }, {
-            scripts: ['Render/particle-system'],
-            message: 'Particle system renderer loaded',
-            onComplete: null
-        }, {
-            scripts: ['game'],
-            message: 'Game loop and model loaded',
-            onComplete: null
-        }];
+        scripts: ['sounds'],
+        message: 'Sound Manager loaded',
+        onComplete: null
+    }, 
+    {
+        scripts: ['game'],
+        message: 'Game Scene selector loaded',
+        onComplete: null
+    },
+    {
+        scripts: ['mainmenu'],
+        message: 'Main menu loaded',
+        onComplete: null
+    },
+    {
+        scripts: ['settings'],
+        message: 'Settings loaded',
+        onComplete: null
+    },
+    {
+        scripts: ['about'],
+        message: 'About Page loaded',
+        onComplete: null
+    },
+    {
+        scripts: ['kb-input'],
+        message: 'Keyboard Input loaded',
+        onComplete: null
+    },
+    {
+        scripts: ['render/core'],
+        message: 'Rendering core loaded',
+        onComplete: null
+    },
+    {
+        scripts: ['gameplay'],
+        message: 'Game loop and model loaded',
+        onComplete: null
+    }];
 
-    let assetOrder = [{
-            key: 'fire',
-            source: '/assets/fire.png'
-        }, {
-            key: 'smoke',
-            source: '/assets/smoke.png'
-        }];
+    let assetOrder = [];
 
     //------------------------------------------------------------------
     //
@@ -61,7 +78,7 @@ MyGame.loader = (function() {
         // When we run out of things to load, that is when we call onComplete.
         if (scripts.length > 0) {
             let entry = scripts[0];
-            require(entry.scripts, function() {
+            require(entry.scripts, function () {
                 console.log(entry.message);
                 if (entry.onComplete) {
                     entry.onComplete();
@@ -95,12 +112,12 @@ MyGame.loader = (function() {
         if (assets.length > 0) {
             let entry = assets[0];
             loadAsset(entry.source,
-                function(asset) {
+                function (asset) {
                     onSuccess(entry, asset);
                     assets.shift();    // Alternatively: assets.splice(0, 1);
                     loadAssets(assets, onSuccess, onError, onComplete);
                 },
-                function(error) {
+                function (error) {
                     onError(error);
                     assets.shift();    // Alternatively: assets.splice(0, 1);
                     loadAssets(assets, onSuccess, onError, onComplete);
@@ -125,17 +142,17 @@ MyGame.loader = (function() {
             xhr.open('GET', source, true);
             xhr.responseType = 'blob';
 
-            xhr.onload = function() {
+            xhr.onload = function () {
                 let asset = null;
                 if (xhr.status === 200) {
                     if (fileExtension === 'png' || fileExtension === 'jpg') {
                         asset = new Image();
-                    } else if (fileExtension === 'mp3') {
+                    } else if (fileExtension === 'mp3' || fileExtension === 'wav') {
                         asset = new Audio();
                     } else {
                         if (onError) { onError('Unknown file extension: ' + fileExtension); }
                     }
-                    asset.onload = function() {
+                    asset.onload = function () {
                         window.URL.revokeObjectURL(asset.src);
                     };
                     asset.src = window.URL.createObjectURL(xhr.response);
@@ -158,20 +175,20 @@ MyGame.loader = (function() {
     //------------------------------------------------------------------
     function mainComplete() {
         console.log('It is all loaded up');
-        MyGame.main.initialize();
+        MyGame.game.initialize();
     }
 
     //
     // Start with loading the assets, then the scripts.
     console.log('Starting to dynamically load project assets');
     loadAssets(assetOrder,
-        function(source, asset) {    // Store it on success
+        function (source, asset) {    // Store it on success
             MyGame.assets[source.key] = asset;
         },
-        function(error) {
+        function (error) {
             console.log(error);
         },
-        function() {
+        function () {
             console.log('All game assets loaded');
             console.log('Starting to dynamically load project scripts');
             loadScripts(scriptOrder, mainComplete);
