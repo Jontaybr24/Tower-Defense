@@ -54,7 +54,7 @@ MyGame.loader = (function () {
         onComplete: null
     },
     {
-        scripts: ['gameplay'],
+        scripts: ['screens/gameplay'],
         message: 'Game loop and model loaded',
         onComplete: null
     }];
