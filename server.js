@@ -11,7 +11,8 @@ let mimeTypes = {
     '.png' : 'image/png',
     '.jpg' : 'image/jpeg',
     '.mp3' : 'audio/mpeg3',
-    '.wav' : 'audio/x-wav'
+    '.wav' : 'audio/x-wav',
+    '.ico' : 'image/x-icon'
 };
 const port = 3000;
 
