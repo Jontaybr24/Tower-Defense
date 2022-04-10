@@ -29,17 +29,17 @@ MyGame.loader = (function () {
         onComplete: null
     },
     {
-        scripts: ['mainmenu'],
+        scripts: ['screens/mainmenu'],
         message: 'Main menu loaded',
         onComplete: null
     },
     {
-        scripts: ['settings'],
+        scripts: ['screens/settings'],
         message: 'Settings loaded',
         onComplete: null
     },
     {
-        scripts: ['about'],
+        scripts: ['screens/about'],
         message: 'About Page loaded',
         onComplete: null
     },
