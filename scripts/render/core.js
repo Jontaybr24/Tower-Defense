@@ -4,26 +4,6 @@ MyGame.graphics = (function () {
     let canvas = document.getElementById('canvas-main');
     let context = canvas.getContext('2d');
 
-    let COORD = canvas.width;
-    let GRID_X = 35;
-    let GRID_Y = 20;
-    let COORD_SIZE = COORD / GRID_X;
-
-    let DATA = {
-        COORD: {
-            X: COORD,
-            Y: canvas.height},
-        GRID: {
-            X: GRID_X,
-            Y: GRID_Y
-        },
-        COORD_SIZE: COORD_SIZE,
-        OFFSET: {
-            X: COORD_SIZE * .5,
-            Y: COORD_SIZE * 5
-        }
-    }
-
     function clear() {
         context.clearRect(0, 0, canvas.width, canvas.height);
     }
