@@ -194,14 +194,11 @@ MyGame.loader = (function () {
         else {
             MyGame.data = {
                 controls: {
-                    up: 'ArrowUp',
-                    down: 'ArrowDown',
-                    left: 'ArrowLeft',
-                    right: 'ArrowRight',
-                    fire: ' ',
+                    grid: {label: 'Toggle Grid', key: 'g'},
                 },
                 volume: .3,
             }
+            localStorage['data'] = JSON.stringify(MyGame.data);
         }
     }
 

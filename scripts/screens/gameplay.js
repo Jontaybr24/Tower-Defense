@@ -64,7 +64,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     }
 
     function setControls() {
-        myKeyboard.register('g', myGameBoard.toggleGrid);
+        myKeyboard.register(data.controls.grid.key, myGameBoard.toggleGrid);
         myMouse.register('mousedown', function (e) {
             let coords = magic.converter.mouseToGrid({ x: e.clientX, y: e.clientY })
             if (e.ctrlKey)
@@ -99,4 +99,4 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         run: run
     };
 
-}(MyGame.game, MyGame.objects, MyGame.assets, MyGame.render, MyGame.graphics, MyGame.input, MyGame.sounds));
+}(MyGame.game, MyGame.objects, MyGame.assets, MyGame.render, MyGame.graphics, MyGame.input, MyGame.sounds, MyGame.data));
