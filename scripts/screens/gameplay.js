@@ -7,6 +7,28 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     let soundManager = sounds.manager();
 
+    const GRID_SIZE = 17;
+    const CELL_SIZE = graphics.canvas.width / GRID_SIZE;
+
+    let converter = {
+        gridToPixel: function(point) {
+            let x = (parseInt(point.x) + .5) * CELL_SIZE;
+            let y = (parseInt(point.y) + .5) * CELL_SIZE;
+            return {x: x, y: y};
+        },
+        pixelToGrid: function(point) {
+            return point;
+        }
+    };
+
+    let magic = {
+        GRID_SIZE: GRID_SIZE,
+        CELL_SIZE: CELL_SIZE,
+        converter: converter,
+    }
+
+    let myGameBoard = objects.Gameboard(assets, graphics, magic);
+
 
     // Checks to see if two boxes have collided
     function checkCollision(box1, box2) {
@@ -19,7 +41,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     }
 
     function loadLevel() {
-
+        myGameBoard.genBoard();
     }
 
     function setControls() {
@@ -34,6 +56,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     }
 
     function render() {
+        myGameBoard.render();
     }
 
     function gameLoop(time) {
@@ -53,7 +76,6 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         lastTimeStamp = performance.now();
         loadLevel();
         setControls();
-        console.log(assets.grass);
         requestAnimationFrame(gameLoop);
     }
 

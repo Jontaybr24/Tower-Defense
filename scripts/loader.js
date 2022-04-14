@@ -30,6 +30,21 @@ MyGame.loader = (function () {
         onComplete: null
     },
     {
+        scripts: ['render/core'],
+        message: 'Rendering core loaded',
+        onComplete: null
+    },
+    {
+        scripts: ['kb-input'],
+        message: 'Keyboard Input loaded',
+        onComplete: null
+    },
+    {
+        scripts: ['objects/gameboard'],
+        message: 'Gameboard Loaded',
+        onComplete: null
+    },
+    {
         scripts: ['screens/mainmenu'],
         message: 'Main menu loaded',
         onComplete: null
@@ -45,16 +60,6 @@ MyGame.loader = (function () {
         onComplete: null
     },
     {
-        scripts: ['kb-input'],
-        message: 'Keyboard Input loaded',
-        onComplete: null
-    },
-    {
-        scripts: ['render/core'],
-        message: 'Rendering core loaded',
-        onComplete: null
-    },
-    {
         scripts: ['screens/gameplay'],
         message: 'Game loop and model loaded',
         onComplete: null
@@ -63,8 +68,10 @@ MyGame.loader = (function () {
     let assetOrder = [{
         key: 'grass',
         source: '/assets/grass.png'
+    },{
+        key: 'wall',
+        source: '/assets/test.png'
     },
-
     ];
 
     //------------------------------------------------------------------

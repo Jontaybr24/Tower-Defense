@@ -53,7 +53,6 @@ MyGame.graphics = (function () {
 
     let api = {
         get canvas() { return canvas; },
-        get DATA() { return DATA; },
         clear: clear,
         drawTexture: drawTexture,
         drawSubTexture: drawSubTexture,
