@@ -40,6 +40,11 @@ MyGame.loader = (function () {
         onComplete: null
     },
     {
+        scripts: ['mouse-input'],
+        message: 'Mouse Input loaded',
+        onComplete: null
+    },
+    {
         scripts: ['objects/gameboard'],
         message: 'Gameboard Loaded',
         onComplete: null

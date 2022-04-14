@@ -3,6 +3,8 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
 
     const GAP = 5; // works best with odd numbers
     const ROTATION = 0;
+    const BUFFER = 100 // time in ms for button presses to register after being held
+    let timePassed = 0;
 
     let board = [];
     let gridOn = true;
@@ -31,7 +33,6 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
                 }
             }
         }
-        console.log(board)
     }
 
     function render() {
@@ -54,20 +55,28 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
     function drawGrid() {
         for (let slice in board) {
             let center = magic.converter.gridToPixel({ x: parseInt(slice), y: parseInt(slice) });
-            let coord =  + center.y + magic.CELL_SIZE / 2;
+            let coord = + center.y + magic.CELL_SIZE / 2;
             graphics.drawLine({ x: 0, y: coord }, { x: magic.CANVAS_SIZE, y: coord }, 2, "FFFFFF");
             graphics.drawLine({ x: coord, y: 0 }, { x: coord, y: magic.CANVAS_SIZE }, 2, "FFFFFF");
         }
     }
 
-    function update() {
+    function toggleGrid() {
+        if (timePassed > BUFFER) {
+            gridOn = !gridOn;
+            timePassed = 0;
+        }
+    }
 
+    function update(elapsedTime) {
+        timePassed += elapsedTime;
     }
 
     let api = {
-        genBoard: genBoard,
         update: update,
         render: render,
+        genBoard: genBoard,
+        toggleGrid: toggleGrid,
         get board() { return board; },
     };
 

@@ -4,6 +4,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let lastTimeStamp = performance.now();
 
     let myKeyboard = input.Keyboard();
+    let myMouse = input.Mouse();
 
     let soundManager = sounds.manager();
 
@@ -16,8 +17,11 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             let y = (parseInt(point.y) + .5) * CELL_SIZE;
             return {x: x, y: y};
         },
-        pixelToGrid: function(point) {
-            return point;
+        mouseToGrid: function(point) {            
+            let rect = graphics.canvas.getBoundingClientRect();
+            let x = Math.floor(((point.x - rect.x) / rect.width) * GRID_SIZE);
+            let y = Math.floor(((point.y - rect.y) / rect.width) * GRID_SIZE);
+            return {x: x, y: y};
         }
     };
 
@@ -45,19 +49,27 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myGameBoard.genBoard();
     }
 
-    function setControls() {
-    }
-
 
     function processInput(elapsedTime) {
         myKeyboard.update(elapsedTime);
+        myMouse.update(elapsedTime);
     }
 
     function update(elapsedTime) {
+        myGameBoard.update(elapsedTime);
     }
 
     function render() {
         myGameBoard.render();
+    }
+
+    function setControls() {
+        myKeyboard.register('g', myGameBoard.toggleGrid);
+        myMouse.register('mousedown', function(e) {
+            let pos = { x : e.clientX, y : e.clientY}
+            let coords = magic.converter.mouseToGrid(pos)
+            console.log(coords);
+        })
     }
 
     function gameLoop(time) {
