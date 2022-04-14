@@ -23,7 +23,7 @@ MyGame.loader = (function () {
         scripts: ['sounds'],
         message: 'Sound Manager loaded',
         onComplete: null
-    }, 
+    },
     {
         scripts: ['game'],
         message: 'Game Scene selector loaded',
@@ -60,7 +60,12 @@ MyGame.loader = (function () {
         onComplete: null
     }];
 
-    let assetOrder = [];
+    let assetOrder = [{
+        key: 'grass',
+        source: '/assets/grass.png'
+    },
+
+    ];
 
     //------------------------------------------------------------------
     //
@@ -169,6 +174,24 @@ MyGame.loader = (function () {
         xhr.send();
     }
 
+    function loadData() {
+        let savedData = localStorage.getItem('data');
+        if (savedData !== null){
+            MyGame.data = JSON.parse(savedData);
+        }
+        else {
+            MyGame.data = {
+                controls: {
+                    up: 'ArrowUp',
+                    down: 'ArrowDown',
+                    left: 'ArrowLeft',
+                    right: 'ArrowRight',
+                    fire: ' ',
+                },
+            }
+        }
+    }
+
     //------------------------------------------------------------------
     //
     // Called when all the scripts are loaded, it kicks off the demo app.
@@ -178,6 +201,9 @@ MyGame.loader = (function () {
         console.log('It is all loaded up');
         MyGame.game.initialize();
     }
+    
+    console.log('Loading saved data');
+    loadData();
 
     //
     // Start with loading the assets, then the scripts.

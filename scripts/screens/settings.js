@@ -1,47 +1,34 @@
-MyGame.screens['settings'] = (function (game, sounds) {
+MyGame.screens['settings'] = (function (game, sounds, data) {
     'use strict';
+
+    console.log(data)
+
     let soundManager = sounds.manager();
-
-    let controls = {}
-    let savedControls = localStorage.getItem('MyGame.controls');
-
-    if (savedControls != null) {
-        controls = JSON.parse(savedControls);
-    }
-    else {
-        controls = {
-            up: 'ArrowUp',
-            down: 'ArrowDown',
-            left: 'ArrowLeft',
-            right: 'ArrowRight',
-            fire: ' ',
-        }
-    }
     let node = document.getElementById('move-up');
-    if (controls.up == ' ')
+    if (data.controls.up == ' ')
         node.innerHTML = 'Space';
     else
-        node.innerHTML = controls.up;
+        node.innerHTML = data.controls.up;
     node = document.getElementById('move-down');
-    if (controls.down == ' ')
+    if (data.controls.down == ' ')
         node.innerHTML = 'Space';
     else
-        node.innerHTML = controls.down;
+        node.innerHTML = data.controls.down;
     node = document.getElementById('move-left');
-    if (controls.left == ' ')
+    if (data.controls.left == ' ')
         node.innerHTML = 'Space';
     else
-        node.innerHTML = controls.left;
+        node.innerHTML = data.controls.left;
     node = document.getElementById('move-right');
-    if (controls.right == ' ')
+    if (data.controls.right == ' ')
         node.innerHTML = 'Space';
     else
-        node.innerHTML = controls.right;
+        node.innerHTML = data.controls.right;
     node = document.getElementById('fire');
-    if (controls.fire == ' ')
+    if (data.controls.fire == ' ')
         node.innerHTML = 'Space';
     else
-        node.innerHTML = controls.fire;
+        node.innerHTML = data.controls.fire;
 
     function setControl(id, key) {
         if (key != 'Escape') {
@@ -52,22 +39,22 @@ MyGame.screens['settings'] = (function (game, sounds) {
                 node.innerHTML = key;
             switch (id) {
                 case 'move-right':
-                    controls.right = key;
+                    data.controls.right = key;
                     break;
                 case 'move-left':
-                    controls.left = key;
+                    data.controls.left = key;
                     break;
                 case 'move-up':
-                    controls.up = key;
+                    data.controls.up = key;
                     break;
                 case 'move-down':
-                    controls.down = key;
+                    data.controls.down = key;
                     break;
                 case 'move-fire':
-                    controls.fire = key;
+                    data.controls.fire = key;
                     break;
             }
-            localStorage['MyGame.controls'] = JSON.stringify(controls);
+            localStorage['data'] = JSON.stringify(data);
         }
     }
 
@@ -93,7 +80,7 @@ MyGame.screens['settings'] = (function (game, sounds) {
         }
     }
 
-    localStorage['MyGame.controls'] = JSON.stringify(controls);
+    localStorage['data'] = JSON.stringify(data);
 
     function initialize() {
 
@@ -146,4 +133,4 @@ MyGame.screens['settings'] = (function (game, sounds) {
         run: run
     };
 
-}(MyGame.game, MyGame.sounds));
+}(MyGame.game, MyGame.sounds, MyGame.data));

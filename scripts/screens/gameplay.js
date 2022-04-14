@@ -1,4 +1,4 @@
-MyGame.screens['game-play'] = (function (game, objects, renderer, graphics, input, sounds) {
+MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphics, input, sounds, data) {
     'use strict';
 
     let lastTimeStamp = performance.now();
@@ -6,6 +6,7 @@ MyGame.screens['game-play'] = (function (game, objects, renderer, graphics, inpu
     let myKeyboard = input.Keyboard();
 
     let soundManager = sounds.manager();
+
 
     // Checks to see if two boxes have collided
     function checkCollision(box1, box2) {
@@ -16,10 +17,9 @@ MyGame.screens['game-play'] = (function (game, objects, renderer, graphics, inpu
             box2.ymax < box1.ymin);
         return collision;
     }
-    function startGame() {
-    }
 
-    function endGame() {
+    function loadLevel() {
+
     }
 
     function setControls() {
@@ -51,8 +51,9 @@ MyGame.screens['game-play'] = (function (game, objects, renderer, graphics, inpu
 
     function run() {
         lastTimeStamp = performance.now();
-        startGame();
+        loadLevel();
         setControls();
+        console.log(assets.grass);
         requestAnimationFrame(gameLoop);
     }
 
@@ -61,4 +62,4 @@ MyGame.screens['game-play'] = (function (game, objects, renderer, graphics, inpu
         run: run
     };
 
-}(MyGame.game, MyGame.objects, MyGame.render, MyGame.graphics, MyGame.input, MyGame.sounds));
+}(MyGame.game, MyGame.objects, MyGame.assets, MyGame.render, MyGame.graphics, MyGame.input, MyGame.sounds));
