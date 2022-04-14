@@ -188,6 +188,7 @@ MyGame.loader = (function () {
                     right: 'ArrowRight',
                     fire: ' ',
                 },
+                volume: .3,
             }
         }
     }

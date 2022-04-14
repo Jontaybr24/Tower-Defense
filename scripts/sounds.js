@@ -3,7 +3,7 @@ MyGame.sounds.manager = function () {
 
     function play(src, loop) {
         sound = new Audio(src);
-        sound.volume = .3;
+        sound.volume = MyGame.data.volume;
         if (loop) {
             sound.loop = loop;
             allSounds.push({ src: src, sound: sound });
