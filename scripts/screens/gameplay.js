@@ -24,6 +24,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let magic = {
         GRID_SIZE: GRID_SIZE,
         CELL_SIZE: CELL_SIZE,
+        CANVAS_SIZE: graphics.canvas.width,
         converter: converter,
     }
 

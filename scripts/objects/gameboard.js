@@ -5,6 +5,7 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
     const ROTATION = 0;
 
     let board = [];
+    let gridOn = true;
 
     function genBoard() {
         for (let i = 0; i < magic.GRID_SIZE; i++) {
@@ -16,17 +17,17 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
                     object: null // The object here will help with pathfinding ie towers and walls
                 });
                 let mid = Math.floor(magic.GRID_SIZE / 2);
-                let gap = Math.floor(GAP / 2); 
+                let gap = Math.floor(GAP / 2);
                 // make a border around the gamespace leaving space for the enemies to spawn on the 4 sides of the map
-                if (i == 0 && j < mid - gap || 
+                if (i == 0 && j < mid - gap ||
                     i == 0 && j > mid + gap ||
                     i == magic.GRID_SIZE - 1 && j < mid - gap ||
                     i == magic.GRID_SIZE - 1 && j > mid + gap ||
                     j == 0 && i < mid - gap ||
                     j == 0 && i > mid + gap ||
                     j == magic.GRID_SIZE - 1 && i < mid - gap ||
-                    j == magic.GRID_SIZE - 1 && i > mid + gap ) {
-                    board[i][j].object = "wall"; 
+                    j == magic.GRID_SIZE - 1 && i > mid + gap) {
+                    board[i][j].object = "wall";
                 }
             }
         }
@@ -44,6 +45,18 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
                     graphics.drawTexture(assets.grass, center, ROTATION, { width: magic.CELL_SIZE, height: magic.CELL_SIZE });
                 }
             }
+        }
+        if (gridOn) {
+            drawGrid();
+        }
+    }
+
+    function drawGrid() {
+        for (let slice in board) {
+            let center = magic.converter.gridToPixel({ x: parseInt(slice), y: parseInt(slice) });
+            let coord =  + center.y + magic.CELL_SIZE / 2;
+            graphics.drawLine({ x: 0, y: coord }, { x: magic.CANVAS_SIZE, y: coord }, 2, "FFFFFF");
+            graphics.drawLine({ x: coord, y: 0 }, { x: coord, y: magic.CANVAS_SIZE }, 2, "FFFFFF");
         }
     }
 

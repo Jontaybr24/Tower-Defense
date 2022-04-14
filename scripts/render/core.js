@@ -51,10 +51,44 @@ MyGame.graphics = (function () {
         context.restore();
     }
 
+    // --------------------------------------------------------------
+    //
+    // Draw a rectangle to the canvas with the following attributes:
+    //      center: { x: , y: },
+    //      size: { x: , y: },
+    //      rotation:       // radians
+    //
+    // --------------------------------------------------------------
+    function drawRectangle(rect, fillStyle, strokeStyle) {
+        context.save();
+        context.translate(rect.center.x, rect.center.y );
+        context.rotate(rect.rotation);
+        context.translate(-rect.center.x, -rect.center.y);
+        
+        context.fillStyle = fillStyle;
+        context.fillRect(rect.center.x - rect.size.x / 2, rect.center.y - rect.size.y / 2, rect.size.x, rect.size.y);
+        
+        context.strokeStyle = strokeStyle;
+        context.strokeRect(rect.center.x - rect.size.x / 2, rect.center.y - rect.size.y / 2, rect.size.x, rect.size.y);
+
+        context.restore();
+    }
+
+    function drawLine(point1, point2, lineWidth, strokeStyle){
+        context.strokeStyle = strokeStyle;
+        context.lineWidth = lineWidth;
+        context.beginPath();
+        context.moveTo(point1.x, point1.y);
+        context.lineTo(point2.x, point2.y);
+        context.stroke();
+    }
+
     let api = {
         get canvas() { return canvas; },
         clear: clear,
+        drawLine: drawLine,
         drawTexture: drawTexture,
+        drawRectangle: drawRectangle,
         drawSubTexture: drawSubTexture,
     };
 
