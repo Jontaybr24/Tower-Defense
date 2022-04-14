@@ -72,11 +72,25 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
         timePassed += elapsedTime;
     }
 
+    function addObject(point, obj) {
+        if (point.x < board.length && point.y < board.length) {
+            board[point.x][point.y].object = obj;
+        }
+    }
+
+    function removeObject(point) {
+        if (point.x < board.length && point.y < board.length) {
+            board[point.x][point.y].object = null;
+        }
+    }
+
     let api = {
         update: update,
         render: render,
         genBoard: genBoard,
         toggleGrid: toggleGrid,
+        addObject: addObject,
+        removeObject: removeObject,
         get board() { return board; },
     };
 

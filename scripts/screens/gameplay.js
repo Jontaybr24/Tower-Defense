@@ -12,16 +12,16 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     const CELL_SIZE = graphics.canvas.width / GRID_SIZE;
 
     let converter = {
-        gridToPixel: function(point) {
+        gridToPixel: function (point) {
             let x = (parseInt(point.x) + .5) * CELL_SIZE;
             let y = (parseInt(point.y) + .5) * CELL_SIZE;
-            return {x: x, y: y};
+            return { x: x, y: y };
         },
-        mouseToGrid: function(point) {            
+        mouseToGrid: function (point) {
             let rect = graphics.canvas.getBoundingClientRect();
             let x = Math.floor(((point.x - rect.x) / rect.width) * GRID_SIZE);
             let y = Math.floor(((point.y - rect.y) / rect.width) * GRID_SIZE);
-            return {x: x, y: y};
+            return { x: x, y: y };
         }
     };
 
@@ -65,10 +65,12 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     function setControls() {
         myKeyboard.register('g', myGameBoard.toggleGrid);
-        myMouse.register('mousedown', function(e) {
-            let pos = { x : e.clientX, y : e.clientY}
-            let coords = magic.converter.mouseToGrid(pos)
-            console.log(coords);
+        myMouse.register('mousedown', function (e) {
+            let coords = magic.converter.mouseToGrid({ x: e.clientX, y: e.clientY })
+            if (e.ctrlKey)
+                myGameBoard.removeObject(coords);
+            else
+                myGameBoard.addObject(coords, "wall");
         })
     }
 
