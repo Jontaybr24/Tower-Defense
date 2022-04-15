@@ -42,6 +42,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     let myGameBoard = objects.Gameboard(assets, graphics, magic);
     let myParticles = objects.Particles(assets, graphics, magic);
+    let myInfo = objects.Info(assets, graphics, magic);
 
 
     // Checks to see if two boxes have collided
@@ -73,6 +74,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         graphics.clear();
         myGameBoard.render();
         myParticles.render();
+        myInfo.render();
     }
 
     function setControls() {
@@ -82,8 +84,10 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             console.log(e)
             if (e.ctrlKey)
                 myGameBoard.removeObject(coords);
-            else
+            else{
                 myParticles.makeCoin(converter.gridToPixel(coords));
+                myInfo.addCoins(10);
+            }
         })
     }
 

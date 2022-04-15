@@ -55,6 +55,11 @@ MyGame.loader = (function () {
         onComplete: null
     },
     {
+        scripts: ['objects/info'],
+        message: 'Particles Loaded',
+        onComplete: null
+    },
+    {
         scripts: ['screens/mainmenu'],
         message: 'Main menu loaded',
         onComplete: null

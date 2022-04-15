@@ -83,10 +83,19 @@ MyGame.graphics = (function () {
         context.stroke();
     }
 
+    function drawText(text, position, fillStyle, font){
+        console.log("test");
+        context.font = font;
+        //context.textAlign = 'center';
+        context.fillStyle = fillStyle;
+        context.fillText(text, position.x, position.y);
+    }
+
     let api = {
         get canvas() { return canvas; },
         clear: clear,
         drawLine: drawLine,
+        drawText: drawText,
         drawTexture: drawTexture,
         drawRectangle: drawRectangle,
         drawSubTexture: drawSubTexture,
