@@ -9,7 +9,9 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let soundManager = sounds.manager();
 
     const GRID_SIZE = 17;
-    const CELL_SIZE = graphics.canvas.width / GRID_SIZE;
+    const CELL_SIZE = graphics.canvas.height / GRID_SIZE;
+    const X_OFFSET = graphics.canvas.width - graphics.canvas.height;
+    console.log(X_OFFSET);
 
     let converter = {
         gridToPixel: function (point) {
@@ -17,10 +19,15 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             let y = (parseInt(point.y) + .5) * CELL_SIZE;
             return { x: x, y: y };
         },
-        mouseToGrid: function (point) {
+        pixelToGrid: function (point) {
+            let x = Math.floor(((point.x) / graphics.canvas.width) * GRID_SIZE);
+            let y = Math.floor(((point.y) / graphics.canvas.height) * GRID_SIZE);
+            return { x: x, y: y };
+        },
+        mouseToGrid: function (point) {            
             let rect = graphics.canvas.getBoundingClientRect();
-            let x = Math.floor(((point.x - rect.x) / rect.width) * GRID_SIZE);
-            let y = Math.floor(((point.y - rect.y) / rect.width) * GRID_SIZE);
+            let x = Math.floor(((point.x - rect.x) / rect.height) * GRID_SIZE);
+            let y = Math.floor(((point.y - rect.y) / rect.height) * GRID_SIZE);
             return { x: x, y: y };
         }
     };
@@ -28,6 +35,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let magic = {
         GRID_SIZE: GRID_SIZE,
         CELL_SIZE: CELL_SIZE,
+        X_OFFSET: X_OFFSET,
         CANVAS_SIZE: graphics.canvas.width,
         converter: converter,
     }
@@ -60,13 +68,15 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     }
 
     function render() {
+        graphics.clear();
         myGameBoard.render();
     }
 
     function setControls() {
         myKeyboard.register(data.controls.grid.key, myGameBoard.toggleGrid);
         myMouse.register('mousedown', function (e) {
-            let coords = magic.converter.mouseToGrid({ x: e.clientX, y: e.clientY })
+            let coords = converter.mouseToGrid({ x: e.clientX, y: e.clientY })
+            console.log(e)
             if (e.ctrlKey)
                 myGameBoard.removeObject(coords);
             else

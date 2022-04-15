@@ -7,7 +7,7 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
     let timePassed = 0;
 
     let board = [];
-    let gridOn = true;
+    let gridOn = false; // The grid is off by default
 
     function genBoard() {
         for (let i = 0; i < magic.GRID_SIZE; i++) {
@@ -39,11 +39,9 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
         for (let row in board) {
             for (let col in board[row]) {
                 let center = magic.converter.gridToPixel({ x: row, y: col })
+                graphics.drawTexture(assets.grass, center, ROTATION, { width: magic.CELL_SIZE, height: magic.CELL_SIZE }); // Renders grass in every cell incase the tower has transperency
                 if (board[row][col].object == "wall") { // there is a wall here so render the wall
                     graphics.drawTexture(assets.wall, center, ROTATION, { width: magic.CELL_SIZE, height: magic.CELL_SIZE });
-                }
-                else if (board[row][col].object == null) { // No wall or tower at this location so render the grass
-                    graphics.drawTexture(assets.grass, center, ROTATION, { width: magic.CELL_SIZE, height: magic.CELL_SIZE });
                 }
             }
         }

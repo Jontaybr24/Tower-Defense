@@ -75,7 +75,10 @@ MyGame.loader = (function () {
         source: '/assets/grass.png'
     },{
         key: 'wall',
-        source: '/assets/test.png'
+        source: '/assets/wall.png'
+    },{
+        key: 'coin',
+        source: '/assets/coin.png'
     },
     ];
 
