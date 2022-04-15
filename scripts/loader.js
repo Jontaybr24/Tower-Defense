@@ -56,7 +56,7 @@ MyGame.loader = (function () {
     },
     {
         scripts: ['objects/info'],
-        message: 'Particles Loaded',
+        message: 'Info Loaded',
         onComplete: null
     },
     {
@@ -83,12 +83,15 @@ MyGame.loader = (function () {
     let assetOrder = [{
         key: 'grass',
         source: '/assets/grass.png'
-    },{
+    }, {
         key: 'wall',
         source: '/assets/wall.png'
-    },{
+    }, {
         key: 'coin',
         source: '/assets/coin.png'
+    },{
+        key: 'menu_hover',
+        source: '/soundFX/menu-hover.wav'
     },
     ];
 
@@ -183,11 +186,21 @@ MyGame.loader = (function () {
                     } else {
                         if (onError) { onError('Unknown file extension: ' + fileExtension); }
                     }
-                    asset.onload = function () {
-                        window.URL.revokeObjectURL(asset.src);
-                    };
-                    asset.src = window.URL.createObjectURL(xhr.response);
-                    if (onSuccess) { onSuccess(asset); }
+                    if (xhr.responseType === 'blob') {
+                        if (fileExtension === 'mp3'|| fileExtension === 'wav') {
+                            asset.oncanplaythrough = function () {
+                                window.URL.revokeObjectURL(asset.src);
+                                if (onSuccess) { onSuccess(asset); }
+                            };
+                        }
+                        else {  // not terrific assumption that it has an 'onload' event, but that is what we are doing
+                            asset.onload = function () {
+                                window.URL.revokeObjectURL(asset.src);
+                                if (onSuccess) { onSuccess(asset); }
+                            };
+                        }
+                        asset.src = window.URL.createObjectURL(xhr.response);
+                    }
                 } else {
                     if (onError) { onError('Failed to retrieve: ' + source); }
                 }
@@ -201,13 +214,13 @@ MyGame.loader = (function () {
 
     function loadData() {
         let savedData = localStorage.getItem('data');
-        if (savedData !== null){
+        if (savedData !== null) {
             MyGame.data = JSON.parse(savedData);
         }
         else {
             MyGame.data = {
                 controls: {
-                    grid: {label: 'Toggle Grid', key: 'g'},
+                    grid: { label: 'Toggle Grid', key: 'g' },
                 },
                 volume: .3,
             }
@@ -224,7 +237,7 @@ MyGame.loader = (function () {
         console.log('It is all loaded up');
         MyGame.game.initialize();
     }
-    
+
     console.log('Loading saved data');
     loadData();
 

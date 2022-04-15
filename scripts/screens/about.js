@@ -1,4 +1,4 @@
-MyGame.screens['about'] = (function (game, sounds) {
+MyGame.screens['about'] = (function (game, sounds, assets) {
     'use strict';
     let soundManager = sounds.manager();
 
@@ -8,7 +8,7 @@ MyGame.screens['about'] = (function (game, sounds) {
             function () { game.showScreen('main-menu'); });
         document.getElementById('id-about-back').addEventListener(
             "mouseenter",
-            function () { soundManager.play("soundFX/menu-hover.wav"); });
+            function () { soundManager.play(assets.menu_hover); });
     }
 
     function run() {
@@ -20,4 +20,4 @@ MyGame.screens['about'] = (function (game, sounds) {
         initialize: initialize,
         run: run
     };
-}(MyGame.game, MyGame.sounds));
+}(MyGame.game, MyGame.sounds, MyGame.assets));

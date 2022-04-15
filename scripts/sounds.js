@@ -1,12 +1,12 @@
 MyGame.sounds.manager = function () {
     allSounds = [];
 
-    function play(src, loop) {
-        sound = new Audio(src);
+    function play(fx, loop) {
+        sound = new Audio(fx.src);
         sound.volume = MyGame.data.volume;
         if (loop) {
             sound.loop = loop;
-            allSounds.push({ src: src, sound: sound });
+            allSounds.push({ src: fx.src, sound: sound });
         }
         sound.play();
     }
