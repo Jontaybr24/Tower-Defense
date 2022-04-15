@@ -1,46 +1,54 @@
-MyGame.objects.Particles = function (spec) {
-    'use strict';
-  
-    let imageReady = false;
-    let image = new Image();
-  
-    image.onload = function () {
-      imageReady = true;
-    };
-    image.src = spec.imageSrc;
-  
-    let sprites = [];
-  
-    function addSprite(sprite) {
-      sprites.push({
-        center: sprite.pos,
-        lifetime: 0,
-        decay: sprite.decay,
-        rotation: sprite.rot,
-        speed: sprite.speed,
-        subSize: spec.subSize,
-      })
-    }
-  
-    function update(elapsedTime){
-      for(let effect in sprites){
-        sprites[effect].lifetime += elapsedTime;
-        if(sprites[effect].lifetime > spec.decay){
-          sprites.splice(effect, 1);
-        }
+MyGame.objects.Particles = function (assets, graphics, magic) {
+  'use strict';
+
+  let sprites = [];
+
+  function addSprite(sprite) {
+    sprites.push({
+      center: sprite.pos,    // The sprites position
+      lifetime: 0,           // how long the sprites been alive 
+      decay: sprite.decay,   // how long the sprite will be alive
+      rotation: sprite.rot,  // the rotation of the sprite
+      velocity: sprite.vel,  // the veloocity of the sprite
+      size: sprite.size,     // how big to render the sprite
+      image: sprite.image,
+    })
+  }
+
+  function makeCoin(point) {
+    addSprite({
+      pos: point,
+      decay: 500, // time in ms
+      vel: {x: 0, y: -1000 / 1000},
+      size: { width: magic.CELL_SIZE / 2, height: magic.CELL_SIZE / 2 },
+      image: assets.coin,
+      });
+  }
+
+  function update(elapsedTime) {
+    for (let effect in sprites) {
+      sprites[effect].lifetime += elapsedTime;
+      sprites[effect].center.x += sprites[effect].velocity.x;
+      sprites[effect].center.y += sprites[effect].velocity.y;
+      if (sprites[effect].lifetime > sprites[effect].decay) {
+        sprites.splice(effect, 1);
       }
     }
-  
-    let api = {
-      addSprite: addSprite,
-      update: update,
-      get imageReady() { return imageReady; },
-      get sprites() { return sprites; },
-      get image() { return image; },
-      get hitbox() { return spec.hitbox; },
-      get subTexture() { return spec.subTexture; }
-    };
-  
-    return api;
   }
-  
+
+  function render(){
+    for (let effect in sprites){
+      let particle = sprites[effect];
+      graphics.drawTexture(particle.image, particle.center, particle.rotation, particle.size);
+    }
+  }
+
+  let api = {
+    addSprite: addSprite,
+    update: update,
+    makeCoin: makeCoin,
+    render: render,
+  };
+
+  return api;
+}
