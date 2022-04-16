@@ -33,16 +33,17 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     };
 
     let magic = {
-        GRID_SIZE: GRID_SIZE,
-        CELL_SIZE: CELL_SIZE,
-        X_OFFSET: X_OFFSET,
-        CANVAS_SIZE: graphics.canvas.width,
+        GRID_SIZE: GRID_SIZE, // how many cells are in the grid 
+        CELL_SIZE: CELL_SIZE, // how big each cell is in pixels
+        X_OFFSET: X_OFFSET, //gap on the right where menu is 
+        CANVAS_SIZE: graphics.canvas.height,
         converter: converter,
     }
 
     let myGameBoard = objects.Gameboard(assets, graphics, magic);
     let myParticles = objects.Particles(assets, graphics, magic);
     let myInfo = objects.Info(assets, graphics, magic);
+    let myEnemies = objects.Enemies(assets,graphics,magic);
 
 
     // Checks to see if two boxes have collided
@@ -68,6 +69,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     function update(elapsedTime) {
         myGameBoard.update(elapsedTime);
         myParticles.update(elapsedTime);
+        myEnemies.update(elapsedTime);
     }
 
     function render() {
@@ -75,6 +77,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myGameBoard.render();
         myParticles.render();
         myInfo.render();
+        myEnemies.render();
     }
 
     function setControls() {
@@ -85,8 +88,10 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             if (e.ctrlKey)
                 myGameBoard.removeObject(coords);
             else{
-                myParticles.makeCoin(converter.gridToPixel(coords));
-                myInfo.addCoins(10);
+                myEnemies.spawnEnemie("thing",{x:magic.CANVAS_SIZE/2, y:magic.CANVAS_SIZE/2}, "ground")
+                //myGameBoard.addObject(coords, "wall")
+                //myParticles.makeCoin(converter.gridToPixel(coords));
+                //myInfo.addCoins(10);
             }
         })
     }

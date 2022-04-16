@@ -60,6 +60,11 @@ MyGame.loader = (function () {
         onComplete: null
     },
     {
+        scripts: ['objects/enemies'],
+        message: 'Info Loaded',
+        onComplete: null
+    },
+    {
         scripts: ['screens/mainmenu'],
         message: 'Main menu loaded',
         onComplete: null
