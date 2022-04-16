@@ -65,6 +65,11 @@ MyGame.loader = (function () {
         onComplete: null
     },
     {
+        scripts: ['objects/path'],
+        message: 'Info Loaded',
+        onComplete: null
+    },
+    {
         scripts: ['screens/mainmenu'],
         message: 'Main menu loaded',
         onComplete: null
@@ -226,6 +231,7 @@ MyGame.loader = (function () {
             MyGame.data = {
                 controls: {
                     grid: { label: 'Toggle Grid', key: 'g' },
+                    spawnEnemy: { label: 'spawn enemy', key: ' ' },
                 },
                 volume: .3,
             }

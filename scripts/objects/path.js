@@ -1,47 +1,67 @@
-MyGame.objects.Enemies = function (assets, graphics, magic) {
-  'use strict';
-  let target = {x:-100,y:800}
-  let enemies = [];
-  let moveRate = .1;
-  const ROTATION = 0;
-  let threshold = 1;
-
-  function addSprite(cname, point, ctype) {
-    enemies.push({name:cname, center:point, goal:{x:magic.CANVAS_SIZE, y:magic.CORDSIZE/2}, type:ctype, moveRate:moveRate})
-  }
-
-
-  function update(elapsedTime) {
-    for(let index in enemies){
-      
-      let movevector = {x:target.x - enemies[index].center.x, y:target.y - enemies[index].center.y}
-      let magnitude = Math.sqrt((movevector.x * movevector.x) + (movevector.y * movevector.y))
-      
-      if(magnitude < threshold){
-        console.log("reached target")
-      }
-      else{
-        enemies[index].center.x += (enemies[index].moveRate * elapsedTime * Math.sign(movevector.x))
-        enemies[index].center.y += (enemies[index].moveRate * elapsedTime * Math.sign(movevector.y))
-      }
-      
-      //checks if enimes have reached the goal
-      if(enemies[index].center.x >= enemies[index].goal.x){
-        enemies.splice(index, 1);
-      }
+MyGame.objects.Path = function (board, magic, myPathfinder) {
+  
+  paths = {}
+  queue = [];
+  visited = {};
+  function groundPathfinding(center, end) {
+    goal = magic.converter.pixelToGrid(end);
+    start = magic.converter.pixelToGrid(center);
+    queue = [];
+    visited = {};
+    queue.push({ pos: start, lastPos: null })
+    while (queue.length > 0) {
+      let currCell = queue[0]
+      queue.splice(0, 1)
+      if (checkCell(currCell.pos, currCell.lastPos, goal)) { break }
     }
-  }
-
-  function render(){
-    for (let index in enemies){
-      graphics.drawTexture(assets.coin, enemies[index].center, ROTATION, { width: magic.CELL_SIZE, height: magic.CELL_SIZE});
+    let backpath = [];
+    let curPos = goal;
+    let stringPos = "x:"+ String(curPos.x-1) + "y:" + String(curPos.y)
+    while (stringPos in visited && visited[stringPos] != null) {
+      
+      if (curPos != null) {
+        backpath.push(curPos);
+      }
+      curPos = visited[stringPos];
+      stringPos = "x:"+ String(curPos.x) + "y:" + String(curPos.y)
     }
+    
+    backpath = backpath.reverse();
+    let stringGoal = "x:"+ String(goal.x) + "y:" + String(goal.y)
+    paths[stringGoal] = backpath;
   }
-
+  
+  function checkCell(currentpos, lastPos, goal) {
+    
+    //console.log(currentpos)
+    if(currentpos.x <0 || currentpos.y <0 || currentpos.x > magic.GRID_SIZE-1 || currentpos.y > magic.GRID_SIZE-1){
+      //console.log("here 1")
+      return false;
+    }
+    if (board[currentpos.x][currentpos.y].object != null) {
+      //console.log("here 2")
+      return false;
+    }
+    let stringPos = "x:"+ String(currentpos.x) + "y:" + String(currentpos.y)
+    
+    if (stringPos in visited) {
+      //console.log("here 3")
+      return false;
+    }
+    visited[stringPos] = lastPos;
+    if (currentpos.x == goal.x-1 && currentpos.y == goal.y) {
+      return true;
+    }
+    queue.push({ pos: { x: currentpos.x + 1, y: currentpos.y }, lastPos: currentpos });
+    queue.push({ pos: { x: currentpos.x, y: currentpos.y + 1 }, lastPos: currentpos });
+    queue.push({ pos: { x: currentpos.x - 1, y: currentpos.y }, lastPos: currentpos });
+    queue.push({ pos: { x: currentpos.x, y: currentpos.y - 1 }, lastPos: currentpos });
+    return false;
+  }
+  
   let api = {
-    spawnEnemie: addSprite,
-    update: update,
-    render: render,
+    groundPathfinding: groundPathfinding,
+    get paths() { return paths; },
   };
 
   return api;

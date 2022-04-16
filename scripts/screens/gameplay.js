@@ -20,11 +20,11 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             return { x: x, y: y };
         },
         pixelToGrid: function (point) {
-            let x = Math.floor(((point.x) / graphics.canvas.width) * GRID_SIZE);
+            let x = Math.floor(((point.x) / graphics.canvas.height) * GRID_SIZE);
             let y = Math.floor(((point.y) / graphics.canvas.height) * GRID_SIZE);
             return { x: x, y: y };
         },
-        mouseToGrid: function (point) {            
+        mouseToGrid: function (point) {
             let rect = graphics.canvas.getBoundingClientRect();
             let x = Math.floor(((point.x - rect.x) / rect.height) * GRID_SIZE);
             let y = Math.floor(((point.y - rect.y) / rect.height) * GRID_SIZE);
@@ -43,7 +43,9 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let myGameBoard = objects.Gameboard(assets, graphics, magic);
     let myParticles = objects.Particles(assets, graphics, magic);
     let myInfo = objects.Info(assets, graphics, magic);
-    let myEnemies = objects.Enemies(assets,graphics,magic);
+
+    let myPathfinder = objects.Path(myGameBoard.board, magic)
+    let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder.paths);
 
 
     // Checks to see if two boxes have collided
@@ -58,6 +60,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     function loadLevel() {
         myGameBoard.genBoard();
+        myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
     }
 
 
@@ -82,14 +85,19 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     function setControls() {
         myKeyboard.register(data.controls.grid.key, myGameBoard.toggleGrid);
+        myKeyboard.register(data.controls.spawnEnemy.key, function () {
+            //myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
+            myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 },{ x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")
+        });
         myMouse.register('mousedown', function (e) {
             let coords = converter.mouseToGrid({ x: e.clientX, y: e.clientY })
             console.log(e)
             if (e.ctrlKey)
                 myGameBoard.removeObject(coords);
-            else{
-                myEnemies.spawnEnemie("thing",{x:magic.CANVAS_SIZE/2, y:magic.CANVAS_SIZE/2}, "ground")
-                //myGameBoard.addObject(coords, "wall")
+            else {
+                myGameBoard.addObject(coords, "wall");
+                myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
+                //myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 },{ x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")
                 //myParticles.makeCoin(converter.gridToPixel(coords));
                 //myInfo.addCoins(10);
             }
