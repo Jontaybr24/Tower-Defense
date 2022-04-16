@@ -4,7 +4,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, paths) {
   let enemies = [];
   let moveRate = .1;
   const ROTATION = 0;
-  let threshold = 1;
+  let threshold = 2;
   const BUFFER = 100 // time in ms for button presses to register after being held
   let timePassed = 0;
 
