@@ -57,7 +57,6 @@ MyGame.screens['settings'] = (function (game, sounds, data, assets) {
             function () { soundManager.play(assets.menu_hover); });
 
         for (let control in data.controls) {
-            console.log(control, data.controls[control]);
             let label = data.controls[control].label;
             let key = data.controls[control].key;
             if (key == ' ')

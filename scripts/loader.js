@@ -61,12 +61,17 @@ MyGame.loader = (function () {
     },
     {
         scripts: ['objects/enemies'],
-        message: 'Info Loaded',
+        message: 'Enemies Loaded',
+        onComplete: null
+    },
+    {
+        scripts: ['objects/towers'],
+        message: 'Towers Loaded',
         onComplete: null
     },
     {
         scripts: ['objects/path'],
-        message: 'Info Loaded',
+        message: 'Path Loaded',
         onComplete: null
     },
     {

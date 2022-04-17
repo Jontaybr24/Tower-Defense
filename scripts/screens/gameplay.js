@@ -11,7 +11,6 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     const GRID_SIZE = 17;
     const CELL_SIZE = graphics.canvas.height / GRID_SIZE;
     const X_OFFSET = graphics.canvas.width - graphics.canvas.height;
-    console.log(X_OFFSET);
 
     let converter = {
         gridToPixel: function (point) {
@@ -47,6 +46,8 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let myPathfinder = objects.Path(myGameBoard.board, magic)
     let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder.paths);
 
+    let myTowers = objects.Towers(assets, graphics, magic);
+
 
     // Checks to see if two boxes have collided
     function checkCollision(box1, box2) {
@@ -73,6 +74,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myGameBoard.update(elapsedTime);
         myParticles.update(elapsedTime);
         myEnemies.update(elapsedTime);
+        myTowers.update(elapsedTime);
     }
 
     function render() {
@@ -81,6 +83,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myParticles.render();
         myInfo.render();
         myEnemies.render();
+        myTowers.render();
     }
 
     function setControls() {
@@ -91,15 +94,17 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         });
         myMouse.register('mousedown', function (e) {
             let coords = converter.mouseToGrid({ x: e.clientX, y: e.clientY })
-            console.log(e)
+            let pixelCoords = converter.gridToPixel(coords);
             if (e.ctrlKey)
                 myGameBoard.removeObject(coords);
             else {
-                myGameBoard.addObject(coords, "wall");
+                let tower = myTowers.makeTower(pixelCoords, "turret");
+                myGameBoard.addObject(coords, tower);
                 myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
                 //myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 },{ x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")
                 //myParticles.makeCoin(converter.gridToPixel(coords));
                 //myInfo.addCoins(10);
+
             }
         })
     }
