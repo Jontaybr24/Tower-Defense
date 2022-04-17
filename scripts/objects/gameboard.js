@@ -78,9 +78,16 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
     }
 
     function removeObject(point) {
+        let copy = null;
         if (point.x < board.length && point.y < board.length) {
+            copy = JSON.parse(JSON.stringify(board[point.x][point.y].object));
             board[point.x][point.y].object = null;
         }
+        return copy;
+    }
+
+    function checkCell(point){
+        return (board[point.x][point.y].object == null) // will return true if the cell is empty
     }
 
     let api = {
@@ -90,6 +97,7 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
         toggleGrid: toggleGrid,
         addObject: addObject,
         removeObject: removeObject,
+        checkCell: checkCell,
         get board() { return board; },
     };
 
