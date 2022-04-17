@@ -8,16 +8,16 @@ MyGame.objects.Cursor = function (assets, graphics, magic) {
 
 
     function render() {
-        let fillStyle = "rgba(0, 0, 0, .5)"
-        let strokeStyle = "rgba(0, 0, 0, .5)"
+        let fillStyle = "rgba(0, 0, 0, 0)"
+        let strokeStyle = "rgba(0, 0, 0, 0)"
         switch (cursor.state) {
             case "clear":
                 fillStyle = "rgba(237, 230, 12, .5)"
-                strokeStyle = "rgba(107, 104, 0, .5)"
+                strokeStyle = "rgba(0, 0, 0, 1)"
                 break;
             case "blocked":
                 fillStyle = "rgba(255, 0, 0, .5)"
-                strokeStyle = "rgba(255, 0, 0, .5)"
+                strokeStyle = "rgba(0, 0, 0, 1)"
                 break;
         }
         graphics.drawRectangle({ center: cursor.center, size: { x: magic.CELL_SIZE, y: magic.CELL_SIZE }, rotation: 0 }, fillStyle, strokeStyle)
@@ -35,7 +35,7 @@ MyGame.objects.Cursor = function (assets, graphics, magic) {
         return (cursor.state == "clear")
     }
 
-    function blocked(blocked) {
+    function blocked() {
         cursor.state = "blocked";
     }
 
@@ -45,6 +45,7 @@ MyGame.objects.Cursor = function (assets, graphics, magic) {
         setCursor: setCursor,
         isClear: isClear,
         blocked: blocked,
+        get cursor() {return cursor},
     };
 
     return api;

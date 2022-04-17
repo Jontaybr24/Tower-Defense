@@ -79,15 +79,18 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
 
     function removeObject(point) {
         let copy = null;
-        if (point.x < board.length && point.y < board.length) {
+        if (point.x < board.length && point.y < board.length && point.x > 0 && point.y > 0) {
             copy = JSON.parse(JSON.stringify(board[point.x][point.y].object));
             board[point.x][point.y].object = null;
         }
         return copy;
     }
 
-    function checkCell(point){
-        return (board[point.x][point.y].object == null) // will return true if the cell is empty
+    function checkCell(point) {
+        if (point.x < board.length && point.y < board.length && point.x >= 0 && point.y >= 0) {
+            return (board[point.x][point.y].object == null) // will return true if the cell is empty
+        }
+        return false;
     }
 
     let api = {

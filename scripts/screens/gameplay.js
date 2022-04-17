@@ -62,6 +62,12 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         return collision;
     }
 
+    function cursorCollision() {
+        if (!myGameBoard.checkCell(converter.pixelToGrid(myCursor.cursor.center)))
+            return true;
+        return false;
+    }
+
     function loadLevel() {
         myGameBoard.genBoard();
         myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
@@ -78,7 +84,10 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myParticles.update(elapsedTime);
         myEnemies.update(elapsedTime);
         myTowers.update(elapsedTime);
+
         myCursor.update(elapsedTime);
+        if (cursorCollision())
+            myCursor.blocked();
     }
 
     function render() {
@@ -103,7 +112,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myMouse.register('mousedown', function (e) {
             let coords = converter.mouseToGrid({ x: e.clientX, y: e.clientY })
             let pixelCoords = converter.gridToPixel(coords);
-            if (e.ctrlKey){
+            if (e.ctrlKey) {
                 let obj = myGameBoard.removeObject(coords);
                 myTowers.deleteTower(obj);
                 myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
