@@ -35,6 +35,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         GRID_SIZE: GRID_SIZE, // how many cells are in the grid 
         CELL_SIZE: CELL_SIZE, // how big each cell is in pixels
         X_OFFSET: X_OFFSET, //gap on the right where menu is 
+        RPS: Math.PI / 500, // 1 Rotation per second
         CANVAS_SIZE: graphics.canvas.height,
         converter: converter,
     }
@@ -103,6 +104,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             else {
                 if (myGameBoard.checkCell(coords)) {
                     let tower = myTowers.makeTower(pixelCoords, "turret");
+                    myInfo.addCoins(-tower.cost)
                     myGameBoard.addObject(coords, tower);
                     myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
                     //myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 },{ x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")

@@ -6,9 +6,7 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
             name: "Basic Turret",
             cost: 50,
             image: "turret",
-            center: null,
-            rotation: 90,
-            type: "tower",
+            radius: 10,
         }
     };
 
@@ -24,22 +22,22 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
         }
     }
 
-    function update() {
-
-    }
-
-    function pushTower(spec) {
-        spec.image = { base: assets.tower_base, tower: spec.image };
-        spec.level = Math.floor(Math.random() * 4) + 1;
-        spec.id = count++;
-        console.log(spec);
-        towers.push(spec);
+    function update(elapsedTime) {
+        for (let idx in towers){
+            towers[idx].rotation += towers[idx].spinRate * elapsedTime;
+        }
     }
 
     function makeTower(pos, name) {
         let tower = JSON.parse(JSON.stringify(towerDictionary[name]))
         tower.center = pos;
-        pushTower(tower);
+        tower.image = { base: assets.tower_base, tower: tower.image };
+        tower.level = Math.floor(Math.random() * 4) + 1;
+        tower.id = count++;
+        tower.spinRate = magic.RPS;
+        tower.type = "tower"
+        tower.rotation = 0;
+        towers.push(tower);
         return tower;
     }
 
