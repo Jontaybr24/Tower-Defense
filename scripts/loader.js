@@ -60,6 +60,11 @@ MyGame.loader = (function () {
         onComplete: null
     },
     {
+        scripts: ['objects/cursor'],
+        message: 'Cursor Loaded',
+        onComplete: null
+    },
+    {
         scripts: ['objects/enemies'],
         message: 'Enemies Loaded',
         onComplete: null
@@ -252,6 +257,7 @@ MyGame.loader = (function () {
                 controls: {
                     grid: { label: 'Toggle Grid', key: 'g' },
                     spawnEnemy: { label: 'spawn enemy', key: ' ' },
+                    testKey2: {label: 'test key', key: 'a'},
                 },
                 volume: .3,
             }

@@ -10,14 +10,14 @@ MyGame.objects.Info = function (assets, graphics, magic) {
         let x = graphics.canvas.width - (2 * (magic.X_OFFSET / 3));
         let y = step;
         let text = ": " + coins;
-        graphics.drawTexture(assets.coin, {x: x + asset_offset_x, y: y + asset_offset_y}, 0, { width: magic.CELL_SIZE / 2, height: magic.CELL_SIZE / 2 })
-        graphics.drawText(text, {x: x, y: y}, "white", "30px Arial");
+        graphics.drawTexture(assets.coin, { x: x + asset_offset_x, y: y + asset_offset_y }, 0, { width: magic.CELL_SIZE / 2, height: magic.CELL_SIZE / 2 })
+        graphics.drawText(text, { x: x, y: y }, "white", "30px Arial");
     }
 
     function update(elapsedTime) {
     }
 
-    function addCoins(amount){
+    function addCoins(amount) {
         coins += amount;
     }
 
@@ -25,7 +25,6 @@ MyGame.objects.Info = function (assets, graphics, magic) {
         update: update,
         render: render,
         addCoins: addCoins,
-        get board() { return board; },
     };
 
     return api;

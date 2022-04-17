@@ -42,7 +42,9 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     let myGameBoard = objects.Gameboard(assets, graphics, magic);
     let myParticles = objects.Particles(assets, graphics, magic);
+
     let myInfo = objects.Info(assets, graphics, magic);
+    let myCursor = objects.Cursor(assets, graphics, magic);
 
     let myPathfinder = objects.Path(myGameBoard.board, magic)
     let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder.paths);
@@ -76,6 +78,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myParticles.update(elapsedTime);
         myEnemies.update(elapsedTime);
         myTowers.update(elapsedTime);
+        myCursor.update(elapsedTime);
     }
 
     function render() {
@@ -85,6 +88,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myInfo.render();
         myEnemies.render();
         myTowers.render();
+        myCursor.render();
     }
 
     function setControls() {
@@ -92,6 +96,9 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myKeyboard.register(data.controls.spawnEnemy.key, function () {
             //myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
             myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")
+        });
+        myKeyboard.register(data.controls.testKey2.key, function () {
+            myCursor.blocked();
         });
         myMouse.register('mousedown', function (e) {
             let coords = converter.mouseToGrid({ x: e.clientX, y: e.clientY })
@@ -102,7 +109,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                 myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
             }
             else {
-                if (myGameBoard.checkCell(coords)) {
+                if (myCursor.isClear() && myGameBoard.checkCell(coords)) {
                     let tower = myTowers.makeTower(pixelCoords, "turret");
                     myInfo.addCoins(-tower.cost)
                     myGameBoard.addObject(coords, tower);
@@ -113,6 +120,13 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                 }
             }
         });
+        graphics.canvas.addEventListener(
+            'mousemove', function (e) {
+                let coords = converter.mouseToGrid({ x: e.clientX, y: e.clientY })
+                let pixelCoords = converter.gridToPixel(coords);
+                myCursor.setCursor(pixelCoords);
+            }
+        );
     }
 
     function gameLoop(time) {
