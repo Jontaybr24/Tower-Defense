@@ -100,6 +100,21 @@ MyGame.loader = (function () {
         key: 'coin',
         source: '/assets/coin.png'
     },{
+        key: 'tower_base',
+        source: '/assets/tower-base.png'
+    },{
+        key: 'turret_1',
+        source: '/assets/basic-turret-1.png'
+    },{
+        key: 'turret_2',
+        source: '/assets/basic-turret-2.png'
+    },{
+        key: 'turret_3',
+        source: '/assets/basic-turret-3.png'
+    },{
+        key: 'turret_4',
+        source: '/assets/basic-turret-4.png'
+    },{
         key: 'menu_hover',
         source: '/soundFX/menu-hover.wav'
     },
