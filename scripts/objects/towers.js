@@ -8,7 +8,49 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
             image: "turret",
             radius: 10,
             preview: assets.turret_preview,
-        }
+        },
+        turret2: {
+            name: "Basic Turret",
+            cost: 50,
+            image: "turret",
+            radius: 10,
+            preview: assets.coin,
+        },
+        turret3: {
+            name: "Basic Turret",
+            cost: 50,
+            image: "turret",
+            radius: 10,
+            preview: assets.coin,
+        },
+        turret4: {
+            name: "Basic Turret",
+            cost: 50,
+            image: "turret",
+            radius: 10,
+            preview: assets.coin,
+        },
+        turret2s: {
+            name: "Basic Turret",
+            cost: 50,
+            image: "turret",
+            radius: 10,
+            preview: assets.coin,
+        },
+        turret3t: {
+            name: "Basic Turret",
+            cost: 50,
+            image: "turret",
+            radius: 10,
+            preview: assets.coin,
+        },
+        turret6: {
+            name: "Basic Turret",
+            cost: 50,
+            image: "turret",
+            radius: 10,
+            preview: assets.coin,
+        },
     };
 
     console.log(assets.turret_preview)
