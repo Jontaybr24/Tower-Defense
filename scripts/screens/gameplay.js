@@ -115,15 +115,16 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             let pixelCoords = converter.gridToPixel(coords);
             if (e.ctrlKey) {
                 let obj = myGameBoard.removeObject(coords);
-                myTowers.deleteTower(obj);
-                myInfo.addCoins(Math.floor(obj.cost * .99));
-                myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
+                if (obj != null) {
+                    myTowers.deleteTower(obj);
+                    myInfo.addCoins(Math.floor(obj.cost * .99));
+                    myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
+                }
             }
-            if (myInfo.placing) {
+            if (myInfo.placing && !e.ctrlKey) {
                 if (myCursor.isClear() && myGameBoard.checkCell(coords)) {
                     let tower = myTowers.getTower("turret");
                     if (myInfo.hasFunds(tower.cost)) {
-                        console.log(tower);
                         myInfo.addCoins(-tower.cost)
                         tower = myTowers.makeTower(pixelCoords, "turret");
                         myGameBoard.addObject(coords, tower);

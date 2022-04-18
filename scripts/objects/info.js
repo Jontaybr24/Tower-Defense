@@ -1,7 +1,7 @@
 MyGame.objects.Info = function (assets, graphics, magic, cursor) {
     'use strict';
 
-    let coins = 100;
+    let coins = 1000;
     let lives = 50;
     let step = 40;
     let asset_offset_y = -10;
@@ -17,7 +17,7 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
         graphics.drawTexture(assets.coin, { x: x + asset_offset_x, y: y + asset_offset_y }, 0, { width: magic.CELL_SIZE / 2, height: magic.CELL_SIZE / 2 })
         graphics.drawText(text, { x: x, y: y }, "white", "30px Arial");
         text = ": " + lives;
-        graphics.drawTexture(assets.coin, { x: x + asset_offset_x, y: y + asset_offset_y + step }, 0, { width: magic.CELL_SIZE / 2, height: magic.CELL_SIZE / 2 })
+        graphics.drawTexture(assets.life, { x: x + asset_offset_x, y: y + asset_offset_y + step }, 0, { width: magic.CELL_SIZE / 2, height: magic.CELL_SIZE / 2 })
         graphics.drawText(text, { x: x, y: y + step }, "white", "30px Arial");
 
         if(placing){
@@ -33,7 +33,6 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
 
     function addCoins(amount) {
         coins += amount;
-        placing = false;
     }
 
     function hasFunds(amount) {
@@ -49,10 +48,14 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
 
     function buyTower(tower) {
         if (!placing) {
-            console.log(towerDictionary[tower]);
             currentTower = towerDictionary[tower];
             placing = true;
         }
+    }
+
+    function cancelTower() {
+        currentTower = null;
+        placing = false;
     }
 
     let api = {

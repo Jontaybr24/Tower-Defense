@@ -110,6 +110,9 @@ MyGame.loader = (function () {
         key: 'coin',
         source: '/assets/coin.png'
     },{
+        key: 'life',
+        source: '/assets/life.png'
+    },{
         key: 'tower_base',
         source: '/assets/tower-base.png'
     },{
