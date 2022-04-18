@@ -108,12 +108,13 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myEnemies.render();
         myInfo.render();
     }
-
+    
     function setControls() {
         myKeyboard.register(data.controls.grid.key, myGameBoard.toggleGrid);
         myKeyboard.register(data.controls.spawnEnemy.key, function () {
             //myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
-            myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")
+            //myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")
+            myEnemies.spawnEnemy("thing", { x: magic.CANVAS_SIZE / 2 , y: 0}, { x: magic.CANVAS_SIZE / 2, y: magic.CANVAS_SIZE }, "ground")
         });
         myKeyboard.register(data.controls.testKey2.key, function () {
             myInfo.buyTower("turret");
@@ -169,11 +170,11 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
                         }
                         if (myGameBoard.checkCell(coords)) {
-                            myGameBoard.addObject(coords, "Cursor")
+                            /*myGameBoard.addObject(coords, "Cursor")
                             //console.log(myPathfinder.Pathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, false))
                             if (myPathfinder.findPath({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "Cursor") != null) {
                                 myGameBoard.removeObject(coords)
-                            }
+                            }*/
                         }
                         lastGrid = coords;
                     }
