@@ -34,6 +34,10 @@ MyGame.objects.Path = function (board, magic, myPathfinder) {
     backpath = backpath.reverse();
     let stringGoal = "x:"+ String(goal.x) + "y:" + String(goal.y)
     paths[stringGoal] = backpath;
+    if(backpath.length == 0){
+      return false
+    }
+    else{return true}
   }
   
   function checkGroundCell(currentpos, lastPos, goal) {
