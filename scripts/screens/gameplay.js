@@ -136,6 +136,12 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                 myCursor.setCursor(pixelCoords);
             }
         );
+        graphics.canvas.addEventListener(
+            'mouseleave', function (e) {
+                myCursor.hideCursor();
+            }
+        );
+
     }
 
     function gameLoop(time) {

@@ -25,6 +25,12 @@ MyGame.objects.Cursor = function (assets, graphics, magic) {
 
     function update(elapsedTime) {
         cursor.state = "clear"
+        let coords = magic.converter.pixelToGrid(cursor.center);
+        if (coords.x < 0 || coords.y < 0 || coords.x > magic.GRID_SIZE - 1 || coords.y > magic.GRID_SIZE - 1)
+            hideCursor();
+
+        if (coords.x == 0 || coords.y == 0 || coords.x == magic.GRID_SIZE - 1 || coords.y == magic.GRID_SIZE - 1)
+            cursor.state = "blocked"
     }
 
     function setCursor(point) {
@@ -39,13 +45,18 @@ MyGame.objects.Cursor = function (assets, graphics, magic) {
         cursor.state = "blocked";
     }
 
+    function hideCursor() {
+        cursor.center = {x: -500, y: -500}
+    }
+
     let api = {
         update: update,
         render: render,
         setCursor: setCursor,
         isClear: isClear,
         blocked: blocked,
-        get cursor() {return cursor},
+        hideCursor: hideCursor,
+        get cursor() { return cursor },
     };
 
     return api;
