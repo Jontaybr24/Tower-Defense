@@ -57,6 +57,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder) {
     updatePath:updatePath,
     update: update,
     render: render,
+    get enemies() { return enemies; },
   };
 
   return api;

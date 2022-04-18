@@ -83,7 +83,6 @@ MyGame.graphics = (function () {
     //
     // --------------------------------------------------------------
     function drawEllipse(ell, fillStyle, strokeStyle){
-        console.log("here")
         context.save();
         context.fillStyle = fillStyle;
         context.strokeStyle = strokeStyle;

@@ -25,7 +25,7 @@ MyGame.objects.Cursor = function (assets, graphics, magic) {
                 break;
         }
         if (tower != null) {
-            graphics.drawEllipse({center: cursor.center, radius: tower.radius}, radFill, "black")
+            graphics.drawEllipse({ center: cursor.center, radius: tower.radius }, radFill, "black")
             graphics.drawTexture(tower.preview, cursor.center, 0, { x: magic.CELL_SIZE, y: magic.CELL_SIZE })
         }
         graphics.drawRectangle({ center: cursor.center, size: { x: magic.CELL_SIZE, y: magic.CELL_SIZE }, rotation: 0 }, fillStyle, strokeStyle);
@@ -33,15 +33,13 @@ MyGame.objects.Cursor = function (assets, graphics, magic) {
     }
 
     function update(elapsedTime) {
-        
         cursor.state = "clear"
         let coords = magic.converter.pixelToGrid(cursor.center);
         if (coords.x < 0 || coords.y < 0 || coords.x > magic.GRID_SIZE - 1 || coords.y > magic.GRID_SIZE - 1)
             hideCursor();
-        if (coords.x == 0 || coords.y == 0 || coords.x == magic.GRID_SIZE - 1 || coords.y == magic.GRID_SIZE - 1 )
+        if (coords.x == 0 || coords.y == 0 || coords.x == magic.GRID_SIZE - 1 || coords.y == magic.GRID_SIZE - 1)
             cursor.state = "blocked"
-        
-        
+
     }
 
     function setCursor(point) {
@@ -52,8 +50,10 @@ MyGame.objects.Cursor = function (assets, graphics, magic) {
         return (cursor.state == "clear")
     }
 
-    function blocked() {
-        cursor.state = "blocked";
+    function blocked(status) {
+        if (status)
+            cursor.state = "blocked";
+
     }
 
     function hideCursor() {
