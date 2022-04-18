@@ -1,55 +1,15 @@
 MyGame.objects.Towers = function (assets, graphics, magic) {
     'use strict';
+    let RADS = magic.CELL_SIZE;
+    let BASE_RADS = .5 * magic.CELL_SIZE;
 
     let towerDictionary = {
         turret: {
             name: "Basic Turret",
             cost: 50,
             image: "turret",
-            radius: 100,
+            radius: BASE_RADS + RADS * 3,
             preview: assets.turret_preview,
-        },
-        turret2: {
-            name: "Basic Turret",
-            cost: 50,
-            image: "turret",
-            radius: 50,
-            preview: assets.coin,
-        },
-        turret3: {
-            name: "Basic Turret",
-            cost: 50,
-            image: "turret",
-            radius: 10,
-            preview: assets.coin,
-        },
-        turret4: {
-            name: "Basic Turret",
-            cost: 50,
-            image: "turret",
-            radius: 10,
-            preview: assets.coin,
-        },
-        turret2s: {
-            name: "Basic Turret",
-            cost: 50,
-            image: "turret",
-            radius: 10,
-            preview: assets.coin,
-        },
-        turret3t: {
-            name: "Basic Turret",
-            cost: 50,
-            image: "turret",
-            radius: 10,
-            preview: assets.coin,
-        },
-        turret6: {
-            name: "Basic Turret",
-            cost: 50,
-            image: "turret",
-            radius: 10,
-            preview: assets.coin,
         },
     };
 
