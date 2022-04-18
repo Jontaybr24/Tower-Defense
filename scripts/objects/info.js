@@ -6,12 +6,13 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
     let step = 40;
     let asset_offset_y = -10;
     let asset_offset_x = -15;
+    let full_offset = 0.65; // the percentage of the X_OFFSET that is padding from the right
     let placing = false;
     let towerDictionary = [];
     let currentTower = null;
 
     function render() {
-        let x = graphics.canvas.width - (2 * (magic.X_OFFSET / 3));
+        let x = graphics.canvas.width -  (magic.X_OFFSET * full_offset);
         let y = step;
         let text = ": " + coins;
         graphics.drawTexture(assets.coin, { x: x + asset_offset_x, y: y + asset_offset_y }, 0, { x: magic.CELL_SIZE / 2, y: magic.CELL_SIZE / 2 })
