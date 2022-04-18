@@ -9,13 +9,22 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
             cost: 50,
             image: "turret",
             radius: BASE_RADS + RADS * 3,
+            damage: 5,
+            fireRate: 1000 / 2, // times per second it can shoot in ms 
             preview: assets.turret_preview,
+        },
+        turret2: {
+            name: "Basic Turret",
+            cost: 500,
+            image: "turret",
+            radius: BASE_RADS + RADS * 3,
+            damage: 15,
+            fireRate: 1000 / 2, // times per second it can shoot in ms 
+            preview: assets.coin,
         },
     };
 
-    console.log(assets.turret_preview)
-
-    let towers = [];
+    let towers = {};
     let count = 0;
     let OFFSET = Math.PI / 2; // rotate tower head asset by 90 degrees
 
@@ -87,6 +96,7 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
 
     function update(elapsedTime) {
         for (let idx in towers) {
+            towers[idx].lastShot += elapsedTime;
             for (let enemy in towers[idx].enemies) {
                 if (magic.converter.magnitude(towers[idx].center, towers[idx].enemies[enemy].center) > towers[idx].radius) {
                     towers[idx].enemies.splice(enemy, 1);
@@ -96,7 +106,7 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
                 towers[idx].target = towers[idx].enemies[0];
             }
             else {
-                towers[idx].target = null; 
+                towers[idx].target = null;
             }
             if (towers[idx].target != null) {
                 let result = computeAngle(towers[idx].rotation, towers[idx].center, towers[idx].target.center);
@@ -107,12 +117,15 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
                         towers[idx].rotation -= towers[idx].spinRate * elapsedTime;
                     }
                 }
-                else{
-                    console.log("Firing");
+                else {
+                    if (towers[idx].lastShot > towers[idx].fireRate) {
+                        towers[idx].lastShot = 0;
+                        if (towers[idx].target.takeDamage(towers[idx].damage, towers[idx].target)) {
+                            towers[idx].enemies.shift()
+                        }
+                    }
                 }
             }
-            console.log(towers[idx].rotation)
-
         }
     }
 
@@ -126,7 +139,9 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
         tower.type = "tower"
         tower.rotation = 0;
         tower.enemies = [];
-        towers.push(tower);
+        tower.lastShot = 0;
+        console.log(tower.damage)
+        towers[tower.id] = tower;
         return tower;
     }
 
@@ -136,22 +151,14 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
     }
 
     function deleteTower(tower) {
-        if (tower?.type == "tower") {
-            for (let index in towers) {
-                if (towers[index].id == tower.id)
-                    towers.splice(index, 1);
-            }
+        console.log(tower.id);
+        if (tower.id in towers) {
+            delete towers[tower.id];
         }
     }
 
     function addEnemy(tower, enemy) {
-        for (let index in towers) {
-            if (towers[index].id == tower.id) {
-                if (!towers[index].enemies.includes(enemy)) {
-                    towers[index].enemies.push(enemy);
-                }
-            }
-        }
+        towers[tower.id].enemies.push(enemy);
     }
 
 
