@@ -20,7 +20,8 @@ MyGame.objects.Cursor = function (assets, graphics, magic) {
                 strokeStyle = "rgba(0, 0, 0, 1)"
                 break;
         }
-        graphics.drawRectangle({ center: cursor.center, size: { x: magic.CELL_SIZE, y: magic.CELL_SIZE }, rotation: 0 }, fillStyle, strokeStyle)
+        graphics.drawRectangle({ center: cursor.center, size: { x: magic.CELL_SIZE, y: magic.CELL_SIZE }, rotation: 0 }, fillStyle, strokeStyle);
+
     }
 
     function update(elapsedTime) {
@@ -46,7 +47,7 @@ MyGame.objects.Cursor = function (assets, graphics, magic) {
     }
 
     function hideCursor() {
-        cursor.center = {x: -500, y: -500}
+        cursor.center = { x: -500, y: -500 }
     }
 
     let api = {

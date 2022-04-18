@@ -43,8 +43,8 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let myGameBoard = objects.Gameboard(assets, graphics, magic);
     let myParticles = objects.Particles(assets, graphics, magic);
 
-    let myInfo = objects.Info(assets, graphics, magic);
     let myCursor = objects.Cursor(assets, graphics, magic);
+    let myInfo = objects.Info(assets, graphics, magic, myCursor);
 
     let myPathfinder = objects.Path(myGameBoard.board, magic)
     let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder.paths);
@@ -71,6 +71,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     function loadLevel() {
         myGameBoard.genBoard();
         myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
+        myInfo.loadTowers(myTowers.towerDictionary);
     }
 
 
@@ -88,16 +89,16 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myCursor.update(elapsedTime);
         if (cursorCollision())
             myCursor.blocked();
+        myInfo.update(elapsedTime);
     }
 
     function render() {
         graphics.clear();
         myGameBoard.render();
         myParticles.render();
-        myInfo.render();
         myEnemies.render();
         myTowers.render();
-        myCursor.render();
+        myInfo.render();
     }
 
     function setControls() {
@@ -107,7 +108,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")
         });
         myKeyboard.register(data.controls.testKey2.key, function () {
-            myCursor.blocked();
+            myInfo.buyTower("turret");
         });
         myMouse.register('mousedown', function (e) {
             let coords = converter.mouseToGrid({ x: e.clientX, y: e.clientY })
@@ -115,12 +116,15 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             if (e.ctrlKey) {
                 let obj = myGameBoard.removeObject(coords);
                 myTowers.deleteTower(obj);
+                myInfo.addCoins(Math.floor(obj.cost * .99));
                 myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
             }
-            else {
+            if (myInfo.placing) {
                 if (myCursor.isClear() && myGameBoard.checkCell(coords)) {
                     let tower = myTowers.getTower("turret");
-                    if(myInfo.hasFunds(tower.cost)){
+                    if (myInfo.hasFunds(tower.cost)) {
+                        console.log(tower);
+                        myInfo.addCoins(-tower.cost)
                         tower = myTowers.makeTower(pixelCoords, "turret");
                         myGameBoard.addObject(coords, tower);
                         myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
@@ -128,6 +132,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                     //myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 },{ x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")
                     //myParticles.makeCoin(converter.gridToPixel(coords));
                     //myInfo.addCoins(10);
+
                 }
             }
         });
