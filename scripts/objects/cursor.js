@@ -5,6 +5,7 @@ MyGame.objects.Cursor = function (assets, graphics, magic) {
         center: { x: 0, y: 0 },
         state: "clear" // The state that the cursor should be rendered Clear: no building blocking, Blocked: something in the way, Off: don't show
     };
+    let preview = null;
 
 
     function render() {
@@ -19,6 +20,9 @@ MyGame.objects.Cursor = function (assets, graphics, magic) {
                 fillStyle = "rgba(255, 0, 0, .5)"
                 strokeStyle = "rgba(0, 0, 0, 1)"
                 break;
+        }
+        if (preview != null) {
+            graphics.drawTexture(preview, cursor.center, 0, { x: magic.CELL_SIZE, y: magic.CELL_SIZE })
         }
         graphics.drawRectangle({ center: cursor.center, size: { x: magic.CELL_SIZE, y: magic.CELL_SIZE }, rotation: 0 }, fillStyle, strokeStyle);
 
@@ -52,6 +56,10 @@ MyGame.objects.Cursor = function (assets, graphics, magic) {
         cursor.center = { x: -500, y: -500 }
     }
 
+    function setPreview(img) {
+        preview = img;
+    }
+
     let api = {
         update: update,
         render: render,
@@ -59,6 +67,7 @@ MyGame.objects.Cursor = function (assets, graphics, magic) {
         isClear: isClear,
         blocked: blocked,
         hideCursor: hideCursor,
+        setPreview: setPreview,
         get cursor() { return cursor },
     };
 

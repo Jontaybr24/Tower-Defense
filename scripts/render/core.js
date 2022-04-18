@@ -13,7 +13,7 @@ MyGame.graphics = (function () {
     // Draws a texture to the canvas with the following specification:
     //    image: Image
     //    center: {x: , y: }
-    //    size: { width: , height: }
+    //    size: { x: , y: }
     //
     // --------------------------------------------------------------
     function drawTexture(image, center, rotation, size) {
@@ -25,9 +25,9 @@ MyGame.graphics = (function () {
 
         context.drawImage(
             image,
-            center.x - size.width / 2,
-            center.y - size.height / 2,
-            size.width, size.height);
+            center.x - size.x / 2,
+            center.y - size.y / 2,
+            size.x, size.y);
 
         context.restore();
     }
@@ -42,11 +42,11 @@ MyGame.graphics = (function () {
         // Pick the selected sprite from the sprite sheet to render
         context.drawImage(
             image,
-            subTexture.width * index.x, subTexture.height * index.y,      // Which sub-texture to pick out
-            subTexture.width, subTexture.height,   // The size of the sub-texture
-            center.x - size.height / 2,           // Where to draw the sub-texture
-            center.y - size.height / 2,
-            size.width, size.height);
+            subTexture.x * index.x, subTexture.x * index.y,      // Which sub-texture to pick out
+            subTexture.x, subTexture.y,   // The size of the sub-texture
+            center.x - size.y / 2,           // Where to draw the sub-texture
+            center.y - size.y / 2,
+            size.width, size.y);
 
         context.restore();
     }

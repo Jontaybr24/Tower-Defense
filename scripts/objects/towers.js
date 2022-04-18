@@ -7,8 +7,53 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
             cost: 50,
             image: "turret",
             radius: 10,
-        }
+            preview: assets.turret_preview,
+        },
+        turret2: {
+            name: "Basic Turret",
+            cost: 50,
+            image: "turret",
+            radius: 10,
+            preview: assets.coin,
+        },
+        turret3: {
+            name: "Basic Turret",
+            cost: 50,
+            image: "turret",
+            radius: 10,
+            preview: assets.coin,
+        },
+        turret4: {
+            name: "Basic Turret",
+            cost: 50,
+            image: "turret",
+            radius: 10,
+            preview: assets.coin,
+        },
+        turret2s: {
+            name: "Basic Turret",
+            cost: 50,
+            image: "turret",
+            radius: 10,
+            preview: assets.coin,
+        },
+        turret3t: {
+            name: "Basic Turret",
+            cost: 50,
+            image: "turret",
+            radius: 10,
+            preview: assets.coin,
+        },
+        turret6: {
+            name: "Basic Turret",
+            cost: 50,
+            image: "turret",
+            radius: 10,
+            preview: assets.coin,
+        },
     };
+
+    console.log(assets.turret_preview)
 
     let towers = [];
     let count = 0;
@@ -16,9 +61,9 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
     function render() {
         for (let index in towers) {
             let tower = towers[index];
-            graphics.drawTexture(tower.image.base, tower.center, 0, { width: magic.CELL_SIZE, height: magic.CELL_SIZE }) // renders the tower base
+            graphics.drawTexture(tower.image.base, tower.center, 0, { x: magic.CELL_SIZE, y: magic.CELL_SIZE }) // renders the tower base
             let towerHead = assets[tower.image.tower + "_" + tower.level] // Gets the image of the tower head based on the level of the tower
-            graphics.drawTexture(towerHead, tower.center, tower.rotation, { width: magic.CELL_SIZE, height: magic.CELL_SIZE }) // Renders the tower head            
+            graphics.drawTexture(towerHead, tower.center, tower.rotation, { x: magic.CELL_SIZE, y: magic.CELL_SIZE }) // Renders the tower head            
         }
     }
 

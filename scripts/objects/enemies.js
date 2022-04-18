@@ -48,7 +48,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder) {
   }
   function render() {
     for (let index in enemies) {
-      graphics.drawTexture(assets.coin, enemies[index].center, ROTATION, { width: magic.CELL_SIZE, height: magic.CELL_SIZE });
+      graphics.drawTexture(assets.coin, enemies[index].center, ROTATION, { x: magic.CELL_SIZE, y: magic.CELL_SIZE });
     }
   }
 

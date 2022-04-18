@@ -28,6 +28,12 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             let x = Math.floor(((point.x - rect.x) / rect.height) * GRID_SIZE);
             let y = Math.floor(((point.y - rect.y) / rect.height) * GRID_SIZE);
             return { x: x, y: y };
+        },
+        mouseToPixel: function (point) {
+            let rect = graphics.canvas.getBoundingClientRect();
+            let x = Math.floor(((point.x - rect.x) / rect.width) * graphics.canvas.width);
+            let y = Math.floor(((point.y - rect.y) / rect.height) * graphics.canvas.height);
+            return { x: x, y: y };
         }
     };
 
@@ -115,6 +121,8 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myMouse.register('mousedown', function (e) {
             let coords = converter.mouseToGrid({ x: e.clientX, y: e.clientY })
             let pixelCoords = converter.gridToPixel(coords);
+            if (coords.x >= magic.GRID_SIZE)
+                myInfo.checkBuy();
             if (e.ctrlKey) {
                 let obj = myGameBoard.removeObject(coords);
                 if (obj != null) {
@@ -125,7 +133,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                 myEnemies.updatePath();
 
             }
-            if (myInfo.placing && !e.ctrlKey) {
+            else if (myInfo.placing) {
                 if (myCursor.isClear() && myGameBoard.checkCell(coords)) {
                     let tower = myTowers.getTower("turret");
                     if (myInfo.hasFunds(tower.cost)) {
@@ -148,6 +156,8 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                 let coords = converter.mouseToGrid({ x: e.clientX, y: e.clientY })
                 
                 let pixelCoords = converter.gridToPixel(coords);
+                let moreCoords = converter.mouseToPixel({ x: e.clientX, y: e.clientY })
+                myInfo.checkHover(moreCoords);
                 myCursor.setCursor(pixelCoords);
                 // add pathfinding thing here
                 if ((coords.x < GRID_SIZE && coords.y < GRID_SIZE)) {
