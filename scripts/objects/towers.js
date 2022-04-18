@@ -19,9 +19,9 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
     function render() {
         for (let index in towers) {
             let tower = towers[index];
-            graphics.drawTexture(tower.image.base, tower.center, 0, { width: magic.CELL_SIZE, height: magic.CELL_SIZE }) // renders the tower base
+            graphics.drawTexture(tower.image.base, tower.center, 0, { x: magic.CELL_SIZE, y: magic.CELL_SIZE }) // renders the tower base
             let towerHead = assets[tower.image.tower + "_" + tower.level] // Gets the image of the tower head based on the level of the tower
-            graphics.drawTexture(towerHead, tower.center, tower.rotation, { width: magic.CELL_SIZE, height: magic.CELL_SIZE }) // Renders the tower head            
+            graphics.drawTexture(towerHead, tower.center, tower.rotation, { x: magic.CELL_SIZE, y: magic.CELL_SIZE }) // Renders the tower head            
         }
     }
 

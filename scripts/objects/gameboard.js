@@ -40,9 +40,9 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
         for (let row in board) {
             for (let col in board[row]) {
                 let center = magic.converter.gridToPixel({ x: row, y: col })
-                graphics.drawTexture(assets.grass, center, ROTATION, { width: magic.CELL_SIZE, height: magic.CELL_SIZE }); // Renders grass in every cell incase the tower has transperency
+                graphics.drawTexture(assets.grass, center, ROTATION, { x: magic.CELL_SIZE, y: magic.CELL_SIZE }); // Renders grass in every cell incase the tower has transperency
                 if (board[row][col].object == "wall") { // there is a wall here so render the wall
-                    graphics.drawTexture(assets.wall, center, ROTATION, { width: magic.CELL_SIZE, height: magic.CELL_SIZE });
+                    graphics.drawTexture(assets.wall, center, ROTATION, { x: magic.CELL_SIZE, y: magic.CELL_SIZE });
                 }
             }
         }
