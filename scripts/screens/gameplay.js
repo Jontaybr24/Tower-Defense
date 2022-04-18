@@ -70,7 +70,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     function loadLevel() {
         myGameBoard.genBoard();
-        myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
+        myPathfinder.Pathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
     }
 
 
@@ -95,8 +95,9 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myGameBoard.render();
         myParticles.render();
         myInfo.render();
-        myEnemies.render();
+        
         myTowers.render();
+        myEnemies.render();
         myCursor.render();
     }
 
@@ -115,14 +116,14 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             if (e.ctrlKey) {
                 let obj = myGameBoard.removeObject(coords);
                 myTowers.deleteTower(obj);
-                myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
+                myPathfinder.Pathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, false);
             }
             else {
                 if (myCursor.isClear() && myGameBoard.checkCell(coords)) {
                     let tower = myTowers.makeTower(pixelCoords, "turret");
                     myInfo.addCoins(-tower.cost)
                     myGameBoard.addObject(coords, tower);
-                    myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
+                    myPathfinder.Pathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, false);
                     //myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 },{ x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")
                     //myParticles.makeCoin(converter.gridToPixel(coords));
                     //myInfo.addCoins(10);
