@@ -49,6 +49,7 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
     function buyTower(tower) {
         if (!placing) {
             currentTower = towerDictionary[tower];
+            cursor.setPreview(currentTower.preview)
             placing = true;
         }
     }

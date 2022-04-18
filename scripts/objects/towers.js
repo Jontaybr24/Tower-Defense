@@ -7,8 +7,11 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
             cost: 50,
             image: "turret",
             radius: 10,
+            preview: assets.turret_preview,
         }
     };
+
+    console.log(assets.turret_preview)
 
     let towers = [];
     let count = 0;
