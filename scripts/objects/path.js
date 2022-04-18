@@ -26,7 +26,8 @@ MyGame.objects.Path = function (board, magic) {
     }
     let backpath = [];
     let curPos = goal;
-    let stringPos = "x:"+ String(curPos.x-1) + "y:" + String(curPos.y)
+    
+    let stringPos = "x:"+ String(curPos.x-1) + "y:" + String(curPos.y-1)
     while (stringPos in visited && visited[stringPos] != null) {
       
       if (curPos != null) {
@@ -63,7 +64,8 @@ MyGame.objects.Path = function (board, magic) {
       return false;
     }
     visited[stringPos] = lastPos;
-    if (currentpos.x == goal.x-1 && currentpos.y == goal.y) {
+    if (currentpos.x == goal.x-1 && currentpos.y == goal.y-1) {
+      console.log("here")
       return true;
     }
     queue.push({ pos: { x: currentpos.x + 1, y: currentpos.y }, lastPos: currentpos });

@@ -25,18 +25,18 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder) {
       let magnitude = Math.sqrt((movevector.x * movevector.x) + (movevector.y * movevector.y))
 
       if (magnitude < threshold) {
-        enemies[index].target = magic.converter.gridToPixel(enemies[index].path[0]);
+        if(enemies[index].path.length ==0){
+          enemies.splice(index, 1);
+        }
+        else{
+          enemies[index].target = magic.converter.gridToPixel(enemies[index].path[0]);
         //console.log(enemies[index].target)
         enemies[index].path.splice(0, 1);
+        }
       }
       else {
         enemies[index].center.x += (enemies[index].moveRate * elapsedTime * Math.sign(movevector.x))
         enemies[index].center.y += (enemies[index].moveRate * elapsedTime * Math.sign(movevector.y))
-      }
-
-      //checks if enimes have reached the goal
-      if (enemies[index].center.x >= enemies[index].goal.x) {
-        enemies.splice(index, 1);
       }
     }
   }
