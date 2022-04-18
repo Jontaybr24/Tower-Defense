@@ -1,4 +1,4 @@
-MyGame.objects.Enemies = function (assets, graphics, magic, paths) {
+MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder) {
   'use strict';
 
   let enemies = [];
@@ -11,10 +11,8 @@ MyGame.objects.Enemies = function (assets, graphics, magic, paths) {
   function spawnEnemy(cname, spawn, end, ctype) {
     if (timePassed > BUFFER) {
       timePassed = 0;
-      goal = magic.converter.pixelToGrid(end);
-      let stringGoal = "x:" + String(goal.x) + "y:" + String(goal.y)
-      let cpath = [...paths[stringGoal]];
-      enemies.push({ name: cname, center: spawn, goal: { x: magic.CANVAS_SIZE, y: magic.CORDSIZE / 2 }, type: ctype, moveRate: moveRate, target: spawn, path: cpath })
+      let cpath = Pathfinder.findPath(spawn,end, ctype)
+      enemies.push({ name: cname, center: spawn, goal: { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, type: ctype, moveRate: moveRate, target: spawn, path: cpath })
     }
   }
 
@@ -42,7 +40,12 @@ MyGame.objects.Enemies = function (assets, graphics, magic, paths) {
       }
     }
   }
-
+  function updatePath(){
+    for(let index in enemies){
+      enemies[index].path = Pathfinder.findPath(enemies[index].center,enemies[index].goal, enemies[index].type )
+      //console.log(enemies[index].path)
+    }
+  }
   function render() {
     for (let index in enemies) {
       graphics.drawTexture(assets.coin, enemies[index].center, ROTATION, { width: magic.CELL_SIZE, height: magic.CELL_SIZE });
@@ -51,6 +54,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, paths) {
 
   let api = {
     spawnEnemy: spawnEnemy,
+    updatePath:updatePath,
     update: update,
     render: render,
   };
