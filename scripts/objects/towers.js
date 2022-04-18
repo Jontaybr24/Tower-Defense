@@ -6,14 +6,14 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
             name: "Basic Turret",
             cost: 50,
             image: "turret",
-            radius: 10,
+            radius: 100,
             preview: assets.turret_preview,
         },
         turret2: {
             name: "Basic Turret",
             cost: 50,
             image: "turret",
-            radius: 10,
+            radius: 50,
             preview: assets.coin,
         },
         turret3: {

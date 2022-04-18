@@ -74,6 +74,26 @@ MyGame.graphics = (function () {
         context.restore();
     }
 
+
+    // --------------------------------------------------------------
+    //
+    // Draw a circle to the canvas with the following attributes:
+    //      center: { x: , y: },
+    //      radius:       // radians
+    //
+    // --------------------------------------------------------------
+    function drawEllipse(ell, fillStyle, strokeStyle){
+        console.log("here")
+        context.save();
+        context.fillStyle = fillStyle;
+        context.strokeStyle = strokeStyle;
+        context.beginPath();
+        context.arc(ell.center.x, ell.center.y, ell.radius, 0, 2 * Math.PI);
+        context.fill();
+        context.stroke();
+
+    }
+
     function drawLine(point1, point2, lineWidth, strokeStyle) {
         context.strokeStyle = strokeStyle;
         context.lineWidth = lineWidth;
@@ -97,6 +117,7 @@ MyGame.graphics = (function () {
         drawLine: drawLine,
         drawText: drawText,
         drawTexture: drawTexture,
+        drawEllipse: drawEllipse,
         drawRectangle: drawRectangle,
         drawSubTexture: drawSubTexture,
     };
