@@ -129,11 +129,14 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                 }
             }
         });
+
         graphics.canvas.addEventListener(
             'mousemove', function (e) {
                 let coords = converter.mouseToGrid({ x: e.clientX, y: e.clientY })
                 let pixelCoords = converter.gridToPixel(coords);
                 myCursor.setCursor(pixelCoords);
+
+                // add pathfinding thing here
             }
         );
         graphics.canvas.addEventListener(
