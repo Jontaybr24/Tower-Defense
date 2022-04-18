@@ -33,13 +33,15 @@ MyGame.objects.Cursor = function (assets, graphics, magic) {
     }
 
     function update(elapsedTime) {
+        
         cursor.state = "clear"
         let coords = magic.converter.pixelToGrid(cursor.center);
         if (coords.x < 0 || coords.y < 0 || coords.x > magic.GRID_SIZE - 1 || coords.y > magic.GRID_SIZE - 1)
             hideCursor();
-
-        if (coords.x == 0 || coords.y == 0 || coords.x == magic.GRID_SIZE - 1 || coords.y == magic.GRID_SIZE - 1)
+        if (coords.x == 0 || coords.y == 0 || coords.x == magic.GRID_SIZE - 1 || coords.y == magic.GRID_SIZE - 1 )
             cursor.state = "blocked"
+        
+        
     }
 
     function setCursor(point) {

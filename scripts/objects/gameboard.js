@@ -76,6 +76,7 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
 
     function update(elapsedTime) {
         timePassed += elapsedTime;
+        
     }
 
     function addObject(point, obj) {
@@ -95,7 +96,7 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
 
     function checkCell(point) {
         if (point.x < board.length && point.y < board.length && point.x >= 0 && point.y >= 0) {
-            return (board[point.x][point.y].object == null) // will return true if the cell is empty
+            return (board[point.x][point.y].object == null /*|| board[point.x][point.y].object == "Cursor"*/) // will return true if the cell is empty
         }
         return false;
     }

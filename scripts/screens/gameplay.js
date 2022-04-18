@@ -53,7 +53,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let myInfo = objects.Info(assets, graphics, magic, myCursor);
 
     let myPathfinder = objects.Path(myGameBoard.board, magic)
-    let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder.paths);
+    let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder);
 
     let myTowers = objects.Towers(assets, graphics, magic);
 
@@ -76,7 +76,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     function loadLevel() {
         myGameBoard.genBoard();
-        myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
+        //myPathfinder.findPath({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, false);
         myInfo.loadTowers(myTowers.towerDictionary);
     }
 
@@ -87,12 +87,13 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     }
 
     function update(elapsedTime) {
-        myGameBoard.update(elapsedTime);
+
         myParticles.update(elapsedTime);
         myEnemies.update(elapsedTime);
         myTowers.update(elapsedTime);
 
         myCursor.update(elapsedTime);
+        myGameBoard.update(elapsedTime);
         if (cursorCollision())
             myCursor.blocked();
         myInfo.update(elapsedTime);
@@ -102,8 +103,9 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         graphics.clear();
         myGameBoard.render();
         myParticles.render();
-        myEnemies.render();
+
         myTowers.render();
+        myEnemies.render();
         myInfo.render();
     }
 
@@ -126,8 +128,10 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                 if (obj != null) {
                     myTowers.deleteTower(obj);
                     myInfo.addCoins(Math.floor(obj.cost * .99));
-                    myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
+                    //myPathfinder.findPath({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, false);
                 }
+                myEnemies.updatePath();
+
             }
             else if (myInfo.placing) {
                 if (myCursor.isClear() && myGameBoard.checkCell(coords)) {
@@ -136,8 +140,9 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                         myInfo.addCoins(-tower.cost)
                         tower = myTowers.makeTower(pixelCoords, "turret");
                         myGameBoard.addObject(coords, tower);
-                        myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
+                        //myPathfinder.findPath({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
                     }
+                    myEnemies.updatePath();
                     //myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 },{ x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")
                     //myParticles.makeCoin(converter.gridToPixel(coords));
                     //myInfo.addCoins(10);
@@ -145,16 +150,35 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                 }
             }
         });
-
+        let lastGrid = null;
         graphics.canvas.addEventListener(
             'mousemove', function (e) {
                 let coords = converter.mouseToGrid({ x: e.clientX, y: e.clientY })
+                
                 let pixelCoords = converter.gridToPixel(coords);
                 let moreCoords = converter.mouseToPixel({ x: e.clientX, y: e.clientY })
                 myInfo.checkHover(moreCoords);
                 myCursor.setCursor(pixelCoords);
-
                 // add pathfinding thing here
+                if ((coords.x < GRID_SIZE && coords.y < GRID_SIZE)) {
+                    if (!(coords.x <= 0 || coords.y <= 0)) {
+                        if (lastGrid != null && (lastGrid.x != coords.x || lastGrid.y != coords.y)) {
+                            if (myGameBoard.board[lastGrid.x][lastGrid.y].object == "Cursor") {
+                                myGameBoard.removeObject(lastGrid)
+                            }
+
+                        }
+                        if (myGameBoard.checkCell(coords)) {
+                            myGameBoard.addObject(coords, "Cursor")
+                            //console.log(myPathfinder.Pathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, false))
+                            if (myPathfinder.findPath({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "Cursor") != null) {
+                                myGameBoard.removeObject(coords)
+                            }
+                        }
+                        lastGrid = coords;
+                    }
+                }
+
             }
         );
         graphics.canvas.addEventListener(
