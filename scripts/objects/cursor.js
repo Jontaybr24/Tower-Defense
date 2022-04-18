@@ -22,7 +22,6 @@ MyGame.objects.Cursor = function (assets, graphics, magic) {
                 break;
         }
         if (preview != null) {
-            console.log("Here")
             graphics.drawTexture(preview, cursor.center, 0, { x: magic.CELL_SIZE, y: magic.CELL_SIZE })
         }
         graphics.drawRectangle({ center: cursor.center, size: { x: magic.CELL_SIZE, y: magic.CELL_SIZE }, rotation: 0 }, fillStyle, strokeStyle);

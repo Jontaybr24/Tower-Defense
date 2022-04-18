@@ -36,6 +36,9 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
             let tower = towerDictionary[idx];
             graphics.drawRectangle({ size: { x: magic.CELL_SIZE, y: magic.CELL_SIZE }, center: tower.center, rotation: 0 }, "black", "black")
             graphics.drawTexture(tower.preview, tower.center, 0, { x: magic.CELL_SIZE * .75, y: magic.CELL_SIZE * .75 })
+            if (tower.selected)
+                graphics.drawRectangle({ size: { x: magic.CELL_SIZE, y: magic.CELL_SIZE }, center: tower.center, rotation: 0 }, "rgba(255, 255, 255, .5)", "black")
+
         }
     }
 
@@ -63,6 +66,12 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
         let y = towerYStep;
         for (let idx in towerDictionary) {
             towerDictionary[idx].center = { x: x, y: y };
+            towerDictionary[idx].hitbox = {
+                xmin: towerDictionary[idx].center.x - magic.CELL_SIZE / 2,
+                xmax: towerDictionary[idx].center.x + magic.CELL_SIZE / 2,
+                ymin: towerDictionary[idx].center.y - magic.CELL_SIZE / 2,
+                ymax: towerDictionary[idx].center.y + magic.CELL_SIZE / 2,
+            }
             x += magic.CELL_SIZE + towerStep;
             if (x > graphics.canvas.width) {
                 x = start;
@@ -84,6 +93,30 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
         placing = false;
     }
 
+    function checkHover(point) {
+        for (let idx in towerDictionary) {
+            let tower = towerDictionary[idx];
+            let box1 = tower.hitbox;
+
+            let collision = !(
+                point.x > box1.xmax ||
+                point.x < box1.xmin ||
+                point.y > box1.ymax ||
+                point.y < box1.ymin);
+            towerDictionary[idx].selected = collision;
+        }
+    }
+
+    function checkBuy(){
+        placing = false;
+        for (let idx in towerDictionary){
+            let tower = JSON.parse(JSON.stringify(towerDictionary[idx]));
+            if (tower.selected){
+                buyTower(idx)
+            }
+        }
+    }
+
     let api = {
         update: update,
         render: render,
@@ -91,6 +124,8 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
         hasFunds: hasFunds,
         loadTowers: loadTowers,
         buyTower: buyTower,
+        checkHover: checkHover,
+        checkBuy: checkBuy,
         get placing() { return placing; }
     };
 
