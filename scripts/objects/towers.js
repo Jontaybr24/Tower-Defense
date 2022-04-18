@@ -41,6 +41,11 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
         return tower;
     }
 
+    function getTower(name){
+        let tower = JSON.parse(JSON.stringify(towerDictionary[name]))
+        return tower;
+    }
+
     function deleteTower(tower) {
         if (tower?.type == "tower") {
             for (let index in towers) {
@@ -55,6 +60,7 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
     let api = {
         update: update,
         render: render,
+        getTower: getTower,
         makeTower: makeTower,
         deleteTower: deleteTower,
         get towerDictionary() { return towerDictionary; },

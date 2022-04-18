@@ -52,11 +52,18 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
     }
 
     function drawGrid() {
-        for (let slice in board) {
-            let center = magic.converter.gridToPixel({ x: parseInt(slice), y: parseInt(slice) });
-            let coord = + center.y + magic.CELL_SIZE / 2;
-            graphics.drawLine({ x: 0, y: coord }, { x: magic.CANVAS_SIZE, y: coord }, 2, "FFFFFF");
-            graphics.drawLine({ x: coord, y: 0 }, { x: coord, y: magic.CANVAS_SIZE }, 2, "FFFFFF");
+        let fillStyle = "rgba(0, 0, 0, .25)";
+        let strokeStyle = "black"
+        for (let row in board) {
+            for (let col in board) {
+                if (fillStyle == "rgba(0, 0, 0, .25)")
+                    fillStyle = "rgba(50, 50, 50, .25)";
+                else
+                    fillStyle = "rgba(0, 0, 0, .25)";
+                let center = magic.converter.gridToPixel({ x: row, y: col })
+                let rect = { size: { x: magic.CELL_SIZE, y: magic.CELL_SIZE }, center: center, rotation: 0 }
+                graphics.drawRectangle(rect, fillStyle, strokeStyle)
+            }
         }
     }
 

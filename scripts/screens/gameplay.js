@@ -43,8 +43,8 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let myGameBoard = objects.Gameboard(assets, graphics, magic);
     let myParticles = objects.Particles(assets, graphics, magic);
 
-    let myInfo = objects.Info(assets, graphics, magic);
     let myCursor = objects.Cursor(assets, graphics, magic);
+    let myInfo = objects.Info(assets, graphics, magic, myCursor);
 
     let myPathfinder = objects.Path(myGameBoard.board, magic)
     let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder.paths);
@@ -70,7 +70,12 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     function loadLevel() {
         myGameBoard.genBoard();
+<<<<<<< HEAD
         myPathfinder.Pathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
+=======
+        myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
+        myInfo.loadTowers(myTowers.towerDictionary);
+>>>>>>> e25623781896d860e8a26f49d291927f48070b26
     }
 
 
@@ -88,17 +93,24 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myCursor.update(elapsedTime);
         if (cursorCollision())
             myCursor.blocked();
+        myInfo.update(elapsedTime);
     }
 
     function render() {
         graphics.clear();
         myGameBoard.render();
         myParticles.render();
+<<<<<<< HEAD
         myInfo.render();
         
         myTowers.render();
         myEnemies.render();
         myCursor.render();
+=======
+        myEnemies.render();
+        myTowers.render();
+        myInfo.render();
+>>>>>>> e25623781896d860e8a26f49d291927f48070b26
     }
 
     function setControls() {
@@ -108,35 +120,63 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")
         });
         myKeyboard.register(data.controls.testKey2.key, function () {
-            myCursor.blocked();
+            myInfo.buyTower("turret");
         });
         myMouse.register('mousedown', function (e) {
             let coords = converter.mouseToGrid({ x: e.clientX, y: e.clientY })
             let pixelCoords = converter.gridToPixel(coords);
             if (e.ctrlKey) {
                 let obj = myGameBoard.removeObject(coords);
+<<<<<<< HEAD
                 myTowers.deleteTower(obj);
                 myPathfinder.Pathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, false);
+=======
+                if (obj != null) {
+                    myTowers.deleteTower(obj);
+                    myInfo.addCoins(Math.floor(obj.cost * .99));
+                    myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
+                }
+>>>>>>> e25623781896d860e8a26f49d291927f48070b26
             }
-            else {
+            if (myInfo.placing && !e.ctrlKey) {
                 if (myCursor.isClear() && myGameBoard.checkCell(coords)) {
+<<<<<<< HEAD
                     let tower = myTowers.makeTower(pixelCoords, "turret");
                     myInfo.addCoins(-tower.cost)
                     myGameBoard.addObject(coords, tower);
                     myPathfinder.Pathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, false);
+=======
+                    let tower = myTowers.getTower("turret");
+                    if (myInfo.hasFunds(tower.cost)) {
+                        myInfo.addCoins(-tower.cost)
+                        tower = myTowers.makeTower(pixelCoords, "turret");
+                        myGameBoard.addObject(coords, tower);
+                        myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
+                    }
+>>>>>>> e25623781896d860e8a26f49d291927f48070b26
                     //myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 },{ x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")
                     //myParticles.makeCoin(converter.gridToPixel(coords));
                     //myInfo.addCoins(10);
+
                 }
             }
         });
+
         graphics.canvas.addEventListener(
             'mousemove', function (e) {
                 let coords = converter.mouseToGrid({ x: e.clientX, y: e.clientY })
                 let pixelCoords = converter.gridToPixel(coords);
                 myCursor.setCursor(pixelCoords);
+
+                // add pathfinding thing here
             }
         );
+        graphics.canvas.addEventListener(
+            'mouseleave', function (e) {
+                myCursor.hideCursor();
+            }
+        );
+
     }
 
     function gameLoop(time) {
