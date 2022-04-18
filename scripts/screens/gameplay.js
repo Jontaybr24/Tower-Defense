@@ -119,10 +119,12 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             }
             else {
                 if (myCursor.isClear() && myGameBoard.checkCell(coords)) {
-                    let tower = myTowers.makeTower(pixelCoords, "turret");
-                    myInfo.addCoins(-tower.cost)
-                    myGameBoard.addObject(coords, tower);
-                    myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
+                    let tower = myTowers.getTower("turret");
+                    if(myInfo.hasFunds(tower.cost)){
+                        tower = myTowers.makeTower(pixelCoords, "turret");
+                        myGameBoard.addObject(coords, tower);
+                        myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
+                    }
                     //myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 },{ x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")
                     //myParticles.makeCoin(converter.gridToPixel(coords));
                     //myInfo.addCoins(10);

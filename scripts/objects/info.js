@@ -1,7 +1,7 @@
 MyGame.objects.Info = function (assets, graphics, magic) {
     'use strict';
 
-    let coins = 0;
+    let coins = 100;
     let lives = 50;
     let step = 40;
     let asset_offset_y = -10;
@@ -25,10 +25,19 @@ MyGame.objects.Info = function (assets, graphics, magic) {
         coins += amount;
     }
 
+    function hasFunds(amount) {
+        if (coins >= amount){
+            coins -= amount;
+            return true;
+        }
+        return false;
+    }
+
     let api = {
         update: update,
         render: render,
         addCoins: addCoins,
+        hasFunds: hasFunds,
     };
 
     return api;
