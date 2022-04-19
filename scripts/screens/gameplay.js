@@ -151,7 +151,6 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             }
             else if (myInfo.placing) {
                 if (myCursor.isClear() && myGameBoard.checkCell(coords)) {
-                    console.log(myCursor.tower)
                     let tower = myTowers.getTower(myCursor.tower.name);
                     if (myInfo.hasFunds(tower.cost)) {
                         myInfo.addCoins(-tower.cost)
