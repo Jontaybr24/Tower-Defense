@@ -59,7 +59,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
           delete enemies[index];
         }
         else {
-          enemies[index].target = magic.converter.gridToPixel(enemies[index].path[0]);
+          enemies[index].target = magic.gridToPixel(enemies[index].path[0]);
           //console.log(enemies[index].target)
           enemies[index].path.splice(0, 1);
         }

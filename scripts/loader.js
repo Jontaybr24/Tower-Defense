@@ -50,6 +50,11 @@ MyGame.loader = (function () {
         onComplete: null
     },
     {
+        scripts: ['objects/magic'],
+        message: 'Gameboard Loaded',
+        onComplete: null
+    },
+    {
         scripts: ['objects/particles'],
         message: 'Particles Loaded',
         onComplete: null

@@ -114,7 +114,7 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
 
             // check to see if the enemies have left the radius, if they have, remove them
             for (let enemy in tower.enemies) {
-                if (magic.converter.magnitude(tower.center, tower.enemies[enemy].center) > tower.radius) {
+                if (magic.magnitude(tower.center, tower.enemies[enemy].center) > tower.radius) {
                     tower.enemies.splice(enemy, 1);
                 }
             }

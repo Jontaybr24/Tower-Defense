@@ -6,50 +6,9 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let myKeyboard = input.Keyboard();
     let myMouse = input.Mouse();
 
-    let soundManager = sounds.manager();
+    let soundManager = sounds.manager();    
 
-    const GRID_SIZE = 17;
-    const CELL_SIZE = graphics.canvas.height / GRID_SIZE;
-    const X_OFFSET = graphics.canvas.width - graphics.canvas.height;
-
-    let converter = {
-        gridToPixel: function (point) {
-            let x = (parseInt(point.x) + .5) * CELL_SIZE;
-            let y = (parseInt(point.y) + .5) * CELL_SIZE;
-            return { x: x, y: y };
-        },
-        pixelToGrid: function (point) {
-            let x = Math.floor(((point.x) / graphics.canvas.height) * GRID_SIZE);
-            let y = Math.floor(((point.y) / graphics.canvas.height) * GRID_SIZE);
-            return { x: x, y: y };
-        },
-        mouseToGrid: function (point) {
-            let rect = graphics.canvas.getBoundingClientRect();
-            let x = Math.floor(((point.x - rect.x) / rect.height) * GRID_SIZE);
-            let y = Math.floor(((point.y - rect.y) / rect.height) * GRID_SIZE);
-            return { x: x, y: y };
-        },
-        mouseToPixel: function (point) {
-            let rect = graphics.canvas.getBoundingClientRect();
-            let x = Math.floor(((point.x - rect.x) / rect.width) * graphics.canvas.width);
-            let y = Math.floor(((point.y - rect.y) / rect.height) * graphics.canvas.height);
-            return { x: x, y: y };
-        },
-        magnitude: function (point1, point2) {
-            let x = point1.x - point2.x;
-            let y = point1.y - point2.y;
-            return Math.sqrt((x * x) + (y * y));
-        }
-    };
-
-    let magic = {
-        GRID_SIZE: GRID_SIZE, // how many cells are in the grid 
-        CELL_SIZE: CELL_SIZE, // how big each cell is in pixels
-        X_OFFSET: X_OFFSET, //gap on the right where menu is 
-        RPS: Math.PI / 500, // 1 Rotation per second
-        CANVAS_SIZE: graphics.canvas.height,
-        converter: converter,
-    }
+    let magic = objects.Magic(graphics);
 
     let myGameBoard = objects.Gameboard(assets, graphics, magic);
     let myParticles = objects.Particles(assets, graphics, magic);
@@ -63,24 +22,15 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let myTowers = objects.Towers(assets, graphics, magic);
 
 
-    // Checks to see if two boxes have collided
-    function checkCollision(box1, box2) {
-        let collision = !(
-            box2.xmin > box1.xmax ||
-            box2.xmax < box1.xmin ||
-            box2.ymin > box1.ymax ||
-            box2.ymax < box1.ymin);
-        return collision;
-    }
 
     function cursorCollision() {
-        myCursor.blocked(!myGameBoard.checkCell(converter.pixelToGrid(myCursor.cursor.center)));
+        myCursor.blocked(!myGameBoard.checkCell(magic.pixelToGrid(myCursor.cursor.center)));
     }
 
     function enemiesInRadius() {
         for (let enemy in myEnemies.enemies) {
             for (let tower in myTowers.towers) {
-                if (converter.magnitude(myTowers.towers[tower].center, myEnemies.enemies[enemy].center) < myTowers.towers[tower].radius) {
+                if (magic.magnitude(myTowers.towers[tower].center, myEnemies.enemies[enemy].center) < myTowers.towers[tower].radius) {
                     myTowers.addEnemy(myTowers.towers[tower], myEnemies.enemies[enemy])
                 }
             }
@@ -135,8 +85,8 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             myEnemies.spawnEnemy("thing", { x: magic.CANVAS_SIZE / 2, y: 0 }, { x: magic.CANVAS_SIZE / 2, y: magic.CANVAS_SIZE }, "ground")
         });
         myMouse.register('mousedown', function (e) {
-            let coords = converter.mouseToGrid({ x: e.clientX, y: e.clientY })
-            let pixelCoords = converter.gridToPixel(coords);
+            let coords = magic.mouseToGrid({ x: e.clientX, y: e.clientY })
+            let pixelCoords = magic.gridToPixel(coords);
 
             if (coords.x >= magic.GRID_SIZE)
                 myInfo.checkBuy();
@@ -169,14 +119,14 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         let lastGrid = null;
         graphics.canvas.addEventListener(
             'mousemove', function (e) {
-                let coords = converter.mouseToGrid({ x: e.clientX, y: e.clientY })
+                let coords = magic.mouseToGrid({ x: e.clientX, y: e.clientY })
 
-                let pixelCoords = converter.gridToPixel(coords);
-                let moreCoords = converter.mouseToPixel({ x: e.clientX, y: e.clientY })
+                let pixelCoords = magic.gridToPixel(coords);
+                let moreCoords = magic.mouseToPixel({ x: e.clientX, y: e.clientY })
                 myInfo.checkHover(moreCoords);
                 myCursor.setCursor(pixelCoords);
                 // add pathfinding thing here
-                if ((coords.x < GRID_SIZE && coords.y < GRID_SIZE)) {
+                if ((coords.x < magic.GRID_SIZE && coords.y < magic.GRID_SIZE)) {
                     if (!(coords.x <= 0 || coords.y <= 0)) {
                         if (lastGrid != null && (lastGrid.x != coords.x || lastGrid.y != coords.y)) {
                             if (myGameBoard.board[lastGrid.x][lastGrid.y].object == "Cursor") {

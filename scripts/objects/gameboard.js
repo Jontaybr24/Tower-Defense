@@ -39,7 +39,7 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
     function render() {
         for (let row in board) {
             for (let col in board[row]) {
-                let center = magic.converter.gridToPixel({ x: row, y: col })
+                let center = magic.gridToPixel({ x: row, y: col })
                 graphics.drawTexture(assets.grass, center, ROTATION, { x: magic.CELL_SIZE, y: magic.CELL_SIZE }); // Renders grass in every cell incase the tower has transperency
                 if (board[row][col].object == "wall") { // there is a wall here so render the wall
                     graphics.drawTexture(assets.wall, center, ROTATION, { x: magic.CELL_SIZE, y: magic.CELL_SIZE });
@@ -60,7 +60,7 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
                     fillStyle = "rgba(50, 50, 50, .25)";
                 else
                     fillStyle = "rgba(0, 0, 0, .25)";
-                let center = magic.converter.gridToPixel({ x: row, y: col })
+                let center = magic.gridToPixel({ x: row, y: col })
                 let rect = { size: { x: magic.CELL_SIZE, y: magic.CELL_SIZE }, center: center, rotation: 0 }
                 graphics.drawRectangle(rect, fillStyle, strokeStyle)
             }
