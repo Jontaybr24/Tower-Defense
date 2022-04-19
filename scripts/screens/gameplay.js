@@ -6,7 +6,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let myKeyboard = input.Keyboard();
     let myMouse = input.Mouse();
 
-    let soundManager = sounds.manager();    
+    let soundManager = sounds.manager();
 
     let magic = objects.Magic(graphics);
 
@@ -20,6 +20,8 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder, myInfo, myParticles);
 
     let myTowers = objects.Towers(assets, graphics, magic);
+
+    let myWaves = objects.Waves(myEnemies, magic);
 
 
 
@@ -56,6 +58,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     function update(elapsedTime) {
         collinsions();
 
+        myWaves.update(elapsedTime);
         myParticles.update(elapsedTime);
         myEnemies.update(elapsedTime);
         myTowers.update(elapsedTime);
@@ -82,7 +85,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myKeyboard.register(data.controls.spawnEnemy.key, function () {
             //myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
             //myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")
-            myEnemies.spawnEnemy("thing", { x: magic.CANVAS_SIZE / 2, y: 0 }, { x: magic.CANVAS_SIZE / 2, y: magic.CANVAS_SIZE }, "ground")
+            myWaves.nextWave();
         });
         myMouse.register('mousedown', function (e) {
             let coords = magic.mouseToGrid({ x: e.clientX, y: e.clientY })

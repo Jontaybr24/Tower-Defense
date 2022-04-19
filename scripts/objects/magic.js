@@ -1,7 +1,6 @@
 MyGame.objects.Magic = function (graphics) {
     'use strict';
 
-
     const GRID_SIZE = 17;
     const CELL_SIZE = graphics.canvas.height / GRID_SIZE;
     const X_OFFSET = graphics.canvas.width - graphics.canvas.height;
