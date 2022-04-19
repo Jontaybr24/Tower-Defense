@@ -5,8 +5,8 @@ MyGame.objects.Path = function (board, magic) {
   visited = {};
   function findPath(center, end, type) {
 
-    goal = magic.converter.pixelToGrid(end);
-    start = magic.converter.pixelToGrid(center);
+    goal = magic.pixelToGrid(end);
+    start = magic.pixelToGrid(center);
     
     queue = [];
     visited = {};

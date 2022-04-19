@@ -102,6 +102,9 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
                 point.y > box1.ymax ||
                 point.y < box1.ymin);
             towerDictionary[idx].selected = collision;
+            if (collision){
+                buyTower(tower.name)
+            }
         }
     }
 
@@ -115,6 +118,10 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
         }
     }
 
+    function loseLife(amount){
+        lives -= amount;
+    }
+
     let api = {
         update: update,
         render: render,
@@ -124,6 +131,7 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
         buyTower: buyTower,
         checkHover: checkHover,
         checkBuy: checkBuy,
+        loseLife: loseLife,
         get placing() { return placing; }
     };
 

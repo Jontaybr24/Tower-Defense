@@ -50,6 +50,11 @@ MyGame.loader = (function () {
         onComplete: null
     },
     {
+        scripts: ['objects/magic'],
+        message: 'Gameboard Loaded',
+        onComplete: null
+    },
+    {
         scripts: ['objects/particles'],
         message: 'Particles Loaded',
         onComplete: null
@@ -77,6 +82,16 @@ MyGame.loader = (function () {
     {
         scripts: ['objects/path'],
         message: 'Path Loaded',
+        onComplete: null
+    },
+    {
+        scripts: ['objects/waves'],
+        message: 'Wave Loaded',
+        onComplete: null
+    },
+    {
+        scripts: ['objects/healthbar'],
+        message: 'Healthbars Loaded',
         onComplete: null
     },
     {
@@ -154,7 +169,7 @@ MyGame.loader = (function () {
         if (scripts.length > 0) {
             let entry = scripts[0];
             require(entry.scripts, function () {
-                console.log(entry.message);
+                //console.log(entry.message);
                 if (entry.onComplete) {
                     entry.onComplete();
                 }

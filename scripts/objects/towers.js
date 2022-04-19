@@ -5,22 +5,35 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
 
     let towerDictionary = {
         turret: {
-            name: "Basic Turret",
+            name: "turret",
             cost: 50,
             image: "turret",
-            radius: BASE_RADS + RADS * 3,
+            radius: BASE_RADS + RADS * 2,
             damage: 5,
             fireRate: 1000 / 2, // times per second it can shoot in ms 
-            preview: assets.turret_preview,
+            preview: assets.turret_preview, // the piction image 
+            needTarget: true, // if the tower needs to turn to target before activating
         },
-        turret2: {
-            name: "Basic Turret",
+        freezer: {
+            name: "freezer",
             cost: 500,
             image: "turret",
-            radius: BASE_RADS + RADS * 3,
-            damage: 15,
+            radius: BASE_RADS + RADS * 1,
+            damage: 5,
             fireRate: 1000 / 2, // times per second it can shoot in ms 
             preview: assets.coin,
+            needTarget: false,
+        },
+    };
+
+    let abilityDict = {
+        turret: function (tower, target) {
+            if (target.takeHit(target, tower.damage))
+                removeTarget(target)
+
+        },
+        freezer: function (tower, targets) {
+            console.log("I'm a friend");
         },
     };
 
@@ -96,41 +109,62 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
 
     function update(elapsedTime) {
         for (let idx in towers) {
-            towers[idx].lastShot += elapsedTime;
-            for (let enemy in towers[idx].enemies) {
-                if (magic.converter.magnitude(towers[idx].center, towers[idx].enemies[enemy].center) > towers[idx].radius) {
-                    towers[idx].enemies.splice(enemy, 1);
+            let tower = towers[idx];
+            tower.lastShot += elapsedTime;
+
+            // check to see if the enemies have left the radius, if they have, remove them
+            for (let enemy in tower.enemies) {
+                if (magic.magnitude(tower.center, tower.enemies[enemy].center) > tower.radius) {
+                    tower.enemies.splice(enemy, 1);
                 }
             }
-            if (towers[idx].enemies.length > 0) {
-                towers[idx].target = towers[idx].enemies[0];
-            }
-            else {
-                towers[idx].target = null;
-            }
-            if (towers[idx].target != null) {
-                let result = computeAngle(towers[idx].rotation, towers[idx].center, towers[idx].target.center);
-                if (testTolerance(result.angle, 0, .01) === false) {
-                    if (result.crossProduct > 0) {
-                        towers[idx].rotation += towers[idx].spinRate * elapsedTime;
-                    } else {
-                        towers[idx].rotation -= towers[idx].spinRate * elapsedTime;
+
+            // check to see the there are enemies in the towers radius
+            if (tower.enemies.length > 0) {
+                // if the tower needs a target first turn to target before activating
+                if (tower.needTarget) {
+                    tower.target = tower.enemies[0];
+                    let result = computeAngle(tower.rotation, tower.center, tower.target.center);
+                    // checks if the angle between the target is below the tollerance otherwise keep turning
+                    if (testTolerance(result.angle, 0, .04) === false) {
+                        if (result.crossProduct > 0) {
+                            tower.rotation += tower.spinRate * elapsedTime;
+                        } else {
+                            tower.rotation -= tower.spinRate * elapsedTime;
+                        }
+                    }
+                    else {
+                        // the tower needs to wait a specific time before it can activate again
+                        if (tower.lastShot > tower.fireRate) {
+                            tower.lastShot = 0;
+                            tower.activate(tower, tower.target);
+                        }
                     }
                 }
+                // the tower needs to wait a specific time before it can activate again
                 else {
-                    if (towers[idx].lastShot > towers[idx].fireRate) {
-                        towers[idx].lastShot = 0;
-                        if (towers[idx].target.takeDamage(towers[idx].damage, towers[idx].target)) {
-                            towers[idx].enemies.shift()
-                        }
+                    if (tower.lastShot > tower.fireRate) {
+                        tower.lastShot = 0;
+                        tower.activate(tower);
                     }
                 }
             }
         }
     }
 
+    // if an enemy died, we need to remove it from the radius of all other towers
+    function removeTarget(target) {
+        for (let idx in towers) {
+            for (let enemy in towers[idx].enemies) {
+                if (towers[idx].enemies[enemy].id == target.id)
+                    towers[idx].target = null;
+                towers[idx].enemies.splice(enemy, 1);
+            }
+        }
+    }
+
     function makeTower(pos, name) {
-        let tower = JSON.parse(JSON.stringify(towerDictionary[name]))
+        let tower = JSON.parse(JSON.stringify(towerDictionary[name]));
         tower.center = pos;
         tower.image = { base: assets.tower_base, tower: tower.image };
         tower.level = Math.floor(Math.random() * 4) + 1;
@@ -140,7 +174,7 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
         tower.rotation = 0;
         tower.enemies = [];
         tower.lastShot = 0;
-        console.log(tower.damage)
+        tower.activate = abilityDict[tower.name]
         towers[tower.id] = tower;
         return tower;
     }
@@ -151,14 +185,14 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
     }
 
     function deleteTower(tower) {
-        console.log(tower.id);
         if (tower.id in towers) {
             delete towers[tower.id];
         }
     }
 
     function addEnemy(tower, enemy) {
-        towers[tower.id].enemies.push(enemy);
+        if (!(tower.enemies.includes(enemy)))
+            towers[tower.id].enemies.push(enemy);
     }
 
 

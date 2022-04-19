@@ -1,4 +1,4 @@
-MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder) {
+MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, particles, bars) {
   'use strict';
 
   let enemies = {};
@@ -8,10 +8,42 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder) {
   let threshold = 2;
   const BUFFER = 100 // time in ms for button presses to register after being held
   let timePassed = 0;
+  let spawnPoints = {
+    N: { x: magic.CANVAS_SIZE / 2, y: 0 },
+    E: { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 },
+    W: { x: 0, y: magic.CANVAS_SIZE / 2 },
+    S: { x: magic.CANVAS_SIZE / 2, y: magic.CANVAS_SIZE },
+  }
 
-  function spawnEnemy(cname, spawn, end, ctype) {
+  // location takes one of the options: N, E, S, W
+  function spawnEnemy(cname, location, ctype) {
     if (timePassed > BUFFER) {
       timePassed = 0;
+
+      let spawn = null;
+      let end = null;
+      switch (location) {
+        case "E":
+          spawn = spawnPoints.E;
+          end = spawnPoints.W;
+          break;
+        case "S":
+          spawn = spawnPoints.S;
+          end = spawnPoints.N;
+          break;
+        case "W":
+          spawn = spawnPoints.W;
+          end = spawnPoints.E;
+          break;
+        default:
+          spawn = spawnPoints.N;
+          end = spawnPoints.S;
+      }
+      let img = assets.coin;
+      if (cname == "thing")
+        img = assets.life;
+      spawn = JSON.parse(JSON.stringify(spawn));
+      end = JSON.parse(JSON.stringify(end));
 
       let cpath = Pathfinder.findPath(spawn, end, ctype)
       let newEnemy = {
@@ -21,24 +53,31 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder) {
         type: ctype,
         moveRate: moveRate,
         target: spawn,
+        img: img,
         path: cpath,
-        health: 100,
+        health: 50,
         id: count++,
-        takeDamage: takeDamage,
+        takeHit: takeHit,
       };
+      bars.newHealthbar(newEnemy);
       enemies[newEnemy.id] = newEnemy;
     }
   }
 
   // function for taking damage returns true if the enemy died
-  function takeDamage(amount, enemy){
+  function takeHit(enemy, amount) {
     enemy.health -= amount;
-    //console.log(enemy.id + " has " + enemy.health + " health");
-    if (enemy.health < 0){
-      delete enemies[enemy.id];
+    if (enemy.health < 0) {
+      particles.makeCoin(enemy.center);
+      info.addCoins(10)
+      kill(enemy);
       return true;
     }
     return false;
+  }
+  function kill(enemy) {
+    bars.removeBar(enemy.id);
+    delete enemies[enemy.id];
   }
 
 
@@ -51,10 +90,12 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder) {
 
       if (magnitude < threshold) {
         if (enemies[index].path.length == 0) {
+          info.loseLife(1);
+          bars.removeBar(enemies[index].id);
           delete enemies[index];
         }
         else {
-          enemies[index].target = magic.converter.gridToPixel(enemies[index].path[0]);
+          enemies[index].target = magic.gridToPixel(enemies[index].path[0]);
           //console.log(enemies[index].target)
           enemies[index].path.splice(0, 1);
         }
@@ -66,14 +107,14 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder) {
     }
   }
 
-  function updatePath(){
-    for(let index in enemies){
-        enemies[index].path = Pathfinder.findPath(enemies[index].center,enemies[index].goal, enemies[index].type )
+  function updatePath() {
+    for (let index in enemies) {
+      enemies[index].path = Pathfinder.findPath(enemies[index].center, enemies[index].goal, enemies[index].type)
     }
   }
   function render() {
     for (let index in enemies) {
-      graphics.drawTexture(assets.coin, enemies[index].center, ROTATION, { x: magic.CELL_SIZE, y: magic.CELL_SIZE });
+      graphics.drawTexture(enemies[index].img, enemies[index].center, ROTATION, { x: magic.CELL_SIZE, y: magic.CELL_SIZE });
     }
   }
 
@@ -83,6 +124,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder) {
     update: update,
     render: render,
     get enemies() { return enemies; },
+    get length() { return Object.keys(enemies).length }
   };
 
   return api;

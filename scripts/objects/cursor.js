@@ -34,7 +34,7 @@ MyGame.objects.Cursor = function (assets, graphics, magic) {
 
     function update(elapsedTime) {
         cursor.state = "clear"
-        let coords = magic.converter.pixelToGrid(cursor.center);
+        let coords = magic.pixelToGrid(cursor.center);
         if (coords.x < 0 || coords.y < 0 || coords.x > magic.GRID_SIZE - 1 || coords.y > magic.GRID_SIZE - 1)
             hideCursor();
         if (coords.x == 0 || coords.y == 0 || coords.x == magic.GRID_SIZE - 1 || coords.y == magic.GRID_SIZE - 1)
@@ -73,6 +73,7 @@ MyGame.objects.Cursor = function (assets, graphics, magic) {
         hideCursor: hideCursor,
         setPreview: setPreview,
         get cursor() { return cursor },
+        get tower() { return tower },
     };
 
     return api;
