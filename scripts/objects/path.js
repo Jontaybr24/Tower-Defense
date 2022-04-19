@@ -65,7 +65,7 @@ MyGame.objects.Path = function (board, magic) {
     }
     visited[stringPos] = lastPos;
     if (currentpos.x == goal.x-1 && currentpos.y == goal.y-1) {
-      console.log("here")
+      //console.log("here")
       return true;
     }
     queue.push({ pos: { x: currentpos.x + 1, y: currentpos.y }, lastPos: currentpos });

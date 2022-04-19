@@ -188,11 +188,11 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
                         }
                         if (myGameBoard.checkCell(coords)) {
-                            /*myGameBoard.addObject(coords, "Cursor")
+                            myGameBoard.addObject(coords, "Cursor")
                             //console.log(myPathfinder.Pathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, false))
                             if (myPathfinder.findPath({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "Cursor") != null) {
                                 myGameBoard.removeObject(coords)
-                            }*/
+                            }
                         }
                         lastGrid = coords;
                     }
