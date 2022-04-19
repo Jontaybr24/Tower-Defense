@@ -12,7 +12,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder) {
     if (timePassed > BUFFER) {
       timePassed = 0;
       let cpath = Pathfinder.findPath(spawn,end, ctype)
-      enemies.push({ name: cname, center: spawn, goal: { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, type: ctype, moveRate: moveRate, target: spawn, path: cpath })
+      enemies.push({ name: cname, center: spawn, goal: end, type: ctype, moveRate: moveRate, target: spawn, path: cpath })
     }
   }
 
@@ -27,6 +27,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder) {
       if (magnitude < threshold) {
         if(enemies[index].path.length ==0){
           enemies.splice(index, 1);
+          //sub health
         }
         else{
           enemies[index].target = magic.converter.gridToPixel(enemies[index].path[0]);
@@ -42,6 +43,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder) {
   }
   function updatePath(){
     for(let index in enemies){
+      
       enemies[index].path = Pathfinder.findPath(enemies[index].center,enemies[index].goal, enemies[index].type )
       //console.log(enemies[index].path)
     }
