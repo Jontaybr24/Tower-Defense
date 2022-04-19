@@ -17,7 +17,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder) {
       let newEnemy = {
         name: cname,
         center: spawn,
-        goal: { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 },
+        goal: end,
         type: ctype,
         moveRate: moveRate,
         target: spawn,
