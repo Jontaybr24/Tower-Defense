@@ -39,9 +39,11 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
           spawn = spawnPoints.N;
           end = spawnPoints.S;
       }
+      let img = assets.coin;
+      if (cname == "thing")
+        img = assets.life;
       spawn = JSON.parse(JSON.stringify(spawn));
       end = JSON.parse(JSON.stringify(end));
-      console.log(spawn, end)
 
       let cpath = Pathfinder.findPath(spawn, end, ctype)
       let newEnemy = {
@@ -51,6 +53,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
         type: ctype,
         moveRate: moveRate,
         target: spawn,
+        img: img,
         path: cpath,
         health: 50,
         id: count++,
@@ -108,7 +111,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
   }
   function render() {
     for (let index in enemies) {
-      graphics.drawTexture(assets.coin, enemies[index].center, ROTATION, { x: magic.CELL_SIZE, y: magic.CELL_SIZE });
+      graphics.drawTexture(enemies[index].img, enemies[index].center, ROTATION, { x: magic.CELL_SIZE, y: magic.CELL_SIZE });
     }
   }
 
@@ -118,7 +121,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
     update: update,
     render: render,
     get enemies() { return enemies; },
-    get length() { return Object.keys(enemies).length}
+    get length() { return Object.keys(enemies).length }
   };
 
   return api;

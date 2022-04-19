@@ -45,6 +45,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     function loadLevel() {
         myGameBoard.genBoard();
+        myWaves.loadWaves("temp");
         //myPathfinder.findPath({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, false);
         myInfo.loadTowers(myTowers.towerDictionary);
     }
@@ -84,6 +85,8 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myTowers.render();
         myEnemies.render();
         myInfo.render();
+        if (myEnemies.length == 0)
+            myWaves.render();
         myParticles.render();
     }
 
