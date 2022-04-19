@@ -58,7 +58,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let myInfo = objects.Info(assets, graphics, magic, myCursor);
 
     let myPathfinder = objects.Path(myGameBoard.board, magic)
-    let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder);
+    let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder, myInfo, myParticles);
 
     let myTowers = objects.Towers(assets, graphics, magic);
 
@@ -120,11 +120,11 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     function render() {
         graphics.clear();
         myGameBoard.render();
-        myParticles.render();
 
         myTowers.render();
         myEnemies.render();
         myInfo.render();
+        myParticles.render();
     }
 
     function setControls() {
@@ -137,6 +137,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myMouse.register('mousedown', function (e) {
             let coords = converter.mouseToGrid({ x: e.clientX, y: e.clientY })
             let pixelCoords = converter.gridToPixel(coords);
+
             if (coords.x >= magic.GRID_SIZE)
                 myInfo.checkBuy();
             if (e.ctrlKey) {
@@ -160,7 +161,6 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                     }
                     myEnemies.updatePath();
                     //myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 },{ x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")
-                    //myParticles.makeCoin(converter.gridToPixel(coords));
                     //myInfo.addCoins(10);
 
                 }

@@ -16,23 +16,21 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
         },
         freezer: {
             name: "freezer",
-            cost: 50,
+            cost: 500,
             image: "turret",
             radius: BASE_RADS + RADS * 1,
             damage: 5,
             fireRate: 1000 / 2, // times per second it can shoot in ms 
             preview: assets.coin,
-            needTarget: false, 
+            needTarget: false,
         },
     };
 
     let abilityDict = {
         turret: function (tower, target) {
-            target.health -= tower.damage;
-            if (target.health < 0) {
-                target.kill(target)
+            if (target.takeHit(target, tower.damage))
                 removeTarget(target)
-            }
+
         },
         freezer: function (tower, targets) {
             console.log("I'm a friend");
@@ -113,15 +111,21 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
         for (let idx in towers) {
             let tower = towers[idx];
             tower.lastShot += elapsedTime;
+
+            // check to see if the enemies have left the radius, if they have, remove them
             for (let enemy in tower.enemies) {
                 if (magic.converter.magnitude(tower.center, tower.enemies[enemy].center) > tower.radius) {
                     tower.enemies.splice(enemy, 1);
                 }
             }
+
+            // check to see the there are enemies in the towers radius
             if (tower.enemies.length > 0) {
+                // if the tower needs a target first turn to target before activating
                 if (tower.needTarget) {
                     tower.target = tower.enemies[0];
                     let result = computeAngle(tower.rotation, tower.center, tower.target.center);
+                    // checks if the angle between the target is below the tollerance otherwise keep turning
                     if (testTolerance(result.angle, 0, .04) === false) {
                         if (result.crossProduct > 0) {
                             tower.rotation += tower.spinRate * elapsedTime;
@@ -130,12 +134,14 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
                         }
                     }
                     else {
+                        // the tower needs to wait a specific time before it can activate again
                         if (tower.lastShot > tower.fireRate) {
                             tower.lastShot = 0;
                             tower.activate(tower, tower.target);
                         }
                     }
                 }
+                // the tower needs to wait a specific time before it can activate again
                 else {
                     if (tower.lastShot > tower.fireRate) {
                         tower.lastShot = 0;
@@ -143,22 +149,10 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
                     }
                 }
             }
-            /*
-            
-            else {
-                if (towers[idx].lastShot > towers[idx].fireRate) {
-                    towers[idx].lastShot = 0;
-                    towers[idx].target.health -= towers[idx].damage;
-                    if (towers[idx].target.health < 0) {
-                        towers[idx].target.kill(towers[idx].target)
-                        removeTarget(towers[idx].target)
-                    }
-                }
-            }*/
         }
     }
 
-
+    // if an enemy died, we need to remove it from the radius of all other towers
     function removeTarget(target) {
         for (let idx in towers) {
             for (let enemy in towers[idx].enemies) {

@@ -19,10 +19,11 @@ MyGame.objects.Particles = function (assets, graphics, magic) {
     addSprite({
       pos: point,
       decay: 500, // time in ms
-      vel: {x: 0, y: -1000 / 1000},
-      size: { width: magic.CELL_SIZE / 2, height: magic.CELL_SIZE / 2 },
+      vel: { x: 0, y: -1000 / 1000 },
+      size: { x: magic.CELL_SIZE * .4, y: magic.CELL_SIZE * .4 },
       image: assets.coin,
-      });
+      rot: 0,
+    });
   }
 
   function update(elapsedTime) {
@@ -36,8 +37,8 @@ MyGame.objects.Particles = function (assets, graphics, magic) {
     }
   }
 
-  function render(){
-    for (let effect in sprites){
+  function render() {
+    for (let effect in sprites) {
       let particle = sprites[effect];
       graphics.drawTexture(particle.image, particle.center, particle.rotation, particle.size);
     }

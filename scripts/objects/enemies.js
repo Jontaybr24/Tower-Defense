@@ -1,4 +1,4 @@
-MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder) {
+MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, particles) {
   'use strict';
 
   let enemies = {};
@@ -22,15 +22,25 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder) {
         moveRate: moveRate,
         target: spawn,
         path: cpath,
-        health: 100,
+        health: 50,
         id: count++,
-        kill: kill,
+        takeHit: takeHit,
       };
       enemies[newEnemy.id] = newEnemy;
     }
   }
 
   // function for taking damage returns true if the enemy died
+  function takeHit(enemy, amount) {
+    enemy.health -= amount;
+    if (enemy.health < 0) {
+      particles.makeCoin(enemy.center);
+      info.addCoins(10)
+      kill(enemy);
+      return true;
+    }
+    return false;
+  }
   function kill(enemy) {
     delete enemies[enemy.id];
   }
@@ -45,6 +55,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder) {
 
       if (magnitude < threshold) {
         if (enemies[index].path.length == 0) {
+          info.loseLife(1);
           delete enemies[index];
         }
         else {
