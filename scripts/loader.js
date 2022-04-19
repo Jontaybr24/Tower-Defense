@@ -90,6 +90,11 @@ MyGame.loader = (function () {
         onComplete: null
     },
     {
+        scripts: ['objects/healthbar'],
+        message: 'Healthbars Loaded',
+        onComplete: null
+    },
+    {
         scripts: ['screens/mainmenu'],
         message: 'Main menu loaded',
         onComplete: null

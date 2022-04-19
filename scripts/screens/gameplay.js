@@ -17,7 +17,8 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let myInfo = objects.Info(assets, graphics, magic, myCursor);
 
     let myPathfinder = objects.Path(myGameBoard.board, magic)
-    let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder, myInfo, myParticles);
+    let myHealthbars = objects.Healthbars(graphics, magic);
+    let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder, myInfo, myParticles, myHealthbars);
 
     let myTowers = objects.Towers(assets, graphics, magic);
 
@@ -68,6 +69,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myWaves.update(elapsedTime);
         myParticles.update(elapsedTime);
         myEnemies.update(elapsedTime);
+        myHealthbars.update(elapsedTime);
         myTowers.update(elapsedTime);
 
         myCursor.update(elapsedTime);
@@ -84,6 +86,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
         myTowers.render();
         myEnemies.render();
+        myHealthbars.render();
         myInfo.render();
         if (myEnemies.length == 0)
             myWaves.render();

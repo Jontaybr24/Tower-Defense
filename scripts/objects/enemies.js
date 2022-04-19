@@ -1,4 +1,4 @@
-MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, particles) {
+MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, particles, bars) {
   'use strict';
 
   let enemies = {};
@@ -59,6 +59,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
         id: count++,
         takeHit: takeHit,
       };
+      bars.newHealthbar(newEnemy);
       enemies[newEnemy.id] = newEnemy;
     }
   }
@@ -75,6 +76,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
     return false;
   }
   function kill(enemy) {
+    bars.removeBar(enemy.id);
     delete enemies[enemy.id];
   }
 
@@ -89,6 +91,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       if (magnitude < threshold) {
         if (enemies[index].path.length == 0) {
           info.loseLife(1);
+          bars.removeBar(enemies[index].id);
           delete enemies[index];
         }
         else {
