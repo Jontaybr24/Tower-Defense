@@ -5,7 +5,7 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
 
     let towerDictionary = {
         turret: {
-            name: "Basic Turret",
+            name: "turret",
             cost: 50,
             image: "turret",
             radius: BASE_RADS + RADS * 3,
@@ -14,10 +14,10 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
             preview: assets.turret_preview,
         },
         turret2: {
-            name: "Basic Turret",
+            name: "turret2",
             cost: 500,
             image: "turret",
-            radius: BASE_RADS + RADS * 3,
+            radius: BASE_RADS + RADS * 2,
             damage: 15,
             fireRate: 1000 / 2, // times per second it can shoot in ms 
             preview: assets.coin,
@@ -110,7 +110,7 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
             }
             if (towers[idx].target != null) {
                 let result = computeAngle(towers[idx].rotation, towers[idx].center, towers[idx].target.center);
-                if (testTolerance(result.angle, 0, .01) === false) {
+                if (testTolerance(result.angle, 0, .04 ) === false) {
                     if (result.crossProduct > 0) {
                         towers[idx].rotation += towers[idx].spinRate * elapsedTime;
                     } else {
@@ -120,11 +120,23 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
                 else {
                     if (towers[idx].lastShot > towers[idx].fireRate) {
                         towers[idx].lastShot = 0;
-                        if (towers[idx].target.takeDamage(towers[idx].damage, towers[idx].target)) {
-                            towers[idx].enemies.shift()
+                        towers[idx].target.health -= towers[idx].damage;
+                        if (towers[idx].target.health < 0) {
+                            towers[idx].target.kill(towers[idx].target)
+                            removeTarget(towers[idx].target)
                         }
                     }
                 }
+            }
+        }
+    }
+
+    function removeTarget(target) {
+        for (let idx in towers) {
+            for (let enemy in towers[idx].enemies) {
+                if (towers[idx].enemies[enemy].id == target.id)
+                    towers[idx].target = null;
+                towers[idx].enemies.splice(enemy, 1);
             }
         }
     }
@@ -140,7 +152,6 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
         tower.rotation = 0;
         tower.enemies = [];
         tower.lastShot = 0;
-        console.log(tower.damage)
         towers[tower.id] = tower;
         return tower;
     }
@@ -151,14 +162,14 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
     }
 
     function deleteTower(tower) {
-        console.log(tower.id);
         if (tower.id in towers) {
             delete towers[tower.id];
         }
     }
 
     function addEnemy(tower, enemy) {
-        towers[tower.id].enemies.push(enemy);
+        if (!(tower.enemies.includes(enemy)))
+            towers[tower.id].enemies.push(enemy);
     }
 
 

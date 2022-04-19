@@ -134,9 +134,6 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             //myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")
             myEnemies.spawnEnemy("thing", { x: magic.CANVAS_SIZE / 2, y: 0 }, { x: magic.CANVAS_SIZE / 2, y: magic.CANVAS_SIZE }, "ground")
         });
-        myKeyboard.register(data.controls.testKey2.key, function () {
-            myInfo.buyTower("turret");
-        });
         myMouse.register('mousedown', function (e) {
             let coords = converter.mouseToGrid({ x: e.clientX, y: e.clientY })
             let pixelCoords = converter.gridToPixel(coords);
@@ -154,10 +151,11 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             }
             else if (myInfo.placing) {
                 if (myCursor.isClear() && myGameBoard.checkCell(coords)) {
-                    let tower = myTowers.getTower("turret");
+                    console.log(myCursor.tower)
+                    let tower = myTowers.getTower(myCursor.tower.name);
                     if (myInfo.hasFunds(tower.cost)) {
                         myInfo.addCoins(-tower.cost)
-                        tower = myTowers.makeTower(pixelCoords, "turret");
+                        tower = myTowers.makeTower(pixelCoords, myCursor.tower.name);
                         myGameBoard.addObject(coords, tower);
                         //myPathfinder.findPath({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
                     }

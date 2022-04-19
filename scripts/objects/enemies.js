@@ -24,21 +24,15 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder) {
         path: cpath,
         health: 100,
         id: count++,
-        takeDamage: takeDamage,
+        kill: kill,
       };
       enemies[newEnemy.id] = newEnemy;
     }
   }
 
   // function for taking damage returns true if the enemy died
-  function takeDamage(amount, enemy){
-    enemy.health -= amount;
-    //console.log(enemy.id + " has " + enemy.health + " health");
-    if (enemy.health < 0){
-      delete enemies[enemy.id];
-      return true;
-    }
-    return false;
+  function kill(enemy) {
+    delete enemies[enemy.id];
   }
 
 
@@ -66,9 +60,9 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder) {
     }
   }
 
-  function updatePath(){
-    for(let index in enemies){
-        enemies[index].path = Pathfinder.findPath(enemies[index].center,enemies[index].goal, enemies[index].type )
+  function updatePath() {
+    for (let index in enemies) {
+      enemies[index].path = Pathfinder.findPath(enemies[index].center, enemies[index].goal, enemies[index].type)
     }
   }
   function render() {

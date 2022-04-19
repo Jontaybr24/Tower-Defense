@@ -73,6 +73,7 @@ MyGame.objects.Cursor = function (assets, graphics, magic) {
         hideCursor: hideCursor,
         setPreview: setPreview,
         get cursor() { return cursor },
+        get tower() { return tower },
     };
 
     return api;
