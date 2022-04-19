@@ -49,6 +49,12 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myInfo.loadTowers(myTowers.towerDictionary);
     }
 
+    function checkWin() {
+        if (myEnemies.length == 0 && !myWaves.checkWaves()) {
+            console.log("All waves complete");
+        }
+    }
+
 
     function processInput(elapsedTime) {
         myKeyboard.update(elapsedTime);
@@ -67,6 +73,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myGameBoard.update(elapsedTime);
         myInfo.update(elapsedTime);
 
+        checkWin();
         cursorCollision();
     }
 
@@ -85,7 +92,8 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myKeyboard.register(data.controls.spawnEnemy.key, function () {
             //myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
             //myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")
-            myWaves.nextWave();
+            if (myEnemies.length == 0)
+                myWaves.nextWave();
         });
         myMouse.register('mousedown', function (e) {
             let coords = magic.mouseToGrid({ x: e.clientX, y: e.clientY })

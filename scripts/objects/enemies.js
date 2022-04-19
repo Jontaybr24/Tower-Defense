@@ -8,10 +8,40 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
   let threshold = 2;
   const BUFFER = 100 // time in ms for button presses to register after being held
   let timePassed = 0;
+  let spawnPoints = {
+    N: { x: magic.CANVAS_SIZE / 2, y: 0 },
+    E: { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 },
+    W: { x: 0, y: magic.CANVAS_SIZE / 2 },
+    S: { x: magic.CANVAS_SIZE / 2, y: magic.CANVAS_SIZE },
+  }
 
-  function spawnEnemy(cname, spawn, end, ctype) {
+  // location takes one of the options: N, E, S, W
+  function spawnEnemy(cname, location, ctype) {
     if (timePassed > BUFFER) {
       timePassed = 0;
+
+      let spawn = null;
+      let end = null;
+      switch (location) {
+        case "E":
+          spawn = spawnPoints.E;
+          end = spawnPoints.W;
+          break;
+        case "S":
+          spawn = spawnPoints.S;
+          end = spawnPoints.N;
+          break;
+        case "W":
+          spawn = spawnPoints.W;
+          end = spawnPoints.E;
+          break;
+        default:
+          spawn = spawnPoints.N;
+          end = spawnPoints.S;
+      }
+      spawn = JSON.parse(JSON.stringify(spawn));
+      end = JSON.parse(JSON.stringify(end));
+      console.log(spawn, end)
 
       let cpath = Pathfinder.findPath(spawn, end, ctype)
       let newEnemy = {
@@ -88,6 +118,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
     update: update,
     render: render,
     get enemies() { return enemies; },
+    get length() { return Object.keys(enemies).length}
   };
 
   return api;
