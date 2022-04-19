@@ -34,6 +34,11 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             let x = Math.floor(((point.x - rect.x) / rect.width) * graphics.canvas.width);
             let y = Math.floor(((point.y - rect.y) / rect.height) * graphics.canvas.height);
             return { x: x, y: y };
+        },
+        magnitude: function (point1, point2) {
+            let x = point1.x - point2.x;
+            let y = point1.y - point2.y;
+            return Math.sqrt((x * x) + (y * y));
         }
     };
 
@@ -69,9 +74,21 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     }
 
     function cursorCollision() {
-        if (!myGameBoard.checkCell(converter.pixelToGrid(myCursor.cursor.center)))
-            return true;
-        return false;
+        myCursor.blocked(!myGameBoard.checkCell(converter.pixelToGrid(myCursor.cursor.center)));
+    }
+
+    function enemiesInRadius() {
+        for (let enemy in myEnemies.enemies) {
+            for (let tower in myTowers.towers) {
+                if (converter.magnitude(myTowers.towers[tower].center, myEnemies.enemies[enemy].center) < myTowers.towers[tower].radius) {
+                    myTowers.addEnemy(myTowers.towers[tower], myEnemies.enemies[enemy])
+                }
+            }
+        }
+    }
+
+    function collinsions() {
+        enemiesInRadius();
     }
 
     function loadLevel() {
@@ -87,6 +104,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     }
 
     function update(elapsedTime) {
+        collinsions();
 
         myParticles.update(elapsedTime);
         myEnemies.update(elapsedTime);
@@ -94,9 +112,9 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
         myCursor.update(elapsedTime);
         myGameBoard.update(elapsedTime);
-        if (cursorCollision())
-            myCursor.blocked();
         myInfo.update(elapsedTime);
+
+        cursorCollision();
     }
 
     function render() {
@@ -108,13 +126,13 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myEnemies.render();
         myInfo.render();
     }
-    
+
     function setControls() {
         myKeyboard.register(data.controls.grid.key, myGameBoard.toggleGrid);
         myKeyboard.register(data.controls.spawnEnemy.key, function () {
             //myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
             //myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")
-            myEnemies.spawnEnemy("thing", { x: magic.CANVAS_SIZE / 2 , y: 0}, { x: magic.CANVAS_SIZE / 2, y: magic.CANVAS_SIZE }, "ground")
+            myEnemies.spawnEnemy("thing", { x: magic.CANVAS_SIZE / 2, y: 0 }, { x: magic.CANVAS_SIZE / 2, y: magic.CANVAS_SIZE }, "ground")
         });
         myKeyboard.register(data.controls.testKey2.key, function () {
             myInfo.buyTower("turret");
@@ -155,7 +173,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         graphics.canvas.addEventListener(
             'mousemove', function (e) {
                 let coords = converter.mouseToGrid({ x: e.clientX, y: e.clientY })
-                
+
                 let pixelCoords = converter.gridToPixel(coords);
                 let moreCoords = converter.mouseToPixel({ x: e.clientX, y: e.clientY })
                 myInfo.checkHover(moreCoords);

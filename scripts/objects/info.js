@@ -43,9 +43,7 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
     }
 
     function update(elapsedTime) {
-        if (currentTower?.cost > coins) {
-            cursor.blocked();
-        }
+        cursor.blocked(currentTower?.cost > coins);
     }
 
     function addCoins(amount) {
@@ -83,7 +81,7 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
     function buyTower(tower) {
         if (!placing) {
             currentTower = towerDictionary[tower];
-            cursor.setPreview(currentTower.preview)
+            cursor.setPreview(currentTower)
             placing = true;
         }
     }
@@ -107,11 +105,11 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
         }
     }
 
-    function checkBuy(){
+    function checkBuy() {
         placing = false;
-        for (let idx in towerDictionary){
+        for (let idx in towerDictionary) {
             let tower = JSON.parse(JSON.stringify(towerDictionary[idx]));
-            if (tower.selected){
+            if (tower.selected) {
                 buyTower(idx)
             }
         }

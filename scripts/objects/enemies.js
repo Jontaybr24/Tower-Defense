@@ -1,7 +1,8 @@
 MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder) {
   'use strict';
 
-  let enemies = [];
+  let enemies = {};
+  let count = 0; // the number for hte id of the enemies
   let moveRate = .1;
   const ROTATION = 0;
   let threshold = 2;
@@ -11,9 +12,33 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder) {
   function spawnEnemy(cname, spawn, end, ctype) {
     if (timePassed > BUFFER) {
       timePassed = 0;
-      let cpath = Pathfinder.findPath(spawn,end, ctype)
-      enemies.push({ name: cname, center: spawn, goal: end, type: ctype, moveRate: moveRate, target: spawn, path: cpath })
+
+      let cpath = Pathfinder.findPath(spawn, end, ctype)
+      let newEnemy = {
+        name: cname,
+        center: spawn,
+        goal: { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 },
+        type: ctype,
+        moveRate: moveRate,
+        target: spawn,
+        path: cpath,
+        health: 100,
+        id: count++,
+        takeDamage: takeDamage,
+      };
+      enemies[newEnemy.id] = newEnemy;
     }
+  }
+
+  // function for taking damage returns true if the enemy died
+  function takeDamage(amount, enemy){
+    enemy.health -= amount;
+    //console.log(enemy.id + " has " + enemy.health + " health");
+    if (enemy.health < 0){
+      delete enemies[enemy.id];
+      return true;
+    }
+    return false;
   }
 
 
@@ -25,14 +50,13 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder) {
       let magnitude = Math.sqrt((movevector.x * movevector.x) + (movevector.y * movevector.y))
 
       if (magnitude < threshold) {
-        if(enemies[index].path.length ==0){
-          enemies.splice(index, 1);
-          //sub health
+        if (enemies[index].path.length == 0) {
+          delete enemies[index];
         }
-        else{
+        else {
           enemies[index].target = magic.converter.gridToPixel(enemies[index].path[0]);
-        //console.log(enemies[index].target)
-        enemies[index].path.splice(0, 1);
+          //console.log(enemies[index].target)
+          enemies[index].path.splice(0, 1);
         }
       }
       else {
@@ -41,11 +65,10 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder) {
       }
     }
   }
+
   function updatePath(){
     for(let index in enemies){
-      
-      enemies[index].path = Pathfinder.findPath(enemies[index].center,enemies[index].goal, enemies[index].type )
-      //console.log(enemies[index].path)
+        enemies[index].path = Pathfinder.findPath(enemies[index].center,enemies[index].goal, enemies[index].type )
     }
   }
   function render() {
@@ -56,9 +79,10 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder) {
 
   let api = {
     spawnEnemy: spawnEnemy,
-    updatePath:updatePath,
+    updatePath: updatePath,
     update: update,
     render: render,
+    get enemies() { return enemies; },
   };
 
   return api;
