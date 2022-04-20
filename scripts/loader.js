@@ -142,16 +142,25 @@ MyGame.loader = (function () {
         key: 'tower_base',
         source: '/assets/tower-base.png'
     },{
-        key: 'turret_1',
+        key: 'turret_0_0',
         source: '/assets/basic-turret-1.png'
     },{
-        key: 'turret_2',
+        key: 'turret_0_1',
         source: '/assets/basic-turret-2.png'
     },{
-        key: 'turret_3',
+        key: 'turret_0_2',
         source: '/assets/basic-turret-3.png'
     },{
-        key: 'turret_4',
+        key: 'turret_0_3',
+        source: '/assets/basic-turret-4.png'
+    },{
+        key: 'turret_1_1',
+        source: '/assets/basic-turret-2.png'
+    },{
+        key: 'turret_1_2',
+        source: '/assets/basic-turret-3.png'
+    },{
+        key: 'turret_1_3',
         source: '/assets/basic-turret-4.png'
     },{
         key: 'turret_preview',

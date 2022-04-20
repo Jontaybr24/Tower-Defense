@@ -98,6 +98,9 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     function setControls() {
         myKeyboard.register(data.controls.grid.key, myGameBoard.toggleGrid);
+        myKeyboard.register(data.controls.testKey2.key, function(){
+            myTowers.upgrade(myUpgrades.tower, 0);
+        });
         myKeyboard.register(data.controls.spawnEnemy.key, function () {
             //myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
             //myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")

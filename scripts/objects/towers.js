@@ -6,22 +6,30 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
         turret: {
             name: "turret",
             cost: 50,
-            image: "turret",
-            radius: RADS * 2.5,
+            radius: 2.5,
             damage: 5,
-            fireRate: 1000 / 2, // times per second it can shoot in ms 
-            preview: assets.turret_preview, // the piction image 
+            fireRate: 2, // times per second it can shoot in ms 
+            upgrades: {
+                cost: [
+                    [75, 150, 200],
+                    [50, 100, 150],],
+                radius: [
+                    [0, 0, .5],
+                    [0, 0, .5],],
+                damage: [
+                    [0, 0, 0],
+                    [5, 0, 0],],
+                fireRate: [
+                    [0, 0, 0],
+                    [0, 1, 0],],
+            },
+            preview: assets.turret_preview, // the piction image
             needTarget: true, // if the tower needs to turn to target before activating
-        },
-        freezer: {
-            name: "freezer",
-            cost: 500,
-            image: "turret",
-            radius: RADS * 1.5,
-            damage: 5,
-            fireRate: 1000 / 2, // times per second it can shoot in ms 
-            preview: assets.coin,
-            needTarget: false,
+            activate: function (tower, target) {
+                if (target.takeHit(target, tower.damage))
+                    removeTarget(target)
+
+            },
         },
     };
 
@@ -101,7 +109,7 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
         for (let index in towers) {
             let tower = towers[index];
             graphics.drawTexture(tower.image.base, tower.center, 0, { x: magic.CELL_SIZE, y: magic.CELL_SIZE }) // renders the tower base
-            let towerHead = assets[tower.image.tower + "_" + tower.level] // Gets the image of the tower head based on the level of the tower
+            let towerHead = assets[tower.image.tower + "_" + tower.path + "_" + tower.level] // Gets the image of the tower head based on the level of the tower
             graphics.drawTexture(towerHead, tower.center, tower.rotation + OFFSET, { x: magic.CELL_SIZE, y: magic.CELL_SIZE }) // Renders the tower head            
         }
     }
@@ -134,7 +142,7 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
                     }
                     else {
                         // the tower needs to wait a specific time before it can activate again
-                        if (tower.lastShot > tower.fireRate) {
+                        if (tower.lastShot > (1000 / tower.fireRate)) {
                             tower.lastShot = 0;
                             tower.activate(tower, tower.target);
                         }
@@ -142,7 +150,7 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
                 }
                 // the tower needs to wait a specific time before it can activate again
                 else {
-                    if (tower.lastShot > tower.fireRate) {
+                    if (tower.lastShot > (1000 / tower.fireRate)) {
                         tower.lastShot = 0;
                         tower.activate(tower);
                     }
@@ -165,15 +173,17 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
     function makeTower(pos, name) {
         let tower = JSON.parse(JSON.stringify(towerDictionary[name]));
         tower.center = pos;
-        tower.image = { base: assets.tower_base, tower: tower.image };
-        tower.level = Math.floor(Math.random() * 4) + 1;
+        tower.image = { base: assets.tower_base, tower: tower.name };
+        tower.level = 0;
+        tower.path = 0;
         tower.id = count++;
         tower.spinRate = magic.RPS;
         tower.type = "tower"
+        tower.radius = tower.radius * magic.CELL_SIZE;
         tower.rotation = 0;
         tower.enemies = [];
         tower.lastShot = 0;
-        tower.activate = abilityDict[tower.name]
+        tower.activate = towerDictionary[name].activate;
         towers[tower.id] = tower;
         return tower;
     }
@@ -194,6 +204,17 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
             towers[tower.id].enemies.push(enemy);
     }
 
+    function upgrade(tower, path) {
+        if (tower != null) {
+            if (tower.level < 3) {
+                tower.level += 1;
+                console.log(towers[tower.id].upgrades["cost"][path]);
+                console.log(towers[tower.id].upgrades["damage"][path]);
+                console.log(towers[tower.id].upgrades["fireRate"][path]);
+                console.log(towers[tower.id].upgrades["radius"][path]);
+            }
+        }
+    }
 
     let api = {
         update: update,
@@ -202,6 +223,7 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
         makeTower: makeTower,
         deleteTower: deleteTower,
         addEnemy: addEnemy,
+        upgrade: upgrade,
         get towerDictionary() { return towerDictionary; },
         get towers() { return towers; },
     };

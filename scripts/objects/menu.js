@@ -5,9 +5,10 @@ MyGame.objects.Menu = function (assets, graphics, magic) {
     function render() {
         if(tower != null){
             graphics.drawEllipse({ center: tower.center, radius: tower.radius }, "rgba(0, 25, 0, .25)", "black");
+            /*
             console.log(Math.floor(tower.radius / magic.CELL_SIZE));
             console.log(tower.name);
-            console.log(tower.damage);
+            console.log(tower.damage);*/
         }
     }
 
@@ -18,11 +19,11 @@ MyGame.objects.Menu = function (assets, graphics, magic) {
         tower = obj;
     }
 
-
     let api = {
         update: update,
         render: render,
         setTower: setTower,
+        get tower() {return tower;},
     };
 
     return api;
