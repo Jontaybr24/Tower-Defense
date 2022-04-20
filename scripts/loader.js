@@ -90,6 +90,11 @@ MyGame.loader = (function () {
         onComplete: null
     },
     {
+        scripts: ['objects/menu'],
+        message: 'Menu Loaded',
+        onComplete: null
+    },
+    {
         scripts: ['objects/healthbar'],
         message: 'Healthbars Loaded',
         onComplete: null
@@ -121,6 +126,9 @@ MyGame.loader = (function () {
     },{
         key: 'snow_imprint',
         source: '/assets/snow_imprint.png'
+    },{
+        key: 'buy_cell',
+        source: '/assets/buy_cell.png'
     }, {
         key: 'wall',
         source: '/assets/wall.png'

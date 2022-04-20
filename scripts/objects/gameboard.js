@@ -98,9 +98,16 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
 
     function checkCell(point) {
         if (point.x < board.length && point.y < board.length && point.x >= 0 && point.y >= 0) {
-            return (board[point.x][point.y].object == null /*|| board[point.x][point.y].object == "Cursor"*/) // will return true if the cell is empty
+            return (board[point.x][point.y].object == null) // will return true if the cell is empty
         }
         return false;
+    }
+
+    function getObject(point){
+        if (point.x < board.length && point.y < board.length && point.x >= 0 && point.y >= 0) {
+            return board[point.x][point.y].object;
+        }
+        return null;
     }
 
     let api = {
@@ -111,6 +118,7 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
         addObject: addObject,
         removeObject: removeObject,
         checkCell: checkCell,
+        getObject: getObject,
         get board() { return board; },
     };
 

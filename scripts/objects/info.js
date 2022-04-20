@@ -34,7 +34,7 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
     function renderTowers() {
         for (let idx in towerDictionary) {
             let tower = towerDictionary[idx];
-            graphics.drawRectangle({ size: { x: magic.CELL_SIZE, y: magic.CELL_SIZE }, center: tower.center, rotation: 0 }, "black", "black")
+            graphics.drawTexture(assets.buy_cell, tower.center, 0, { x: magic.CELL_SIZE, y: magic.CELL_SIZE})
             graphics.drawTexture(tower.preview, tower.center, 0, { x: magic.CELL_SIZE * .75, y: magic.CELL_SIZE * .75 })
             if (tower.selected)
                 graphics.drawRectangle({ size: { x: magic.CELL_SIZE, y: magic.CELL_SIZE }, center: tower.center, rotation: 0 }, "rgba(255, 255, 255, .5)", "black")
