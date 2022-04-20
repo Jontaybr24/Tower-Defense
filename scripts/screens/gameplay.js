@@ -107,10 +107,21 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     function setControls() {
         myKeyboard.register(data.controls.grid.key, myGameBoard.toggleGrid);
-        myKeyboard.register(data.controls.testKey2.key, function () {
-            myInfo.addCoins(-myTowers.upgrade(myUpgrades.tower, 0));
+        myKeyboard.register(data.controls.upgrade.key, function () {
+            myInfo.addCoins(-myTowers.upgrade(myUpgrades.tower, 1));
         });
-        myKeyboard.register(data.controls.spawnEnemy.key, function () {
+        myKeyboard.register(data.controls.sell.key, function () {
+            let tower = myUpgrades.tower;
+            if (tower != null) {
+                let coords = magic.pixelToGrid(tower.center);
+                let obj = myGameBoard.removeObject(coords);
+                myTowers.deleteTower(obj);
+                myInfo.addCoins(Math.floor(obj.cost * .90));
+                myUpgrades.setTower(null);
+                myEnemies.updatePath();
+            }
+        });
+        myKeyboard.register(data.controls.startWave.key, function () {
             //myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
             //myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")
             if (myEnemies.length == 0)
@@ -127,13 +138,6 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             if (coords.x >= magic.GRID_SIZE)
                 myInfo.checkBuy();
             if (e.ctrlKey) {
-                let obj = myGameBoard.removeObject(coords);
-                if (obj != null) {
-                    myTowers.deleteTower(obj);
-                    myInfo.addCoins(Math.floor(obj.cost * .99));
-                    //myPathfinder.findPath({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, false);
-                }
-                myEnemies.updatePath();
 
             }
             else if (myInfo.placing) {

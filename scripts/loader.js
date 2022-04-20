@@ -297,8 +297,9 @@ MyGame.loader = (function () {
             MyGame.data = {
                 controls: {
                     grid: { label: 'Toggle Grid', key: 'g' },
-                    spawnEnemy: { label: 'spawn enemy', key: ' ' },
-                    testKey2: {label: 'test key', key: 'a'},
+                    startWave: { label: 'Start Wave', key: 'g' },
+                    sell: { label: 'Sell', key: 's' },
+                    upgrade: {label: 'Upgrade', key: 'u'},
                 },
                 volume: .3,
             }

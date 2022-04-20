@@ -33,17 +33,6 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
         },
     };
 
-    let abilityDict = {
-        turret: function (tower, target) {
-            if (target.takeHit(target, tower.damage))
-                removeTarget(target)
-
-        },
-        freezer: function (tower, targets) {
-            console.log("I'm a friend");
-        },
-    };
-
     let towers = {};
     let count = 0;
     let OFFSET = Math.PI / 2; // rotate tower head asset by 90 degrees
@@ -207,8 +196,10 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
     function upgrade(tower, path) {
         let spent = 0;
         if (tower != null) {
-            if (tower.level < 3 && (tower.path = 3 || tower.path == path)) {
-                tower.path = path;
+            if (tower.path != path){
+                tower.path = path;                
+            }
+            if (tower.level < 3) {
                 tower.level += 1;
                 spent = tower.upgrades["cost"][path].shift();
                 tower.cost += spent;
