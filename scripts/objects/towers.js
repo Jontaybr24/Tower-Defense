@@ -15,7 +15,7 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
                     [50, 100, 150],],
                 radius: [
                     [0, 0, .5],
-                    [0, 0, .5],],
+                    [.5, 0, .5],],
                 damage: [
                     [0, 0, 0],
                     [5, 0, 0],],
@@ -175,7 +175,7 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
         tower.center = pos;
         tower.image = { base: assets.tower_base, tower: tower.name };
         tower.level = 0;
-        tower.path = 0;
+        tower.path = 3;
         tower.id = count++;
         tower.spinRate = magic.RPS;
         tower.type = "tower"
@@ -205,15 +205,21 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
     }
 
     function upgrade(tower, path) {
+        let spent = 0;
         if (tower != null) {
-            if (tower.level < 3) {
+            if (tower.level < 3 && (tower.path = 3 || tower.path == path)) {
+                tower.path = path;
                 tower.level += 1;
-                console.log(towers[tower.id].upgrades["cost"][path]);
-                console.log(towers[tower.id].upgrades["damage"][path]);
-                console.log(towers[tower.id].upgrades["fireRate"][path]);
-                console.log(towers[tower.id].upgrades["radius"][path]);
+                spent = tower.upgrades["cost"][path].shift();
+                tower.cost += spent;
+                tower.damage += tower.upgrades["damage"][path].shift();
+                let fire = tower.upgrades["fireRate"][path].shift();
+                if (fire != 0)
+                    tower.fireRate += 1000 / fire;
+                tower.radius += tower.upgrades["radius"][path].shift() * magic.CELL_SIZE;
             }
         }
+        return spent;
     }
 
     let api = {

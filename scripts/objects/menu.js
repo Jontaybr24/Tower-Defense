@@ -9,6 +9,7 @@ MyGame.objects.Menu = function (assets, graphics, magic) {
             console.log(Math.floor(tower.radius / magic.CELL_SIZE));
             console.log(tower.name);
             console.log(tower.damage);*/
+            console.log(tower.path);
         }
     }
 

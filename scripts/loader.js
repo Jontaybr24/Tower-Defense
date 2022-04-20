@@ -142,7 +142,7 @@ MyGame.loader = (function () {
         key: 'tower_base',
         source: '/assets/tower-base.png'
     },{
-        key: 'turret_0_0',
+        key: 'turret_3_0',
         source: '/assets/basic-turret-1.png'
     },{
         key: 'turret_0_1',

@@ -28,16 +28,16 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
 
     function cursorCollision() {
-        
+
         myCursor.blocked(!myGameBoard.checkCell(magic.pixelToGrid(myCursor.cursor.center)));
-        
-        for(let index in myEnemies.enemies){
-            if(magic.collision(myCursor.cursor.hitbox, myEnemies.enemies[index].hitbox)){
+
+        for (let index in myEnemies.enemies) {
+            if (magic.collision(myCursor.cursor.hitbox, myEnemies.enemies[index].hitbox)) {
                 myCursor.blocked(true);
                 break;
             }
         }
-        
+
     }
 
     function enemiesInRadius() {
@@ -107,8 +107,8 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     function setControls() {
         myKeyboard.register(data.controls.grid.key, myGameBoard.toggleGrid);
-        myKeyboard.register(data.controls.testKey2.key, function(){
-            myTowers.upgrade(myUpgrades.tower, 0);
+        myKeyboard.register(data.controls.testKey2.key, function () {
+            myInfo.addCoins(-myTowers.upgrade(myUpgrades.tower, 0));
         });
         myKeyboard.register(data.controls.spawnEnemy.key, function () {
             //myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
@@ -120,7 +120,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             let coords = magic.mouseToGrid({ x: e.clientX, y: e.clientY })
             let pixelCoords = magic.gridToPixel(coords);
 
-            if(coords.x < magic.GRID_SIZE-1 &&  coords.y < magic.GRID_SIZE-1){
+            if (coords.x < magic.GRID_SIZE - 1 && coords.y < magic.GRID_SIZE - 1) {
                 myUpgrades.setTower(null);
             }
 
@@ -151,9 +151,9 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
                 }
             }
-            else{
+            else {
                 let tower = myGameBoard.getObject(coords);
-                if(tower?.type == "tower"){
+                if (tower?.type == "tower") {
                     myUpgrades.setTower(tower);
                 }
             }
