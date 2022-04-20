@@ -15,14 +15,16 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       type: "ground",
       moveRate: 100/1000,
       health: 50,
-      img: assets.coin,  
+      img: assets.coin,
+      
     },
     runner: {
       name: "runner",
       type: "flying",
       moveRate: 400/1000,
       health: 50,
-      img: assets.life,  
+      img: assets.life, 
+      
     },
   };
   // location takes one of the options: N, E, S, W
@@ -60,22 +62,11 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
     enemy.id = count++;
     enemy.takeHit = takeHit;
     enemy.path = cpath;
-    /*
-    let newEnemy = {
-      name: en,
-      center: spawn,
-      goal: end,
-      type: ctype,
-      moveRate: moveRate,
-      target: spawn,
-      img: img,
-      path: cpath,
-      health: 50,
-      id: count++,
-      takeHit: takeHit,
-    };*/
+    enemy.hitbox = {xmin:0,xmax:0,ymin:0,ymax:0} 
+    magic.sethitbox(enemy)
     bars.newHealthbar(enemy);
     enemies[enemy.id] = enemy;
+
   }
 
   // function for taking damage returns true if the enemy died
@@ -93,7 +84,6 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
     bars.removeBar(enemy.id);
     delete enemies[enemy.id];
   }
-
 
   function update(elapsedTime) {
     timePassed += elapsedTime;
@@ -117,6 +107,8 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       else {
         enemies[index].center.x += (enemies[index].moveRate * elapsedTime * Math.sign(movevector.x))
         enemies[index].center.y += (enemies[index].moveRate * elapsedTime * Math.sign(movevector.y))
+        //console.log(enemies[index])
+        magic.sethitbox(enemies[index])
       }
     }
   }

@@ -3,6 +3,7 @@ MyGame.objects.Cursor = function (assets, graphics, magic) {
 
     let cursor = {
         center: { x: 0, y: 0 },
+        hitbox:{xmin:0,xmax:0,ymin:0,ymax:0},
         state: "clear" // The state that the cursor should be rendered Clear: no building blocking, Blocked: something in the way, Off: don't show
     };
     let tower = null;
@@ -39,6 +40,7 @@ MyGame.objects.Cursor = function (assets, graphics, magic) {
             hideCursor();
         if (coords.x == 0 || coords.y == 0 || coords.x == magic.GRID_SIZE - 1 || coords.y == magic.GRID_SIZE - 1)
             cursor.state = "blocked"
+        magic.sethitbox(cursor) 
 
     }
 

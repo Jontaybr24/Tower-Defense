@@ -12,6 +12,13 @@ MyGame.objects.Magic = function (graphics) {
         W: { x: 0, y: CANVAS_SIZE / 2 },
         S: { x: CANVAS_SIZE / 2, y: CANVAS_SIZE-GRID_SIZE },
       }
+    function sethitbox(thing){
+        
+        thing.hitbox.xmax = thing.center.x;
+        thing.hitbox.xmin =  thing.center.x -CELL_SIZE;
+        thing.hitbox.ymin = thing.center.y-CELL_SIZE+2;
+        thing.hitbox.ymax = thing.center.y-2;
+    }
     function gridToPixel(point) {
         let x = (parseInt(point.x) + .5) * CELL_SIZE;
         let y = (parseInt(point.y) + .5) * CELL_SIZE;
@@ -58,6 +65,7 @@ MyGame.objects.Magic = function (graphics) {
         mouseToPixel: mouseToPixel,
         magnitude: magnitude,
         collision: collision,
+        sethitbox: sethitbox,
         get spawnPoints(){return spawnPoints},
         get GRID_SIZE() { return GRID_SIZE; },
         get CELL_SIZE() { return CELL_SIZE; },
