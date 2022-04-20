@@ -23,6 +23,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let myTowers = objects.Towers(assets, graphics, magic);
 
     let myWaves = objects.Waves(myEnemies, magic);
+    let myUpgrades = objects.Menu(assets, graphics, magic);
 
 
 
@@ -75,6 +76,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myCursor.update(elapsedTime);
         myGameBoard.update(elapsedTime);
         myInfo.update(elapsedTime);
+        myUpgrades.update(elapsedTime);
 
         checkWin();
         cursorCollision();
@@ -84,6 +86,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         graphics.clear();
         myGameBoard.render();
 
+        myUpgrades.render();
         myTowers.render();
         myEnemies.render();
         myHealthbars.render();
@@ -104,6 +107,10 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myMouse.register('mousedown', function (e) {
             let coords = magic.mouseToGrid({ x: e.clientX, y: e.clientY })
             let pixelCoords = magic.gridToPixel(coords);
+
+            if(coords.x < magic.GRID_SIZE-1 &&  coords.y < magic.GRID_SIZE-1){
+                myUpgrades.setTower(null);
+            }
 
             if (coords.x >= magic.GRID_SIZE)
                 myInfo.checkBuy();
@@ -130,6 +137,12 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                     //myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 },{ x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")
                     //myInfo.addCoins(10);
 
+                }
+            }
+            else{
+                let tower = myGameBoard.getObject(coords);
+                if(tower?.type == "tower"){
+                    myUpgrades.setTower(tower);
                 }
             }
         });

@@ -82,7 +82,7 @@ MyGame.graphics = (function () {
     //      radius:       // radians
     //
     // --------------------------------------------------------------
-    function drawEllipse(ell, fillStyle, strokeStyle){
+    function drawEllipse(ell, fillStyle, strokeStyle) {
         context.save();
         context.fillStyle = fillStyle;
         context.strokeStyle = strokeStyle;
@@ -102,10 +102,11 @@ MyGame.graphics = (function () {
         context.stroke();
     }
 
-    function drawText(text, position, fillStyle, font) {
+    function drawText(text, position, fillStyle, font, centered) {
         //console.log("test");
         context.font = font;
-        //context.textAlign = 'center';
+        if (centered)
+            context.textAlign = 'center';
         context.fillStyle = fillStyle;
         context.fillText(text, position.x, position.y);
     }

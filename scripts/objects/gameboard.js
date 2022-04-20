@@ -40,10 +40,12 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
         for (let row in board) {
             for (let col in board[row]) {
                 let center = magic.gridToPixel({ x: row, y: col })
-                graphics.drawTexture(assets.grass, center, ROTATION, { x: magic.CELL_SIZE, y: magic.CELL_SIZE }); // Renders grass in every cell incase the tower has transperency
+                graphics.drawTexture(assets.snow, center, ROTATION, { x: magic.CELL_SIZE, y: magic.CELL_SIZE }); // Renders grass in every cell incase the tower has transperency
                 if (board[row][col].object == "wall") { // there is a wall here so render the wall
                     graphics.drawTexture(assets.wall, center, ROTATION, { x: magic.CELL_SIZE, y: magic.CELL_SIZE });
                 }
+                else if (board[row][col].object != null){
+                    graphics.drawTexture(assets.snow_imprint, center, ROTATION, { x: magic.CELL_SIZE, y: magic.CELL_SIZE });}
             }
         }
         if (gridOn) {
@@ -96,9 +98,16 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
 
     function checkCell(point) {
         if (point.x < board.length && point.y < board.length && point.x >= 0 && point.y >= 0) {
-            return (board[point.x][point.y].object == null /*|| board[point.x][point.y].object == "Cursor"*/) // will return true if the cell is empty
+            return (board[point.x][point.y].object == null) // will return true if the cell is empty
         }
         return false;
+    }
+
+    function getObject(point){
+        if (point.x < board.length && point.y < board.length && point.x >= 0 && point.y >= 0) {
+            return board[point.x][point.y].object;
+        }
+        return null;
     }
 
     let api = {
@@ -109,6 +118,7 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
         addObject: addObject,
         removeObject: removeObject,
         checkCell: checkCell,
+        getObject: getObject,
         get board() { return board; },
     };
 
