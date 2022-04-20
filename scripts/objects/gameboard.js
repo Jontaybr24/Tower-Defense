@@ -43,8 +43,9 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
                 if (board[row][col].object == "wall") { // there is a wall here so render the wall
                     graphics.drawTexture(assets.wall, center, ROTATION, { x: magic.CELL_SIZE, y: magic.CELL_SIZE });
                 }
-                else if (board[row][col].object != null){
-                    graphics.drawTexture(assets.snow_imprint, center, ROTATION, { x: magic.CELL_SIZE, y: magic.CELL_SIZE });}
+                else if (board[row][col].object != null) {
+                    graphics.drawTexture(assets.snow_imprint, center, ROTATION, { x: magic.CELL_SIZE, y: magic.CELL_SIZE });
+                }
             }
         }
         if (gridOn) {
@@ -69,15 +70,12 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
     }
 
     function toggleGrid() {
-        if (timePassed > BUFFER) {
-            gridOn = !gridOn;
-            timePassed = 0;
-        }
+        gridOn = !gridOn;
     }
 
     function update(elapsedTime) {
         timePassed += elapsedTime;
-        
+
     }
 
     function addObject(point, obj) {
@@ -102,7 +100,7 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
         return false;
     }
 
-    function getObject(point){
+    function getObject(point) {
         if (point.x < board.length && point.y < board.length && point.x >= 0 && point.y >= 0) {
             return board[point.x][point.y].object;
         }

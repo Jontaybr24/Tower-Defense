@@ -1,22 +1,34 @@
 MyGame.input.Keyboard = function () {
     let that = {
         keys: {},
-        handlers: {}
+        handlers: {},
+        keyRelease:keyRelease
     };
 
     function keyPress(e) {
-        that.keys[e.key] = e.timeStamp;
+        
+        if(!(e.key in that.keys)){
+            
+            that.keys[e.key] = true;
+        }
+        
     }
 
     function keyRelease(e) {
+        
         delete that.keys[e.key];
     }
 
     that.update = function (elapsedTime) {
+        //console.log(that.keys)
         for (let key in that.keys) {
             if (that.keys.hasOwnProperty(key)) {
                 if (that.handlers[key]) {
-                    that.handlers[key](elapsedTime);
+                    
+                    if(that.keys[key]){
+                        that.handlers[key](elapsedTime);
+                        that.keys[key] = false;
+                    }
                 }
             }
         }
@@ -25,13 +37,11 @@ MyGame.input.Keyboard = function () {
     that.register = function (key, handler) {
         that.handlers[key] = handler;
     };
+    that.clear = function () {
+        that.handlers= {};
+    };
 
-    that.clear = function() {
-        for(let key in this.handlers)
-            delete that.handlers[key];
-    }
-
-    window.addEventListener('keydown', keyPress);
+    window.addEventListener('keydown',  keyPress);
     window.addEventListener('keyup', keyRelease);
 
     return that;
