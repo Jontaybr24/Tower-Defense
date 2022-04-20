@@ -3,6 +3,7 @@ MyGame.objects.Magic = function (graphics) {
 
     const GRID_SIZE = 17;
     const CELL_SIZE = graphics.canvas.height / GRID_SIZE;
+    const MENU_SIZE = 60;
     const X_OFFSET = graphics.canvas.width - graphics.canvas.height;
     const RPS = Math.PI / 500 // 1 Rotation per second
     const CANVAS_SIZE = graphics.canvas.height
@@ -70,6 +71,7 @@ MyGame.objects.Magic = function (graphics) {
         get GRID_SIZE() { return GRID_SIZE; },
         get CELL_SIZE() { return CELL_SIZE; },
         get X_OFFSET() { return X_OFFSET; },
+        get MENU_SIZE() {return MENU_SIZE;},
         get RPS() { return RPS; },
         get CANVAS_SIZE() { return CANVAS_SIZE; },
     };

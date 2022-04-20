@@ -18,10 +18,10 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
         let x = graphics.canvas.width - (magic.X_OFFSET * full_offset);
         let y = step;
         let text = ": " + coins;
-        graphics.drawTexture(assets.coin, { x: x + asset_offset_x, y: y + asset_offset_y }, 0, { x: magic.CELL_SIZE / 2, y: magic.CELL_SIZE / 2 })
+        graphics.drawTexture(assets.coin, { x: x + asset_offset_x, y: y + asset_offset_y }, 0, { x: magic.MENU_SIZE / 2, y: magic.MENU_SIZE / 2 })
         graphics.drawText(text, { x: x, y: y }, "white", "30px Arial");
         text = ": " + lives;
-        graphics.drawTexture(assets.life, { x: x + asset_offset_x, y: y + asset_offset_y + step }, 0, { x: magic.CELL_SIZE / 2, y: magic.CELL_SIZE / 2 })
+        graphics.drawTexture(assets.life, { x: x + asset_offset_x, y: y + asset_offset_y + step }, 0, { x: magic.MENU_SIZE / 2, y: magic.MENU_SIZE / 2 })
         graphics.drawText(text, { x: x, y: y + step }, "white", "30px Arial");
 
         if (placing) {
@@ -34,10 +34,10 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
     function renderTowers() {
         for (let idx in towerDictionary) {
             let tower = towerDictionary[idx];
-            graphics.drawTexture(assets.buy_cell, tower.center, 0, { x: magic.CELL_SIZE, y: magic.CELL_SIZE})
-            tower.renderPreview(tower, tower.center, 0, 3, { x: magic.CELL_SIZE, y: magic.CELL_SIZE });
+            graphics.drawTexture(assets.buy_cell, tower.center, 0, { x: magic.MENU_SIZE, y: magic.MENU_SIZE})
+            tower.renderPreview(tower, tower.center, 0, 3, { x: magic.MENU_SIZE, y: magic.MENU_SIZE });
             if (tower.selected)
-                graphics.drawRectangle({ size: { x: magic.CELL_SIZE, y: magic.CELL_SIZE }, center: tower.center, rotation: 0 }, "rgba(255, 255, 255, .5)", "black")
+                graphics.drawRectangle({ size: { x: magic.MENU_SIZE, y: magic.MENU_SIZE }, center: tower.center, rotation: 0 }, "rgba(255, 255, 255, .5)", "black")
 
         }
     }
@@ -65,10 +65,10 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
         for (let idx in towerDictionary) {
             towerDictionary[idx].center = { x: x, y: y };
             towerDictionary[idx].hitbox = {
-                xmin: towerDictionary[idx].center.x - magic.CELL_SIZE / 2,
-                xmax: towerDictionary[idx].center.x + magic.CELL_SIZE / 2,
-                ymin: towerDictionary[idx].center.y - magic.CELL_SIZE / 2,
-                ymax: towerDictionary[idx].center.y + magic.CELL_SIZE / 2,
+                xmin: towerDictionary[idx].center.x - magic.MENU_SIZE / 2,
+                xmax: towerDictionary[idx].center.x + magic.MENU_SIZE / 2,
+                ymin: towerDictionary[idx].center.y - magic.MENU_SIZE / 2,
+                ymax: towerDictionary[idx].center.y + magic.MENU_SIZE / 2,
             }
             x += magic.CELL_SIZE + towerStep;
             if (x > graphics.canvas.width) {

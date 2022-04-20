@@ -163,9 +163,6 @@ MyGame.loader = (function () {
         key: 'turret_1_3',
         source: '/assets/basic-turret-4.png'
     },{
-        key: 'turret_preview',
-        source: '/assets/basic-turret-preview.png'
-    },{
         key: 'menu_hover',
         source: '/soundFX/menu-hover.wav'
     },
