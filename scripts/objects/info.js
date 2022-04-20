@@ -1,7 +1,7 @@
 MyGame.objects.Info = function (assets, graphics, magic, cursor) {
     'use strict';
 
-    let coins = 1000;
+    let coins = 10000;
     let lives = 50;
     let step = 40;
     let towerYStep = 200;

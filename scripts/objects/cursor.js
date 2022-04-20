@@ -14,8 +14,8 @@ MyGame.objects.Cursor = function (assets, graphics, magic) {
         let radFill = "rgba(255, 255, 255, .25)";
         switch (cursor.state) {
             case "clear":
-                fillStyle = "rgba(237, 230, 12, .5)"
-                radFill = "rgba(255, 255, 255, .25)"
+                fillStyle = "rgba(12, 170, 7, .5)"
+                radFill = "rgba(0, 25, 0, .25)"
                 strokeStyle = "rgba(0, 0, 0, 1)"
                 break;
             case "blocked":

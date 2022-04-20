@@ -116,8 +116,11 @@ MyGame.loader = (function () {
     }];
 
     let assetOrder = [{
-        key: 'grass',
-        source: '/assets/grass.png'
+        key: 'snow',
+        source: '/assets/snow.png'
+    },{
+        key: 'snow_imprint',
+        source: '/assets/snow_imprint.png'
     }, {
         key: 'wall',
         source: '/assets/wall.png'
