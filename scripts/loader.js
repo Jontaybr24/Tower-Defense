@@ -139,7 +139,7 @@ MyGame.loader = (function () {
         key: 'life',
         source: '/assets/life.png'
     },{
-        key: 'tower_base',
+        key: 'turret_base',
         source: '/assets/tower-base.png'
     },{
         key: 'turret_3_0',
@@ -296,7 +296,7 @@ MyGame.loader = (function () {
         else {
             MyGame.data = {
                 controls: {
-                    grid: { label: 'Toggle Grid', key: 'g' },
+                    grid: { label: 'Toggle Grid', key: 'h' },
                     startWave: { label: 'Start Wave', key: 'g' },
                     sell: { label: 'Sell', key: 's' },
                     upgrade: {label: 'Upgrade', key: 'u'},

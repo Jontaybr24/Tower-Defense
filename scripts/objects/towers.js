@@ -23,7 +23,7 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
                     [0, 0, 0],
                     [0, 1, 0],],
             },
-            preview: assets.turret_preview, // the piction image
+            renderPreview: renderPreview, // the piction image
             needTarget: true, // if the tower needs to turn to target before activating
             activate: function (tower, target) {
                 if (target.takeHit(target, tower.damage))
@@ -97,10 +97,18 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
     function render() {
         for (let index in towers) {
             let tower = towers[index];
-            graphics.drawTexture(tower.image.base, tower.center, 0, { x: magic.CELL_SIZE, y: magic.CELL_SIZE }) // renders the tower base
-            let towerHead = assets[tower.image.tower + "_" + tower.path + "_" + tower.level] // Gets the image of the tower head based on the level of the tower
+            let base = assets[tower.name + "_base"];
+            graphics.drawTexture(base, tower.center, 0, { x: magic.CELL_SIZE, y: magic.CELL_SIZE }) // renders the tower base
+            let towerHead = assets[tower.name + "_" + tower.path + "_" + tower.level] // Gets the image of the tower head based on the level of the tower
             graphics.drawTexture(towerHead, tower.center, tower.rotation + OFFSET, { x: magic.CELL_SIZE, y: magic.CELL_SIZE }) // Renders the tower head            
         }
+    }
+
+    function renderPreview(tower, pos, level, path, size) {
+        let base = assets[tower.name + "_base"];
+        let towerHead = assets[tower.name + "_" + path + "_" + level] // Gets the image of the tower head based on the level of the tower
+        graphics.drawTexture(base, pos, 0, size) // renders the tower base
+        graphics.drawTexture(towerHead, pos, 0, size) // Renders the tower head    
     }
 
     function update(elapsedTime) {
@@ -162,7 +170,6 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
     function makeTower(pos, name) {
         let tower = JSON.parse(JSON.stringify(towerDictionary[name]));
         tower.center = pos;
-        tower.image = { base: assets.tower_base, tower: tower.name };
         tower.level = 0;
         tower.path = 3;
         tower.id = count++;

@@ -35,7 +35,7 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
         for (let idx in towerDictionary) {
             let tower = towerDictionary[idx];
             graphics.drawTexture(assets.buy_cell, tower.center, 0, { x: magic.CELL_SIZE, y: magic.CELL_SIZE})
-            graphics.drawTexture(tower.preview, tower.center, 0, { x: magic.CELL_SIZE * .75, y: magic.CELL_SIZE * .75 })
+            tower.renderPreview(tower, tower.center, 0, 3, { x: magic.CELL_SIZE, y: magic.CELL_SIZE });
             if (tower.selected)
                 graphics.drawRectangle({ size: { x: magic.CELL_SIZE, y: magic.CELL_SIZE }, center: tower.center, rotation: 0 }, "rgba(255, 255, 255, .5)", "black")
 
@@ -79,7 +79,7 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
     }
 
     function buyTower(tower) {
-        if (!placing) {
+        if (!placing && towerDictionary[tower].selected) {
             currentTower = towerDictionary[tower];
             cursor.setPreview(currentTower)
             placing = true;
@@ -103,7 +103,6 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
                 point.y < box1.ymin);
             towerDictionary[idx].selected = collision;
             if (collision){
-                buyTower(tower.name)
             }
         }
     }
