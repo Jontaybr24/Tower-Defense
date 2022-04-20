@@ -3,65 +3,79 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
 
   let enemies = {};
   let count = 0; // the number for hte id of the enemies
-  let moveRate = .1;
   const ROTATION = 0;
   let threshold = 10;
   const BUFFER = 100 // time in ms for button presses to register after being held
   let timePassed = 0;
-  let spawnPoints = {
-    N: { x: magic.CANVAS_SIZE / 2, y: 0 },
-    E: { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 },
-    W: { x: 0, y: magic.CANVAS_SIZE / 2 },
-    S: { x: magic.CANVAS_SIZE / 2, y: magic.CANVAS_SIZE },
-  }
+  let spawnPoints = magic.spawnPoints;
 
+  let enemiesDictionary = {
+    slime: {
+      name: "slime",
+      type: "ground",
+      moveRate: 100/1000,
+      health: 50,
+      img: assets.coin,  
+    },
+    runner: {
+      name: "runner",
+      type: "ground",
+      moveRate: 400/1000,
+      health: 50,
+      img: assets.life,  
+    },
+  };
   // location takes one of the options: N, E, S, W
-  function spawnEnemy(cname, location, ctype) {
-    if (timePassed > BUFFER) {
-      timePassed = 0;
-
-      let spawn = null;
-      let end = null;
-      switch (location) {
-        case "E":
-          spawn = spawnPoints.E;
-          end = spawnPoints.W;
-          break;
-        case "S":
-          spawn = spawnPoints.S;
-          end = spawnPoints.N;
-          break;
-        case "W":
-          spawn = spawnPoints.W;
-          end = spawnPoints.E;
-          break;
-        default:
-          spawn = spawnPoints.N;
-          end = spawnPoints.S;
-      }
-      let img = assets.coin;
-      if (cname == "thing")
-        img = assets.life;
-      spawn = JSON.parse(JSON.stringify(spawn));
-      end = JSON.parse(JSON.stringify(end));
-
-      let cpath = Pathfinder.findPath(spawn, end, ctype)
-      let newEnemy = {
-        name: cname,
-        center: spawn,
-        goal: end,
-        type: ctype,
-        moveRate: moveRate,
-        target: spawn,
-        img: img,
-        path: cpath,
-        health: 50,
-        id: count++,
-        takeHit: takeHit,
-      };
-      bars.newHealthbar(newEnemy);
-      enemies[newEnemy.id] = newEnemy;
+  function spawnEnemy(name, location) {
+    //if (timePassed > BUFFER) {
+    timePassed = 0;
+    let spawn = null;
+    let end = null;
+    switch (location) {
+      case "E":
+        spawn = spawnPoints.E;
+        end = spawnPoints.W;
+        break;
+      case "S":
+        spawn = spawnPoints.S;
+        end = spawnPoints.N;
+        break;
+      case "W":
+        spawn = spawnPoints.W;
+        end = spawnPoints.E;
+        break;
+      default:
+        spawn = spawnPoints.N;
+        end = spawnPoints.S;
     }
+    let enemy = JSON.parse(JSON.stringify(enemiesDictionary[name]));
+    spawn = JSON.parse(JSON.stringify(spawn));
+    end = JSON.parse(JSON.stringify(end));
+    
+    let cpath = Pathfinder.findPath(spawn, end, enemy.type)
+    enemy.img = enemiesDictionary[name].img;
+    enemy.target = spawn;
+    enemy.center = spawn;
+    enemy.goal = end;
+    enemy.id = count++;
+    enemy.takeHit = takeHit;
+    enemy.path = cpath;
+    /*
+    let newEnemy = {
+      name: en,
+      center: spawn,
+      goal: end,
+      type: ctype,
+      moveRate: moveRate,
+      target: spawn,
+      img: img,
+      path: cpath,
+      health: 50,
+      id: count++,
+      takeHit: takeHit,
+    };*/
+    bars.newHealthbar(enemy);
+    enemies[enemy.id] = enemy;
   }
 
   // function for taking damage returns true if the enemy died

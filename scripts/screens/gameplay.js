@@ -143,25 +143,38 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                 myInfo.checkHover(moreCoords);
                 myCursor.setCursor(pixelCoords);
                 // add pathfinding thing here
-                if ((coords.x < magic.GRID_SIZE && coords.y < magic.GRID_SIZE)) {
-                    if (!(coords.x <= 0 || coords.y <= 0)) {
-                        if (lastGrid != null && (lastGrid.x != coords.x || lastGrid.y != coords.y)) {
-                            if (myGameBoard.board[lastGrid.x][lastGrid.y].object == "Cursor") {
-                                myGameBoard.removeObject(lastGrid)
+                if (myInfo.placing) {
+                    if ((coords.x < magic.GRID_SIZE && coords.y < magic.GRID_SIZE)) {
+                        if (!(coords.x <= 0 || coords.y <= 0)) {
+                            if (lastGrid == null) {
+                                if (myGameBoard.checkCell(coords)) {
+                                    myGameBoard.addObject(coords, "Cursor")
+                                    //console.log(myPathfinder.Pathfinding({ x: magic.CANVAS_SIZE / 2, y: 0 }, { x: magic.CANVAS_SIZE / 2, y: magic.CANVAS_SIZE }, "Cursor") != null ))
+                                    //console.log("checked path")
+                                    if (myPathfinder.findPath(magic.spawnPoints.W, magic.spawnPoints.E, "Cursor") != null && myPathfinder.findPath(magic.spawnPoints.N, magic.spawnPoints.S, "Cursor") != null) {
+                                        myGameBoard.removeObject(coords)
+                                    }
+                                }
+                                lastGrid = coords;
+                            }
+                            if (lastGrid != null && (lastGrid.x != coords.x || lastGrid.y != coords.y)) {
+                                if (myGameBoard.board[lastGrid.x][lastGrid.y].object == "Cursor") {
+                                    myGameBoard.removeObject(lastGrid)
+                                }
+                                if (myGameBoard.checkCell(coords)) {
+                                    myGameBoard.addObject(coords, "Cursor")
+                                    //console.log(myPathfinder.Pathfinding({ x: magic.CANVAS_SIZE / 2, y: 0 }, { x: magic.CANVAS_SIZE / 2, y: magic.CANVAS_SIZE }, "Cursor") != null ))
+                                    //console.log("checked path")
+                                    if (myPathfinder.findPath(magic.spawnPoints.W, magic.spawnPoints.E, "Cursor") != null && myPathfinder.findPath(magic.spawnPoints.N, magic.spawnPoints.S, "Cursor") != null) {
+                                        myGameBoard.removeObject(coords)
+                                    }
+                                }
+                                lastGrid = coords;
                             }
 
                         }
-                        if (myGameBoard.checkCell(coords)) {
-                            myGameBoard.addObject(coords, "Cursor")
-                            //console.log(myPathfinder.Pathfinding({ x: magic.CANVAS_SIZE / 2, y: 0 }, { x: magic.CANVAS_SIZE / 2, y: magic.CANVAS_SIZE }, "Cursor") != null ))
-                            if (myPathfinder.findPath({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "Cursor") != null && myPathfinder.findPath({ x: magic.CANVAS_SIZE / 2, y: 0 }, { x: magic.CANVAS_SIZE / 2, y: magic.CANVAS_SIZE }, "Cursor") != null ) {
-                                myGameBoard.removeObject(coords)
-                            }
-                        }
-                        lastGrid = coords;
                     }
                 }
-
             }
         );
         graphics.canvas.addEventListener(

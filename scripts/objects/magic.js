@@ -6,7 +6,12 @@ MyGame.objects.Magic = function (graphics) {
     const X_OFFSET = graphics.canvas.width - graphics.canvas.height;
     const RPS = Math.PI / 500 // 1 Rotation per second
     const CANVAS_SIZE = graphics.canvas.height
-
+    let spawnPoints = {
+        N: { x: CANVAS_SIZE / 2, y: 0 },
+        E: { x: CANVAS_SIZE-GRID_SIZE, y: CANVAS_SIZE / 2 },
+        W: { x: 0, y: CANVAS_SIZE / 2 },
+        S: { x: CANVAS_SIZE / 2, y: CANVAS_SIZE-GRID_SIZE },
+      }
     function gridToPixel(point) {
         let x = (parseInt(point.x) + .5) * CELL_SIZE;
         let y = (parseInt(point.y) + .5) * CELL_SIZE;
@@ -53,6 +58,7 @@ MyGame.objects.Magic = function (graphics) {
         mouseToPixel: mouseToPixel,
         magnitude: magnitude,
         collision: collision,
+        get spawnPoints(){return spawnPoints},
         get GRID_SIZE() { return GRID_SIZE; },
         get CELL_SIZE() { return CELL_SIZE; },
         get X_OFFSET() { return X_OFFSET; },
