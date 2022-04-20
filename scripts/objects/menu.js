@@ -1,18 +1,21 @@
 MyGame.objects.Menu = function (assets, graphics, magic) {
     'use strict';
-    let currentTower = null;
+    let tower = null;
 
     function render() {
-        if(currentTower != null){
-            graphics.drawEllipse({ center: currentTower.center, radius: currentTower.radius }, "rgba(0, 25, 0, .25)", "black");
+        if(tower != null){
+            graphics.drawEllipse({ center: tower.center, radius: tower.radius }, "rgba(0, 25, 0, .25)", "black");
+            console.log(Math.floor(tower.radius / magic.CELL_SIZE));
+            console.log(tower.name);
+            console.log(tower.damage);
         }
     }
 
     function update(elapsedTime) {
     }
 
-    function setTower(tower){
-        currentTower = tower;
+    function setTower(obj){
+        tower = obj;
     }
 
 

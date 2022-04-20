@@ -1,14 +1,13 @@
 MyGame.objects.Towers = function (assets, graphics, magic) {
     'use strict';
     let RADS = magic.CELL_SIZE;
-    let BASE_RADS = .5 * magic.CELL_SIZE;
 
     let towerDictionary = {
         turret: {
             name: "turret",
             cost: 50,
             image: "turret",
-            radius: BASE_RADS + RADS * 2,
+            radius: RADS * 2.5,
             damage: 5,
             fireRate: 1000 / 2, // times per second it can shoot in ms 
             preview: assets.turret_preview, // the piction image 
@@ -18,7 +17,7 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
             name: "freezer",
             cost: 500,
             image: "turret",
-            radius: BASE_RADS + RADS * 1,
+            radius: RADS * 1.5,
             damage: 5,
             fireRate: 1000 / 2, // times per second it can shoot in ms 
             preview: assets.coin,
