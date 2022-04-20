@@ -19,7 +19,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
     },
     runner: {
       name: "runner",
-      type: "ground",
+      type: "flying",
       moveRate: 400/1000,
       health: 50,
       img: assets.life,  

@@ -17,7 +17,6 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
                     x: i,
                     y: j,
                     object: null, // The object here will help with pathfinding ie towers and walls
-                    visited: false // to see where you have been in pathfinding 
                 });
                 let mid = Math.floor(magic.GRID_SIZE / 2);
                 let gap = Math.floor(GAP / 2);
