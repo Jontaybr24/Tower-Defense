@@ -105,22 +105,25 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myParticles.render();
     }
 
+    function sellaTower() {
+        let tower = myUpgrades.tower;
+        if (tower != null) {
+            let coords = magic.pixelToGrid(tower.center);
+            let obj = myGameBoard.removeObject(coords);
+            myTowers.deleteTower(obj);
+            myInfo.addCoins(Math.floor(obj.cost * .90));
+            myUpgrades.setTower(null);
+            myEnemies.updatePath();
+        }
+    }
+
+
     function setControls() {
         myKeyboard.register(data.controls.grid.key, myGameBoard.toggleGrid);
         myKeyboard.register(data.controls.upgrade.key, function () {
             myInfo.addCoins(-myTowers.upgrade(myUpgrades.tower, 0));
         });
-        myKeyboard.register(data.controls.sell.key, function () {
-            let tower = myUpgrades.tower;
-            if (tower != null) {
-                let coords = magic.pixelToGrid(tower.center);
-                let obj = myGameBoard.removeObject(coords);
-                myTowers.deleteTower(obj);
-                myInfo.addCoins(Math.floor(obj.cost * .90));
-                myUpgrades.setTower(null);
-                myEnemies.updatePath();
-            }
-        });
+        myKeyboard.register(data.controls.sell.key, sellaTower);
         myKeyboard.register(data.controls.startWave.key, function () {
             //myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
             //myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")
@@ -135,9 +138,11 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                 myUpgrades.setTower(null);
             }
 
-            if (coords.x >= magic.GRID_SIZE){
+            if (coords.x >= magic.GRID_SIZE) {
                 myInfo.checkBuy();
                 myInfo.addCoins(-myUpgrades.buyUpgrade());
+                if (myUpgrades.sellTower())
+                    sellaTower()
             }
             if (e.ctrlKey) {
 

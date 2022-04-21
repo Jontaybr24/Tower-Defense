@@ -3,8 +3,8 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
     let RADS = magic.CELL_SIZE;
 
     let towerDictionary = {
-        turret: {
-            name: "turret",
+        Turret: {
+            name: "Turret",
             cost: 50,
             radius: 2.5,
             damage: 5,
@@ -15,24 +15,34 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
                     [50, 100, 150],
                     [50, 100, 150],],
                 radius: [
-                    [0, 0, .5],
+                    [1, 0, 0],
                     [.5, 0, .5],
                     [1, 0, .5],],
                 damage: [
-                    [0, 0, 0],
+                    [0, 1, 0],
                     [5, 0, 0],
                     [5, 0, 0],],
                 fireRate: [
-                    [0, 0, 0],
+                    [0, 0, 1],
                     [0, 1, 0],
                     [0, 1, 0],],
             },
             renderPreview: renderPreview, // the piction image
             needTarget: true, // if the tower needs to turn to target before activating
-            activate: function (tower, target) {
-                if (target.takeHit(target, tower.damage))
-                    removeTarget(target)
-
+            finalForm: {
+                path0: function (tower, targets){
+                    console.log("Red tower shoot");
+                },
+                path1: function (tower, targets){
+                    console.log("Blue tower shoot");
+                },
+                path2: function (tower, targets){
+                    console.log("Green tower shoot");
+                },
+            },
+            activate: function (tower, targets) {
+                if (targets[0].takeHit(targets[0], tower.damage))
+                    removeTarget(targets[0])
             },
         },
     };
@@ -89,7 +99,7 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
                         // the tower needs to wait a specific time before it can activate again
                         if (tower.lastShot > (1000 / tower.fireRate)) {
                             tower.lastShot = 0;
-                            tower.activate(tower, tower.target);
+                            tower.activate(tower, tower.enemies);
                         }
                     }
                 }
@@ -128,6 +138,8 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
         tower.enemies = [];
         tower.lastShot = 0;
         tower.activate = towerDictionary[name].activate;
+        tower.finalForm = towerDictionary[name].finalForm;
+        console.log(tower.finalForm)
         tower.renderPreview = renderPreview;
         towers[tower.id] = tower;
         return tower;
@@ -157,13 +169,16 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
             }
             if (tower.level < 3) {
                 path = tower.path;
-                console.log(path);
                 tower.level += 1;
                 spent = tower.upgrades["cost"][path].shift();
                 tower.cost += spent;
                 tower.damage += tower.upgrades["damage"][path].shift();
                 tower.fireRate += tower.upgrades["fireRate"][path].shift();
                 tower.radius += tower.upgrades["radius"][path].shift() * magic.CELL_SIZE;
+                if (tower.level == 3){
+                    let string = "path" + path;
+                    tower.activate = tower.finalForm[string];
+                }
             }
         }
         return spent;
