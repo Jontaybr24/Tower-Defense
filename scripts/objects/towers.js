@@ -12,15 +12,19 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
             upgrades: {
                 cost: [
                     [75, 150, 200],
+                    [50, 100, 150],
                     [50, 100, 150],],
                 radius: [
                     [0, 0, .5],
-                    [.5, 0, .5],],
+                    [.5, 0, .5],
+                    [1, 0, .5],],
                 damage: [
                     [0, 0, 0],
+                    [5, 0, 0],
                     [5, 0, 0],],
                 fireRate: [
                     [0, 0, 0],
+                    [0, 1, 0],
                     [0, 1, 0],],
             },
             renderPreview: renderPreview, // the piction image

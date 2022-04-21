@@ -1,15 +1,15 @@
 MyGame.objects.Menu = function (assets, graphics, magic, towers) {
     'use strict';
     let tower = null;
-    let smallBoxHeight = graphics.canvas.height / 10;
+    let smallBoxHeight = graphics.canvas.height / 11;
     let smallBoxWidth = magic.X_OFFSET * .8;
     let padding = 20;
-    let y_bottom = 100;
-    let bigBoxHeight = (smallBoxHeight + padding) * 2;
+    let y_bottom = 80;
+    let bigBoxHeight = (smallBoxHeight + padding) * 3;
     let bigBoxWidth = magic.X_OFFSET * .9;
     let bigBoxPos = { x: graphics.canvas.height + magic.X_OFFSET / 2, y: graphics.canvas.height - (bigBoxHeight / 2) - y_bottom }
     let box1 = {
-        center: { x: bigBoxPos.x, y: bigBoxPos.y - (smallBoxHeight + padding) / 2 },
+        center: { x: bigBoxPos.x, y: bigBoxPos.y - (smallBoxHeight + padding) },
         size: { x: smallBoxWidth, y: smallBoxHeight },
         selected: false,
     };
@@ -20,7 +20,7 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers) {
         ymax: box1.center.y + box1.size.y / 2,
     };
     let box2 = {
-        center: { x: bigBoxPos.x, y: bigBoxPos.y + (smallBoxHeight + padding) / 2 },
+        center: { x: bigBoxPos.x, y: bigBoxPos.y },
         size: { x: smallBoxWidth, y: smallBoxHeight },
         selected: false,
     };
@@ -30,6 +30,17 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers) {
         ymin: box2.center.y - box2.size.y / 2,
         ymax: box2.center.y + box2.size.y / 2,
     };
+    let box3 = {
+        center: { x: bigBoxPos.x, y: bigBoxPos.y + (smallBoxHeight + padding) },
+        size: { x: smallBoxWidth, y: smallBoxHeight },
+        selected: false,
+    };
+    box3.hitbox = {
+        xmin: box3.center.x - box3.size.x / 2,
+        xmax: box3.center.x + box3.size.x / 2,
+        ymin: box3.center.y - box3.size.y / 2,
+        ymax: box3.center.y + box3.size.y / 2,
+    };
 
     function render() {
         graphics.drawRectangle({ center: bigBoxPos, size: { x: bigBoxWidth, y: bigBoxHeight } }, "#6e3e1b", "black");
@@ -37,26 +48,38 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers) {
             graphics.drawEllipse({ center: tower.center, radius: tower.radius }, "rgba(0, 25, 0, .25)", "black");
             graphics.drawRectangle({ center: box1.center, size: box1.size }, "#85481d", "black");
             graphics.drawRectangle({ center: box2.center, size: box2.size }, "#85481d", "black");
+            graphics.drawRectangle({ center: box3.center, size: box3.size }, "#85481d", "black");
             if (tower.level < 3) {
                 tower.renderPreview(tower, box1.center, tower.level + 1, 0, { x: magic.CELL_SIZE, y: magic.CELL_SIZE });
                 tower.renderPreview(tower, box2.center, tower.level + 1, 1, { x: magic.CELL_SIZE, y: magic.CELL_SIZE });
+                tower.renderPreview(tower, box3.center, tower.level + 1, 2, { x: magic.CELL_SIZE, y: magic.CELL_SIZE });
             }
             else{
                 graphics.drawText("MAX LEVEL", box1.center, "white", "24px Arial", true);
                 graphics.drawText("MAX LEVEL", box2.center, "white", "24px Arial", true);
+                graphics.drawText("MAX LEVEL", box3.center, "white", "24px Arial", true);
             }
 
-            if (box1.selected && tower.path != 1) {
+            if (box1.selected && tower.path != 1 && tower.path != 2) {
                 graphics.drawRectangle({ center: box1.center, size: box1.size }, "rgba(69, 69, 69, .5)", "black");
             }
-            else if (box2.selected && tower.path != 0) {
+            else if (box2.selected && tower.path != 0 && tower.path != 2) {
                 graphics.drawRectangle({ center: box2.center, size: box2.size }, "rgba(69, 69, 69, .5)", "black");
+            }
+            else if (box3.selected && tower.path != 0 && tower.path != 2) {
+                graphics.drawRectangle({ center: box3.center, size: box3.size }, "rgba(69, 69, 69, .5)", "black");
             }
             if (tower.path == 0) {
                 graphics.drawRectangle({ center: box2.center, size: box2.size }, "#693a19", "black");
+                graphics.drawRectangle({ center: box3.center, size: box3.size }, "#693a19", "black");
             }
             else if (tower.path == 1) {
                 graphics.drawRectangle({ center: box1.center, size: box1.size }, "#693a19", "black");
+                graphics.drawRectangle({ center: box3.center, size: box3.size }, "#693a19", "black");
+            }
+            else if (tower.path == 2) {
+                graphics.drawRectangle({ center: box1.center, size: box1.size }, "#693a19", "black");
+                graphics.drawRectangle({ center: box2.center, size: box2.size }, "#693a19", "black");
             }
 
             //console.log(Math.floor(tower.radius / magic.CELL_SIZE));
@@ -72,11 +95,14 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers) {
     }
 
     function buyUpgrade() {
-        if (box1.selected && tower.path != 1) {
+        if (box1.selected && tower.path != 1 && tower.path != 2) {
             return towers.upgrade(tower, 0)
         }
-        if (box2.selected && tower.path != 0) {
+        if (box2.selected && tower.path != 0 && tower.path != 2) {
             return towers.upgrade(tower, 1)
+        }
+        if (box3.selected && tower.path != 0 && tower.path != 1) {
+            return towers.upgrade(tower, 2)
         }
         return 0;
     }
@@ -85,6 +111,7 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers) {
         point = { xmin: point.x, xmax: point.x, ymin: point.y, ymax: point.y }
         box1.selected = magic.collision(point, box1.hitbox);
         box2.selected = magic.collision(point, box2.hitbox);
+        box3.selected = magic.collision(point, box3.hitbox);
     }
 
     let api = {

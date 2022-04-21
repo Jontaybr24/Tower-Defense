@@ -107,6 +107,8 @@ MyGame.graphics = (function () {
         context.font = font;
         if (centered)
             context.textAlign = 'center';
+        else
+            context.textAlign = "left";
         context.fillStyle = fillStyle;
         context.fillText(text, position.x, position.y);
     }
