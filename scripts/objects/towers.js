@@ -37,62 +37,6 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
     let count = 0;
     let OFFSET = Math.PI / 2; // rotate tower head asset by 90 degrees
 
-    //------------------------------------------------------------------
-    //
-    // Returns the magnitude of the 2D cross product.  The sign of the
-    // magnitude tells you which direction to rotate to close the angle
-    // between the two vectors.
-    //
-    //------------------------------------------------------------------
-    function crossProduct2d(v1, v2) {
-        return (v1.x * v2.y) - (v1.y * v2.x);
-    }
-
-    //------------------------------------------------------------------
-    //
-    // Computes the angle, and direction (cross product) between two vectors.
-    //
-    //------------------------------------------------------------------
-    function computeAngle(rotation, ptCenter, ptTarget) {
-        let v1 = {
-            x: Math.cos(rotation),
-            y: Math.sin(rotation)
-        };
-        let v2 = {
-            x: ptTarget.x - ptCenter.x,
-            y: ptTarget.y - ptCenter.y
-        };
-
-        v2.len = Math.sqrt(v2.x * v2.x + v2.y * v2.y);
-        v2.x /= v2.len;
-        v2.y /= v2.len;
-
-        let dp = v1.x * v2.x + v1.y * v2.y;
-        let angle = Math.acos(dp);
-
-        //
-        // Get the cross product of the two vectors so we can know
-        // which direction to rotate.
-        let cp = crossProduct2d(v1, v2);
-
-        return {
-            angle: angle,
-            crossProduct: cp
-        };
-    }
-
-    //------------------------------------------------------------------
-    //
-    // Simple helper function to help testing a value with some level of tolerance.
-    //
-    //------------------------------------------------------------------
-    function testTolerance(value, test, tolerance) {
-        if (Math.abs(value - test) < tolerance) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     function render() {
         for (let index in towers) {
@@ -128,9 +72,9 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
                 // if the tower needs a target first turn to target before activating
                 if (tower.needTarget) {
                     tower.target = tower.enemies[0];
-                    let result = computeAngle(tower.rotation, tower.center, tower.target.center);
+                    let result = magic.computeAngle(tower.rotation, tower.center, tower.target.center);
                     // checks if the angle between the target is below the tollerance otherwise keep turning
-                    if (testTolerance(result.angle, 0, .04) === false) {
+                    if (magic.testTolerance(result.angle, 0, .04) === false) {
                         if (result.crossProduct > 0) {
                             tower.rotation += tower.spinRate * elapsedTime;
                         } else {
@@ -180,6 +124,7 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
         tower.enemies = [];
         tower.lastShot = 0;
         tower.activate = towerDictionary[name].activate;
+        tower.renderPreview = renderPreview;
         towers[tower.id] = tower;
         return tower;
     }
@@ -203,17 +148,17 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
     function upgrade(tower, path) {
         let spent = 0;
         if (tower != null) {
-            if (tower.path != path){
-                tower.path = path;                
+            if (tower.path == 3) {
+                tower.path = path;
             }
             if (tower.level < 3) {
+                path = tower.path;
+                console.log(path);
                 tower.level += 1;
                 spent = tower.upgrades["cost"][path].shift();
                 tower.cost += spent;
                 tower.damage += tower.upgrades["damage"][path].shift();
-                let fire = tower.upgrades["fireRate"][path].shift();
-                if (fire != 0)
-                    tower.fireRate += 1000 / fire;
+                tower.fireRate += tower.upgrades["fireRate"][path].shift();
                 tower.radius += tower.upgrades["radius"][path].shift() * magic.CELL_SIZE;
             }
         }

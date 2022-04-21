@@ -23,7 +23,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let myTowers = objects.Towers(assets, graphics, magic);
 
     let myWaves = objects.Waves(myEnemies, magic);
-    let myUpgrades = objects.Menu(assets, graphics, magic);
+    let myUpgrades = objects.Menu(assets, graphics, magic, myTowers);
 
 
 
@@ -108,7 +108,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     function setControls() {
         myKeyboard.register(data.controls.grid.key, myGameBoard.toggleGrid);
         myKeyboard.register(data.controls.upgrade.key, function () {
-            myInfo.addCoins(-myTowers.upgrade(myUpgrades.tower, 1));
+            myInfo.addCoins(-myTowers.upgrade(myUpgrades.tower, 0));
         });
         myKeyboard.register(data.controls.sell.key, function () {
             let tower = myUpgrades.tower;
@@ -135,8 +135,10 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                 myUpgrades.setTower(null);
             }
 
-            if (coords.x >= magic.GRID_SIZE)
+            if (coords.x >= magic.GRID_SIZE){
                 myInfo.checkBuy();
+                myInfo.addCoins(-myUpgrades.buyUpgrade());
+            }
             if (e.ctrlKey) {
 
             }
@@ -170,6 +172,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                 let pixelCoords = magic.gridToPixel(coords);
                 let moreCoords = magic.mouseToPixel({ x: e.clientX, y: e.clientY })
                 myInfo.checkHover(moreCoords);
+                myUpgrades.checkHover(moreCoords);
                 myCursor.setCursor(pixelCoords);
                 // add pathfinding thing here
                 if (myInfo.placing) {

@@ -102,8 +102,6 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
                 point.y > box1.ymax ||
                 point.y < box1.ymin);
             towerDictionary[idx].selected = collision;
-            if (collision){
-            }
         }
     }
 
