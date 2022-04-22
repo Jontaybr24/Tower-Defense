@@ -147,6 +147,7 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor, sounds) {
         checkBuy: checkBuy,
         loseLife: loseLife,
         plusWave: plusWave,
+        cancelTower: cancelTower,
         get placing() { return placing; },
         get coins() { return coins; }
     };

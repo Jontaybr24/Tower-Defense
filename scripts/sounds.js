@@ -12,27 +12,27 @@ MyGame.sounds.manager = function () {
     }
 
     function clearSound(src) {
-        for (let sound in allSounds){
-            if(allSounds[sound].src == src){
+        for (let sound in allSounds) {
+            if (allSounds[sound].src == src) {
                 allSounds[sound].sound.pause();
                 allSounds.splice(sound, 1);
             }
         }
     }
 
-    function playAll(){        
-        for (let sound in allSounds){            
+    function playAll() {
+        for (let sound in allSounds) {
             allSounds[sound].sound.play();
         }
     }
 
-    function pauseAll(){        
-        for (let sound in allSounds){            
+    function pauseAll() {
+        for (let sound in allSounds) {
             allSounds[sound].sound.pause();
         }
     }
 
-    function clearAll(){
+    function clearAll() {
         pauseAll();
         allSounds = [];
     }

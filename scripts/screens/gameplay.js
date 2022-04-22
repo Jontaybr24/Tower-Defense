@@ -153,9 +153,9 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             }
         });
         myMouse.register('mousedown', function (e) {
-
             if(e.button == 2){
-                console.log("rightclick")
+                myInfo.cancelTower();
+                myUpgrades.setTower(null);
             }
             else {
             let coords = magic.mouseToGrid({ x: e.clientX, y: e.clientY })

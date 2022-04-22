@@ -200,9 +200,6 @@ MyGame.loader = (function () {
     },{
         key: 'menu_hover',
         source: '/soundFX/menu-hover.wav'
-    },{
-        key: 'laser_shoot',
-        source: '/soundFX/laser.mp3'
     },
     ];
 
