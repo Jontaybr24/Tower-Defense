@@ -16,7 +16,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       name: "spider",
       type: "ground",
       moveRate: 100/1000,
-      health: 50,
+      health: 1000,
       spec:{
         spriteSheet: assets.spider,
         subIndex : {x: 0, y:0},
@@ -141,7 +141,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
   }
   function render() {
     for (let index in enemies) {
-      enemies[index].rig.render({center:enemies[index].center, rotation:enemies[index].rotation,subSize:{x:magic.CELL_SIZE,y:magic.CELL_SIZE}});
+      enemies[index].rig.render({center:enemies[index].center, rotation:enemies[index].rotation,subSize:{x:magic.CELL_SIZE *1.5,y:magic.CELL_SIZE *1.5}});
 
       //graphics.drawRectangle({center:{x:(enemies[index].hitbox.xmin +enemies[index].hitbox.xmax)/2,y:(enemies[index].hitbox.ymin +enemies[index].hitbox.ymax)/2}, size:{x:enemies[index].hitbox.xmin - enemies[index].hitbox.xmax, y:enemies[index].hitbox.ymin - enemies[index].hitbox.ymax}}, "red","red");
     }

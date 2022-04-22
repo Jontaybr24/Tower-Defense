@@ -129,6 +129,7 @@ MyGame.objects.Waves = function (enemies, magic) {
                 ["drone", 5, "N"],
                 ["spider", 5, "N"],
                 ["drone", 5, "N"],
+                
             ],
         ];
         previewWave();

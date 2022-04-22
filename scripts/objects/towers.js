@@ -8,15 +8,15 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers) {
             cost: 50,
             radius: 2.5,
             damage: 5,
-            fireRate: 2, // times per second it can shoot in ms 
+            fireRate: 5, // times per second it can shoot in ms 
             upgrades: {
                 cost: [
                     [75, 150, 200],
                     [50, 100, 150],
-                    [50, 100, 10050],],
+                    [50, 100, 1050],],
                 radius: [
                     [1, 0, 0],
-                    [.5, 0, .5],
+                    [7, 0, .5],
                     [1, 0, .5],],
                 damage: [
                     [0, 1, 0],
@@ -25,7 +25,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers) {
                 fireRate: [
                     [0, 0, 1],
                     [0, 1, 0],
-                    [0, 1, 0],],
+                    [0, 1, 20],],
             },
             renderPreview: renderPreview, // the piction image
             needTarget: true, // if the tower needs to turn to target before activating
