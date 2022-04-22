@@ -183,10 +183,10 @@ MyGame.loader = (function () {
         source: '/assets/basic-turret-10.png'
     },{
 
-        key: 'drone',
+        key: 'Drone',
         source: '/assets/drone.png'
     },{
-        key: 'spider',
+        key: 'Spider',
         source: '/assets/spider.png'
     },{
         key: 'laser_basic',
@@ -200,6 +200,18 @@ MyGame.loader = (function () {
     },{
         key: 'menu_hover',
         source: '/soundFX/menu-hover.wav'
+    },{
+        key: 'playBtnHover',
+        source: '/assets/play-hover.png'
+    },{
+        key: 'playBtn',
+        source: '/assets/play.png'
+    },{
+        key: 'pauseBtnHover',
+        source: '/assets/pause-hover.png'
+    },{
+        key: 'pauseBtn',
+        source: '/assets/pause.png'
     },
     ];
 

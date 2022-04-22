@@ -21,11 +21,11 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     let myLasers = objects.Laser(assets, graphics, magic, soundManager);
     let myTowers = objects.Towers(assets, graphics, magic, myLasers);
-    let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder, myInfo, myParticles, myHealthbars,renderer.AnimatedModel, myTowers);
+    let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder, myInfo, myParticles, myHealthbars, renderer.AnimatedModel, myTowers);
 
 
 
-    let myWaves = objects.Waves(myEnemies, magic);
+    let myWaves = objects.Waves(myEnemies, graphics, magic, assets);
     let myUpgrades = objects.Menu(assets, graphics, magic, myTowers, myInfo, soundManager);
 
 
@@ -80,7 +80,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     }
 
     function checkWin() {
-        if (myEnemies.length == 0 && !myWaves.checkWaves()) {
+        if (!myWaves.checkWaves()) {
             console.log("All waves complete");
         }
     }
@@ -153,46 +153,50 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             }
         });
         myMouse.register('mousedown', function (e) {
-            if(e.button == 2){
+            if (e.button == 2) {
                 myInfo.cancelTower();
                 myUpgrades.setTower(null);
             }
             else {
-            let coords = magic.mouseToGrid({ x: e.clientX, y: e.clientY })
-            let pixelCoords = magic.gridToPixel(coords);
+                let coords = magic.mouseToGrid({ x: e.clientX, y: e.clientY })
+                let pixelCoords = magic.gridToPixel(coords);
 
-            if (coords.x < magic.GRID_SIZE - 1 && coords.y < magic.GRID_SIZE - 1) {
-                myUpgrades.setTower(null);
-            }
+                if (coords.x < magic.GRID_SIZE - 1 && coords.y < magic.GRID_SIZE - 1) {
+                    myUpgrades.setTower(null);
+                }
 
-            if (coords.x >= magic.GRID_SIZE) {
-                myInfo.checkBuy();
-                myInfo.addCoins(-myUpgrades.buyUpgrade());
-                if (myUpgrades.sellTower())
-                    sellaTower()
-            }
-            if (e.ctrlKey) {
-
-            }
-            else if (myInfo.placing) {
-                if (myCursor.isClear() && myGameBoard.checkCell(coords)) {
-                    let tower = myTowers.getTower(myCursor.tower.name);
-                    if (myInfo.hasFunds(tower.cost)) {
-                        myInfo.addCoins(-tower.cost)
-                        tower = myTowers.makeTower(pixelCoords, myCursor.tower.name);
-                        myGameBoard.addObject(coords, tower);
-                    }
+                if (coords.x >= magic.GRID_SIZE) {
+                    myInfo.checkBuy();
+                    myInfo.addCoins(-myUpgrades.buyUpgrade());
+                    if (myUpgrades.sellTower())
+                        sellaTower()
+                }
+                if (e.ctrlKey) {
+                    let obj = myGameBoard.removeObject(coords);
+                    myTowers.deleteTower(obj);
+                    myInfo.addCoins(Math.floor(obj.cost * magic.SELL_PRICE));
+                    myUpgrades.setTower(null);
                     myEnemies.updatePath();
-                    
+                }
+                else if (myInfo.placing) {
+                    if (myCursor.isClear() && myGameBoard.checkCell(coords)) {
+                        let tower = myTowers.getTower(myCursor.tower.name);
+                        if (myInfo.hasFunds(tower.cost)) {
+                            myInfo.addCoins(-tower.cost)
+                            tower = myTowers.makeTower(pixelCoords, myCursor.tower.name);
+                            myGameBoard.addObject(coords, tower);
+                        }
+                        myEnemies.updatePath();
 
+
+                    }
                 }
-            }
-            else {
-                let tower = myGameBoard.getObject(coords);
-                if (tower?.type == "tower") {
-                    myUpgrades.setTower(tower);
+                else {
+                    let tower = myGameBoard.getObject(coords);
+                    if (tower?.type == "tower") {
+                        myUpgrades.setTower(tower);
+                    }
                 }
-            }
             }
         });
         let lastGrid = null;
@@ -204,16 +208,14 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                 let moreCoords = magic.mouseToPixel({ x: e.clientX, y: e.clientY })
                 myInfo.checkHover(moreCoords);
                 myUpgrades.checkHover(moreCoords);
+                myWaves.checkHover(moreCoords);
                 myCursor.setCursor(pixelCoords);
-                // add pathfinding thing here
                 if (myInfo.placing) {
                     if ((coords.x < magic.GRID_SIZE && coords.y < magic.GRID_SIZE)) {
                         if (!(coords.x <= 0 || coords.y <= 0)) {
                             if (lastGrid == null) {
                                 if (myGameBoard.checkCell(coords)) {
                                     myGameBoard.addObject(coords, "Cursor")
-                                    //console.log(myPathfinder.Pathfinding({ x: magic.CANVAS_SIZE / 2, y: 0 }, { x: magic.CANVAS_SIZE / 2, y: magic.CANVAS_SIZE }, "Cursor") != null ))
-                                    //console.log("checked path")
                                     if (myPathfinder.findPath(magic.spawnPoints.W, magic.spawnPoints.E, "Cursor") != null && myPathfinder.findPath(magic.spawnPoints.N, magic.spawnPoints.S, "Cursor") != null) {
                                         myGameBoard.removeObject(coords)
                                     }
@@ -226,8 +228,6 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                                 }
                                 if (myGameBoard.checkCell(coords)) {
                                     myGameBoard.addObject(coords, "Cursor")
-                                    //console.log(myPathfinder.Pathfinding({ x: magic.CANVAS_SIZE / 2, y: 0 }, { x: magic.CANVAS_SIZE / 2, y: magic.CANVAS_SIZE }, "Cursor") != null ))
-                                    //console.log("checked path")
                                     if (myPathfinder.findPath(magic.spawnPoints.W, magic.spawnPoints.E, "Cursor") != null && myPathfinder.findPath(magic.spawnPoints.N, magic.spawnPoints.S, "Cursor") != null) {
                                         myGameBoard.removeObject(coords)
                                     }

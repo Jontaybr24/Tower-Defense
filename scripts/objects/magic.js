@@ -21,11 +21,6 @@ MyGame.objects.Magic = function (graphics) {
          thing.hitbox.ymax = thing.center.y + size.y * .45,
          thing.hitbox.xmin = thing.center.x - size.x * .45,
          thing.hitbox.xmax = thing.center.x + size.x * .45 
-        /*
-        thing.hitbox.xmax = thing.center.x -2; 
-        thing.hitbox.xmin = thing.center.x - CELL_SIZE+2;
-        thing.hitbox.ymin = thing.center.y - CELL_SIZE + 2;
-        thing.hitbox.ymax = thing.center.y - 2;*/
     }
     function gridToPixel(point) {
         let x = (parseInt(point.x) + .5) * CELL_SIZE;

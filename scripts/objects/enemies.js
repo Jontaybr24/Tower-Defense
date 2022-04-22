@@ -12,26 +12,26 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
   let spawnPoints = magic.spawnPoints;
 
   let enemiesDictionary = {
-    spider: {
-      name: "spider",
+    Spider: {
+      name: "Spider",
       type: "ground",
       moveRate: 100/1000,
       health: 40,
       spec:{
-        spriteSheet: assets.spider,
+        spriteSheet: assets.Spider,
         subIndex : {x: 0, y:0},
         subTextureWidth: {x: 32, y:32},
         spriteCount : 4,
         spriteTime: 70 }  // ms per frame
         
     },
-    drone: {
-      name: "drone",
+    Drone: {
+      name: "Drone",
       type: "flying",
       moveRate: 200/1000,
       health: 20,
       spec:{
-        spriteSheet: assets.drone,
+        spriteSheet: assets.Drone,
         subIndex : {x: 0, y:0},
         subTextureWidth: {x: 32, y:32},
         spriteCount : 4,
