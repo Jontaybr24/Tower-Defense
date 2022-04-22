@@ -3,7 +3,7 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
 
     let coins = 2000;
     let lives = 50;
-    let wave = 1;
+    let wave = 0;
     let step = 40;
     let padding = 45;
     let towerYStep = 200;

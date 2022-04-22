@@ -7,21 +7,21 @@ MyGame.objects.Magic = function (graphics) {
     const X_OFFSET = graphics.canvas.width - graphics.canvas.height;
     const RPS = Math.PI / 500 // 1 Rotation per second
     const CANVAS_SIZE = graphics.canvas.height
-    
+
     const SELL_PRICE = 1; // The percentage you get from selling a tower
 
     let spawnPoints = {
         N: { x: CANVAS_SIZE / 2, y: 0 },
-        E: { x: CANVAS_SIZE-GRID_SIZE, y: CANVAS_SIZE / 2 },
+        E: { x: CANVAS_SIZE - GRID_SIZE, y: CANVAS_SIZE / 2 },
         W: { x: 0, y: CANVAS_SIZE / 2 },
-        S: { x: CANVAS_SIZE / 2, y: CANVAS_SIZE-GRID_SIZE },
-      }
-    function sethitbox(thing){
-        
+        S: { x: CANVAS_SIZE / 2, y: CANVAS_SIZE - GRID_SIZE },
+    }
+    function sethitbox(thing) {
+
         thing.hitbox.xmax = thing.center.x;
-        thing.hitbox.xmin =  thing.center.x -CELL_SIZE;
-        thing.hitbox.ymin = thing.center.y-CELL_SIZE+2;
-        thing.hitbox.ymax = thing.center.y-2;
+        thing.hitbox.xmin = thing.center.x - CELL_SIZE;
+        thing.hitbox.ymin = thing.center.y - CELL_SIZE + 2;
+        thing.hitbox.ymax = thing.center.y - 2;
     }
     function gridToPixel(point) {
         let x = (parseInt(point.x) + .5) * CELL_SIZE;
@@ -118,6 +118,25 @@ MyGame.objects.Magic = function (graphics) {
         }
     }
 
+    function computeVelocity(position, target) {
+        let x = position.x - target.x;
+        let y = position.y - target.y;
+        let angle = Math.atan(y / x);
+        if (x < 0){
+            y =  Math.sin(angle);
+            x =  Math.cos(angle);
+        }
+        else{
+            y =  Math.sin(angle) * -1;
+            x =  Math.cos(angle) * -1;
+        }
+        return { x: x, y: y }
+    }
+
+    function computeRotation(vel){
+        return Math.atan(vel.y / vel.x);
+    }
+
 
     let api = {
         gridToPixel: gridToPixel,
@@ -129,11 +148,13 @@ MyGame.objects.Magic = function (graphics) {
         sethitbox: sethitbox,
         computeAngle: computeAngle,
         testTolerance: testTolerance,
-        get spawnPoints(){return spawnPoints},
+        computeVelocity: computeVelocity,
+        computeRotation: computeRotation,
+        get spawnPoints() { return spawnPoints },
         get GRID_SIZE() { return GRID_SIZE; },
         get CELL_SIZE() { return CELL_SIZE; },
         get X_OFFSET() { return X_OFFSET; },
-        get MENU_SIZE() {return MENU_SIZE;},
+        get MENU_SIZE() { return MENU_SIZE; },
         get RPS() { return RPS; },
         get CANVAS_SIZE() { return CANVAS_SIZE; },
         get SELL_PRICE() { return SELL_PRICE; },

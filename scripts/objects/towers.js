@@ -1,4 +1,4 @@
-MyGame.objects.Towers = function (assets, graphics, magic) {
+MyGame.objects.Towers = function (assets, graphics, magic, lasers) {
     'use strict';
     let RADS = magic.CELL_SIZE;
 
@@ -30,8 +30,16 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
             renderPreview: renderPreview, // the piction image
             needTarget: true, // if the tower needs to turn to target before activating
             activate: function (tower, targets) {
-                if (targets[0].takeHit(targets[0], tower.damage))
-                    removeTarget(targets[0])
+                let pos = JSON.parse(JSON.stringify(tower.center));
+                let virus = function(enemy, data){
+                    enemy.takeHit(enemy, data.damage)
+                }
+                let data = {
+                    damage: tower.damage,
+                }
+                lasers.createLaser(targets[0], pos, virus, data, assets.laser_basic);
+
+                /*
                 if (tower.level >= 2) {
                     if (tower.path == 0) {
                         console.log("red tower");
@@ -42,217 +50,7 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
                     else if (tower.path == 2) {
                         console.log("green tower");
                     }
-                }
-            },
-        },
-        Turret2: {
-            name: "Turret",
-            cost: 500,
-            radius: 2.5,
-            damage: 5,
-            fireRate: 2, // times per second it can shoot in ms 
-            upgrades: {
-                cost: [
-                    [75, 150, 200],
-                    [50, 100, 150],
-                    [50, 100, 10050],],
-                radius: [
-                    [1, 0, 0],
-                    [.5, 0, .5],
-                    [1, 0, .5],],
-                damage: [
-                    [0, 1, 0],
-                    [5, 0, 0],
-                    [5, 0, 0],],
-                fireRate: [
-                    [0, 0, 1],
-                    [0, 1, 0],
-                    [0, 1, 0],],
-            },
-            renderPreview: renderPreview, // the piction image
-            needTarget: true, // if the tower needs to turn to target before activating
-            activate: function (tower, targets) {
-                if (targets[0].takeHit(targets[0], tower.damage))
-                    removeTarget(targets[0])
-                if (tower.level >= 2) {
-                    if (tower.path == 0) {
-                        console.log("red tower");
-                    }
-                    else if (tower.path == 1) {
-                        console.log("blue tower");
-                    }
-                    else if (tower.path == 2) {
-                        console.log("green tower");
-                    }
-                }
-            },
-        },
-        Turret3: {
-            name: "Turret",
-            cost: 150,
-            radius: 2.5,
-            damage: 5,
-            fireRate: 2, // times per second it can shoot in ms 
-            upgrades: {
-                cost: [
-                    [75, 150, 200],
-                    [50, 100, 150],
-                    [50, 100, 10050],],
-                radius: [
-                    [1, 0, 0],
-                    [.5, 0, .5],
-                    [1, 0, .5],],
-                damage: [
-                    [0, 1, 0],
-                    [5, 0, 0],
-                    [5, 0, 0],],
-                fireRate: [
-                    [0, 0, 1],
-                    [0, 1, 0],
-                    [0, 1, 0],],
-            },
-            renderPreview: renderPreview, // the piction image
-            needTarget: true, // if the tower needs to turn to target before activating
-            activate: function (tower, targets) {
-                if (targets[0].takeHit(targets[0], tower.damage))
-                    removeTarget(targets[0])
-                if (tower.level >= 2) {
-                    if (tower.path == 0) {
-                        console.log("red tower");
-                    }
-                    else if (tower.path == 1) {
-                        console.log("blue tower");
-                    }
-                    else if (tower.path == 2) {
-                        console.log("green tower");
-                    }
-                }
-            },
-        },
-        Turret4: {
-            name: "Turret",
-            cost: 250,
-            radius: 2.5,
-            damage: 5,
-            fireRate: 2, // times per second it can shoot in ms 
-            upgrades: {
-                cost: [
-                    [75, 150, 200],
-                    [50, 100, 150],
-                    [50, 100, 10050],],
-                radius: [
-                    [1, 0, 0],
-                    [.5, 0, .5],
-                    [1, 0, .5],],
-                damage: [
-                    [0, 1, 0],
-                    [5, 0, 0],
-                    [5, 0, 0],],
-                fireRate: [
-                    [0, 0, 1],
-                    [0, 1, 0],
-                    [0, 1, 0],],
-            },
-            renderPreview: renderPreview, // the piction image
-            needTarget: true, // if the tower needs to turn to target before activating
-            activate: function (tower, targets) {
-                if (targets[0].takeHit(targets[0], tower.damage))
-                    removeTarget(targets[0])
-                if (tower.level >= 2) {
-                    if (tower.path == 0) {
-                        console.log("red tower");
-                    }
-                    else if (tower.path == 1) {
-                        console.log("blue tower");
-                    }
-                    else if (tower.path == 2) {
-                        console.log("green tower");
-                    }
-                }
-            },
-        },
-        Turret5: {
-            name: "Turret",
-            cost: 540,
-            radius: 2.5,
-            damage: 5,
-            fireRate: 2, // times per second it can shoot in ms 
-            upgrades: {
-                cost: [
-                    [75, 150, 200],
-                    [50, 100, 150],
-                    [50, 100, 10050],],
-                radius: [
-                    [1, 0, 0],
-                    [.5, 0, .5],
-                    [1, 0, .5],],
-                damage: [
-                    [0, 1, 0],
-                    [5, 0, 0],
-                    [5, 0, 0],],
-                fireRate: [
-                    [0, 0, 1],
-                    [0, 1, 0],
-                    [0, 1, 0],],
-            },
-            renderPreview: renderPreview, // the piction image
-            needTarget: true, // if the tower needs to turn to target before activating
-            activate: function (tower, targets) {
-                if (targets[0].takeHit(targets[0], tower.damage))
-                    removeTarget(targets[0])
-                if (tower.level >= 2) {
-                    if (tower.path == 0) {
-                        console.log("red tower");
-                    }
-                    else if (tower.path == 1) {
-                        console.log("blue tower");
-                    }
-                    else if (tower.path == 2) {
-                        console.log("green tower");
-                    }
-                }
-            },
-        },
-        Turret6: {
-            name: "Turret",
-            cost: 5,
-            radius: 2.5,
-            damage: 5,
-            fireRate: 2, // times per second it can shoot in ms 
-            upgrades: {
-                cost: [
-                    [75, 150, 200],
-                    [50, 100, 150],
-                    [50, 100, 10050],],
-                radius: [
-                    [1, 0, 0],
-                    [.5, 0, .5],
-                    [1, 0, .5],],
-                damage: [
-                    [0, 1, 0],
-                    [5, 0, 0],
-                    [5, 0, 0],],
-                fireRate: [
-                    [0, 0, 1],
-                    [0, 1, 0],
-                    [0, 1, 0],],
-            },
-            renderPreview: renderPreview, // the piction image
-            needTarget: true, // if the tower needs to turn to target before activating
-            activate: function (tower, targets) {
-                if (targets[0].takeHit(targets[0], tower.damage))
-                    removeTarget(targets[0])
-                if (tower.level >= 2) {
-                    if (tower.path == 0) {
-                        console.log("red tower");
-                    }
-                    else if (tower.path == 1) {
-                        console.log("blue tower");
-                    }
-                    else if (tower.path == 2) {
-                        console.log("green tower");
-                    }
-                }
+                }*/
             },
         },
     };
@@ -396,6 +194,7 @@ MyGame.objects.Towers = function (assets, graphics, magic) {
         deleteTower: deleteTower,
         addEnemy: addEnemy,
         upgrade: upgrade,
+        removeTarget: removeTarget,
         get towerDictionary() { return towerDictionary; },
         get towers() { return towers; },
     };

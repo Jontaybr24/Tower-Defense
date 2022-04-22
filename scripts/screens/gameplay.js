@@ -18,9 +18,10 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     let myPathfinder = objects.Path(myGameBoard.board, magic)
     let myHealthbars = objects.Healthbars(graphics, magic);
-    let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder, myInfo, myParticles, myHealthbars);
+    let myLasers = objects.Laser(assets, graphics, magic);
+    let myTowers = objects.Towers(assets, graphics, magic, myLasers);
+    let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder, myInfo, myParticles, myHealthbars, myTowers);
 
-    let myTowers = objects.Towers(assets, graphics, magic);
 
     let myWaves = objects.Waves(myEnemies, magic);
     let myUpgrades = objects.Menu(assets, graphics, magic, myTowers, myInfo);
@@ -50,8 +51,23 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         }
     }
 
+    function enemiesToLaser() {
+        for (let enemy in myEnemies.enemies) {
+            for (let laser in myLasers.lasers) {
+                if (myEnemies.enemies[enemy] !== undefined) {
+                    if (magic.collision(myLasers.lasers[laser].hitbox, myEnemies.enemies[enemy].hitbox)) {
+                        if (myLasers.lasers[laser].target.id == myEnemies.enemies[enemy].id) {
+                            myLasers.hitLaser(myLasers.lasers[laser], myEnemies.enemies[enemy]);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     function collinsions() {
         enemiesInRadius();
+        enemiesToLaser();
     }
 
     function loadLevel() {
@@ -86,6 +102,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myGameBoard.update(elapsedTime);
         myInfo.update(elapsedTime);
         myUpgrades.update(elapsedTime);
+        myLasers.update(elapsedTime);
 
         checkWin();
         cursorCollision();
@@ -98,6 +115,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myTowers.render();
         myEnemies.render();
         myHealthbars.render();
+        myLasers.render();
         myInfo.render();
         myUpgrades.render();
         if (myEnemies.length == 0)
@@ -127,7 +145,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myKeyboard.register(data.controls.startWave.key, function () {
             //myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
             //myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")
-            if (myEnemies.length == 0){
+            if (myEnemies.length == 0) {
                 myWaves.nextWave();
                 myInfo.plusWave();
             }
