@@ -1,4 +1,4 @@
-MyGame.objects.Menu = function (assets, graphics, magic, towers, info) {
+MyGame.objects.Menu = function (assets, graphics, magic, towers, info, sounds) {
     'use strict';
     let tower = null;
     let smallBoxHeight = graphics.canvas.height / 11;
@@ -193,7 +193,7 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers, info) {
                 graphics.drawText("MAX LEVEL", box3.center, "white", "24px Arial", true);
             }
 
-            
+
             if (sellBox.selected) {
                 graphics.drawRectangle({ center: sellBox.center, size: sellBox.size }, "rgba(255, 0, 0, .5)", "black");
             }
@@ -248,11 +248,21 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers, info) {
     }
 
     function checkHover(point) {
-        point = { xmin: point.x, xmax: point.x, ymin: point.y, ymax: point.y }
-        box1.selected = magic.collision(point, box1.hitbox);
-        box2.selected = magic.collision(point, box2.hitbox);
-        box3.selected = magic.collision(point, box3.hitbox);
-        sellBox.selected = magic.collision(point, sellBox.hitbox);
+        if (tower != null) {
+            point = { xmin: point.x, xmax: point.x, ymin: point.y, ymax: point.y }
+            if (!box1.selected && magic.collision(point, box1.hitbox) && (tower.path == 3 || tower.path == 0))
+                sounds.play(assets.menu_hover);
+            if (!box2.selected && magic.collision(point, box2.hitbox) && (tower.path == 3 || tower.path == 1))
+                sounds.play(assets.menu_hover);
+            if (!box3.selected && magic.collision(point, box3.hitbox) && (tower.path == 3 || tower.path == 2))
+                sounds.play(assets.menu_hover);
+            if (!sellBox.selected && magic.collision(point, sellBox.hitbox))
+                sounds.play(assets.menu_hover);
+            box1.selected = magic.collision(point, box1.hitbox);
+            box2.selected = magic.collision(point, box2.hitbox);
+            box3.selected = magic.collision(point, box3.hitbox);
+            sellBox.selected = magic.collision(point, sellBox.hitbox);
+        }
     }
 
     let api = {

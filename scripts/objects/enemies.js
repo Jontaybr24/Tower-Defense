@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, particles, bars, model) {
+=======
+MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, particles, bars, towers) {
+>>>>>>> 7a22bc3cdf0ce34adcc9d90a6db3ec9805f3db1b
   'use strict';
 
   let enemies = {};
@@ -94,6 +98,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
   }
   function kill(enemy) {
     bars.removeBar(enemy.id);
+    towers.removeTarget(enemy);
     delete enemies[enemy.id];
   }
 
@@ -107,8 +112,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       if (magnitude < threshold) {
         if (enemies[index].path.length == 0) {
           info.loseLife(1);
-          bars.removeBar(enemies[index].id);
-          delete enemies[index];
+          kill(enemies[index]);
         }
         else {
           enemies[index].target = magic.gridToPixel(enemies[index].path[0]);

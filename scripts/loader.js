@@ -65,6 +65,11 @@ MyGame.loader = (function () {
         onComplete: null
     },
     {
+        scripts: ['objects/laser'],
+        message: 'Pew Pew Loaded',
+        onComplete: null
+    },
+    {
         scripts: ['objects/info'],
         message: 'Info Loaded',
         onComplete: null
@@ -177,14 +182,28 @@ MyGame.loader = (function () {
         key: 'Turret_2_3',
         source: '/assets/basic-turret-10.png'
     },{
+<<<<<<< HEAD
         key: 'drone',
         source: '/assets/drone.png'
     },{
         key: 'spider',
         source: '/assets/spider.png'
+=======
+        key: 'laser_basic',
+        source: '/assets/laser.png'
+    },{
+        key: 'laser_ice',
+        source: '/assets/laser-ice.png'
+    },{
+        key: 'laser_acid',
+        source: '/assets/laser-acid.png'
+>>>>>>> 7a22bc3cdf0ce34adcc9d90a6db3ec9805f3db1b
     },{
         key: 'menu_hover',
         source: '/soundFX/menu-hover.wav'
+    },{
+        key: 'laser_shoot',
+        source: '/soundFX/laser.mp3'
     },
     ];
 
