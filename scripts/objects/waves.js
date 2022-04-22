@@ -52,8 +52,8 @@ MyGame.objects.Waves = function (enemies, magic) {
     function loadWaves(file) {
         waves = [
             [
-                ["slime", 2, "W"],
-                ["slime", 2, "N"],
+                ["slime", 1, "N"],
+                
             ],
             [
                 ["slime", 2, "S"],

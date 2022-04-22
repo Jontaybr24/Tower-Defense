@@ -35,6 +35,11 @@ MyGame.loader = (function () {
         onComplete: null
     },
     {
+        scripts: ['render/animated-model'],
+        message: 'Rendering animated-model loaded',
+        onComplete: null
+    },
+    {
         scripts: ['kb-input'],
         message: 'Keyboard Input loaded',
         onComplete: null
@@ -171,6 +176,12 @@ MyGame.loader = (function () {
     },{
         key: 'Turret_2_3',
         source: '/assets/basic-turret-10.png'
+    },{
+        key: 'drone',
+        source: '/assets/drone.png'
+    },{
+        key: 'spider',
+        source: '/assets/spider.png'
     },{
         key: 'menu_hover',
         source: '/soundFX/menu-hover.wav'

@@ -1,4 +1,4 @@
-MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, particles, bars) {
+MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, particles, bars, model) {
   'use strict';
 
   let enemies = {};
@@ -15,15 +15,25 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       type: "ground",
       moveRate: 100/1000,
       health: 50,
-      img: assets.coin,
-      
+      spec:{
+        spriteSheet: assets.spider,
+        subIndex : {x: 0, y:0},
+        subTextureWidth: {x: 32, y:32},
+        spriteCount : 4,
+        spriteTime: 30 }  // ms per frame
+        
     },
     runner: {
       name: "runner",
       type: "flying",
       moveRate: 400/1000,
       health: 50,
-      img: assets.life, 
+      spec:{
+        spriteSheet: assets.drone,
+        subIndex : {x: 0, y:0},
+        subTextureWidth: {x: 32, y:32},
+        spriteCount : 4,
+        spriteTime: 140 }, 
       
     },
   };
@@ -55,13 +65,15 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
     end = JSON.parse(JSON.stringify(end));
     
     let cpath = Pathfinder.findPath(spawn, end, enemy.type)
-    enemy.img = enemiesDictionary[name].img;
+    enemy.spec = enemiesDictionary[name].spec;
     enemy.target = spawn;
     enemy.center = spawn;
+    enemy.rotation =0;
     enemy.goal = end;
     enemy.id = count++;
     enemy.takeHit = takeHit;
     enemy.path = cpath;
+    enemy.rig = new model(enemy.spec,graphics)
     enemy.hitbox = {xmin:0,xmax:0,ymin:0,ymax:0} 
     magic.sethitbox(enemy)
     bars.newHealthbar(enemy);
@@ -88,7 +100,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
   function update(elapsedTime) {
     timePassed += elapsedTime;
     for (let index in enemies) {
-
+      enemies[index].rig.update(elapsedTime);
       let movevector = { x: enemies[index].target.x - enemies[index].center.x, y: enemies[index].target.y - enemies[index].center.y }
       let magnitude = Math.sqrt((movevector.x * movevector.x) + (movevector.y * movevector.y))
 
@@ -110,7 +122,9 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
         //console.log(enemies[index])
         magic.sethitbox(enemies[index])
       }
+      
     }
+    
   }
 
   function updatePath() {
@@ -120,7 +134,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
   }
   function render() {
     for (let index in enemies) {
-      graphics.drawTexture(enemies[index].img, enemies[index].center, ROTATION, { x: magic.CELL_SIZE, y: magic.CELL_SIZE });
+      enemies[index].rig.render({center:enemies[index].center, rotation:enemies[index].rotation,subSize:{x:magic.CELL_SIZE,y:magic.CELL_SIZE}});
     }
   }
 

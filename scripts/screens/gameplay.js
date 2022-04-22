@@ -18,7 +18,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     let myPathfinder = objects.Path(myGameBoard.board, magic)
     let myHealthbars = objects.Healthbars(graphics, magic);
-    let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder, myInfo, myParticles, myHealthbars);
+    let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder, myInfo, myParticles, myHealthbars, renderer.AnimatedModel);
 
     let myTowers = objects.Towers(assets, graphics, magic);
 
