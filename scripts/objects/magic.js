@@ -1,7 +1,7 @@
 MyGame.objects.Magic = function (graphics) {
     'use strict';
 
-    const GRID_SIZE = 17;
+    const GRID_SIZE = 21;
     const CELL_SIZE = graphics.canvas.height / GRID_SIZE;
     const MENU_SIZE = 60;
     const X_OFFSET = graphics.canvas.width - graphics.canvas.height;
@@ -12,9 +12,9 @@ MyGame.objects.Magic = function (graphics) {
 
     let spawnPoints = {
         N: { x: CANVAS_SIZE / 2, y: 0 },
-        E: { x: CANVAS_SIZE - GRID_SIZE, y: CANVAS_SIZE / 2 },
+        E: { x: CANVAS_SIZE - CELL_SIZE, y: CANVAS_SIZE / 2 },
         W: { x: 0, y: CANVAS_SIZE / 2 },
-        S: { x: CANVAS_SIZE / 2, y: CANVAS_SIZE - GRID_SIZE },
+        S: { x: CANVAS_SIZE / 2, y: CANVAS_SIZE - CELL_SIZE },
     }
     function sethitbox(thing, size) {
          thing.hitbox.ymin = thing.center.y - size.y * .45,

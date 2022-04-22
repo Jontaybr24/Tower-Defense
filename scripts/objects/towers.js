@@ -127,9 +127,9 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers) {
     function removeTarget(target) {
         for (let idx in towers) {
             for (let enemy in towers[idx].enemies) {
-                if (towers[idx].enemies[enemy].id == target.id)
+                if (towers[idx].enemies[enemy].id == target.id){
                     towers[idx].target = null;
-                towers[idx].enemies.splice(enemy, 1);
+                towers[idx].enemies.splice(enemy, 1);}
             }
         }
     }

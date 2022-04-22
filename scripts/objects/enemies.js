@@ -12,8 +12,8 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
   let spawnPoints = magic.spawnPoints;
 
   let enemiesDictionary = {
-    slime: {
-      name: "slime",
+    spider: {
+      name: "spider",
       type: "ground",
       moveRate: 100/1000,
       health: 50,
@@ -25,11 +25,11 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
         spriteTime: 70 }  // ms per frame
         
     },
-    runner: {
-      name: "runner",
+    drone: {
+      name: "drone",
       type: "flying",
       moveRate: 200/1000,
-      health: 50,
+      health: 20,
       spec:{
         spriteSheet: assets.drone,
         subIndex : {x: 0, y:0},
@@ -86,7 +86,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
   // function for taking damage returns true if the enemy died
   function takeHit(enemy, amount) {
     enemy.health -= amount;
-    if (enemy.health < 0) {
+    if (enemy.health <= 0) {
       particles.makeCoin(enemy.center);
       info.addCoins(10)
       kill(enemy);
@@ -112,7 +112,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       let magnitude = Math.sqrt((movevector.x * movevector.x) + (movevector.y * movevector.y))
       
       if (magnitude < threshold) {
-        if (enemies[index].path.length == 0) {
+        if (enemies[index].path == null || enemies[index].path.length == 0) {
           info.loseLife(1);
           kill(enemies[index]);
         }
