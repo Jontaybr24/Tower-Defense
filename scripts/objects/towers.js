@@ -31,26 +31,27 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers) {
             needTarget: true, // if the tower needs to turn to target before activating
             activate: function (tower, targets) {
                 let pos = JSON.parse(JSON.stringify(tower.center));
+                let color = assets.laser_basic;
                 let virus = function(enemy, data){
                     enemy.takeHit(enemy, data.damage)
                 }
                 let data = {
                     damage: tower.damage,
                 }
-                lasers.createLaser(targets[0], pos, virus, data, assets.laser_basic);
 
-                /*
+                
                 if (tower.level >= 2) {
                     if (tower.path == 0) {
                         console.log("red tower");
                     }
                     else if (tower.path == 1) {
-                        console.log("blue tower");
+                        color = assets.laser_ice;
                     }
                     else if (tower.path == 2) {
-                        console.log("green tower");
+                        color = assets.laser_acid;
                     }
-                }*/
+                }
+                lasers.createLaser(targets[0], pos, virus, data, color);
             },
         },
     };

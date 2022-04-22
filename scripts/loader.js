@@ -180,7 +180,7 @@ MyGame.loader = (function () {
         key: 'laser_basic',
         source: '/assets/laser.png'
     },{
-        key: 'laser_freeze',
+        key: 'laser_ice',
         source: '/assets/laser-ice.png'
     },{
         key: 'laser_acid',
