@@ -1,8 +1,6 @@
-<<<<<<< HEAD
-MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, particles, bars, model) {
-=======
-MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, particles, bars, towers) {
->>>>>>> 7a22bc3cdf0ce34adcc9d90a6db3ec9805f3db1b
+
+MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, particles, bars, model, towers) {
+
   'use strict';
 
   let enemies = {};
@@ -24,20 +22,20 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
         subIndex : {x: 0, y:0},
         subTextureWidth: {x: 32, y:32},
         spriteCount : 4,
-        spriteTime: 30 }  // ms per frame
+        spriteTime: 70 }  // ms per frame
         
     },
     runner: {
       name: "runner",
       type: "flying",
-      moveRate: 400/1000,
+      moveRate: 200/1000,
       health: 50,
       spec:{
         spriteSheet: assets.drone,
         subIndex : {x: 0, y:0},
         subTextureWidth: {x: 32, y:32},
         spriteCount : 4,
-        spriteTime: 140 }, 
+        spriteTime: 60 }, 
       
     },
   };
@@ -79,7 +77,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
     enemy.path = cpath;
     enemy.rig = new model(enemy.spec,graphics)
     enemy.hitbox = {xmin:0,xmax:0,ymin:0,ymax:0} 
-    magic.sethitbox(enemy)
+    magic.sethitbox(enemy,{x: magic.CELL_SIZE, y:magic.CELL_SIZE})
     bars.newHealthbar(enemy);
     enemies[enemy.id] = enemy;
 
@@ -106,9 +104,13 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
     timePassed += elapsedTime;
     for (let index in enemies) {
       enemies[index].rig.update(elapsedTime);
+      enemies[index].velocity = magic.computeVelocity(enemies[index].center, enemies[index].target);
+      enemies[index].rotation = magic.computeRotation(enemies[index].velocity);
+      enemies[index].rotation -= Math.PI/2;
+     
       let movevector = { x: enemies[index].target.x - enemies[index].center.x, y: enemies[index].target.y - enemies[index].center.y }
       let magnitude = Math.sqrt((movevector.x * movevector.x) + (movevector.y * movevector.y))
-
+      
       if (magnitude < threshold) {
         if (enemies[index].path.length == 0) {
           info.loseLife(1);
@@ -121,10 +123,11 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
         }
       }
       else {
-        enemies[index].center.x += (enemies[index].moveRate * elapsedTime * Math.sign(movevector.x))
-        enemies[index].center.y += (enemies[index].moveRate * elapsedTime * Math.sign(movevector.y))
+        enemies[index].center.x += (enemies[index].moveRate * elapsedTime * enemies[index].velocity.x)
+        enemies[index].center.y += (enemies[index].moveRate * elapsedTime * enemies[index].velocity.y)
+        
         //console.log(enemies[index])
-        magic.sethitbox(enemies[index])
+        magic.sethitbox(enemies[index],{x: magic.CELL_SIZE, y:magic.CELL_SIZE})
       }
       
     }
@@ -139,6 +142,8 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
   function render() {
     for (let index in enemies) {
       enemies[index].rig.render({center:enemies[index].center, rotation:enemies[index].rotation,subSize:{x:magic.CELL_SIZE,y:magic.CELL_SIZE}});
+
+      //graphics.drawRectangle({center:{x:(enemies[index].hitbox.xmin +enemies[index].hitbox.xmax)/2,y:(enemies[index].hitbox.ymin +enemies[index].hitbox.ymax)/2}, size:{x:enemies[index].hitbox.xmin - enemies[index].hitbox.xmax, y:enemies[index].hitbox.ymin - enemies[index].hitbox.ymax}}, "red","red");
     }
   }
 

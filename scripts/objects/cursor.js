@@ -40,7 +40,7 @@ MyGame.objects.Cursor = function (assets, graphics, magic) {
             hideCursor();
         if (coords.x == 0 || coords.y == 0 || coords.x == magic.GRID_SIZE - 1 || coords.y == magic.GRID_SIZE - 1)
             cursor.state = "blocked"
-        magic.sethitbox(cursor) 
+        magic.sethitbox(cursor,{x: magic.CELL_SIZE, y:magic.CELL_SIZE}) 
 
     }
 

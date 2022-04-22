@@ -9,6 +9,7 @@ MyGame.objects.Laser = function (assets, graphics, magic, sounds) {
         for (let idx in lasers) {
             let laser = lasers[idx];
             graphics.drawTexture(laser.image, laser.center, laser.rotation, { x: size, y: size });
+            //graphics.drawRectangle({center:{x:(lasers[idx].hitbox.xmin +lasers[idx].hitbox.xmax)/2,y:(lasers[idx].hitbox.ymin +lasers[idx].hitbox.ymax)/2}, size:{x:lasers[idx].hitbox.xmin - lasers[idx].hitbox.xmax, y:lasers[idx].hitbox.ymin - lasers[idx].hitbox.ymax}}, "red","red");
         }
     }
 
@@ -17,12 +18,7 @@ MyGame.objects.Laser = function (assets, graphics, magic, sounds) {
             let laser = lasers[idx];
             laser.center.x += laser.velocity.x * laser.moveSpeed * elapsedTime;
             laser.center.y += laser.velocity.y * laser.moveSpeed * elapsedTime;
-            laser.hitbox = {
-                xmin: laser.center.x - size / 2,
-                xmax: laser.center.x + size / 2,
-                ymin: laser.center.y - size / 2,
-                ymax: laser.center.y + size / 2,
-            };
+            magic.sethitbox(laser,{x: size, y:size})
             if (laser.center.x < 0 || laser.center.x > graphics.canvas.height || laser.center.y < 0 || laser.center.y > graphics.canvas.height) {
                 deleteLaser(laser);
             }
@@ -52,7 +48,9 @@ MyGame.objects.Laser = function (assets, graphics, magic, sounds) {
             data: data,
             target: target,
             rotation: res + Math.PI / 2,
+            hitbox:{xmin:0,xmax:0,ymin:0,ymax:0}
         };
+        
     }
 
     let api = {

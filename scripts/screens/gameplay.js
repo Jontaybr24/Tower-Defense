@@ -18,13 +18,11 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     let myPathfinder = objects.Path(myGameBoard.board, magic)
     let myHealthbars = objects.Healthbars(graphics, magic);
-<<<<<<< HEAD
-    let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder, myInfo, myParticles, myHealthbars, renderer.AnimatedModel);
-=======
+
     let myLasers = objects.Laser(assets, graphics, magic, soundManager);
     let myTowers = objects.Towers(assets, graphics, magic, myLasers);
-    let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder, myInfo, myParticles, myHealthbars, myTowers);
->>>>>>> 7a22bc3cdf0ce34adcc9d90a6db3ec9805f3db1b
+    let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder, myInfo, myParticles, myHealthbars,renderer.AnimatedModel, myTowers);
+
 
 
     let myWaves = objects.Waves(myEnemies, magic);
@@ -155,6 +153,11 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             }
         });
         myMouse.register('mousedown', function (e) {
+
+            if(e.button == 2){
+                console.log("rightclick")
+            }
+            else {
             let coords = magic.mouseToGrid({ x: e.clientX, y: e.clientY })
             let pixelCoords = magic.gridToPixel(coords);
 
@@ -178,11 +181,9 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                         myInfo.addCoins(-tower.cost)
                         tower = myTowers.makeTower(pixelCoords, myCursor.tower.name);
                         myGameBoard.addObject(coords, tower);
-                        //myPathfinder.findPath({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
                     }
                     myEnemies.updatePath();
-                    //myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 },{ x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")
-                    //myInfo.addCoins(10);
+                    
 
                 }
             }
@@ -191,6 +192,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                 if (tower?.type == "tower") {
                     myUpgrades.setTower(tower);
                 }
+            }
             }
         });
         let lastGrid = null;

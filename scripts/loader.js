@@ -182,13 +182,13 @@ MyGame.loader = (function () {
         key: 'Turret_2_3',
         source: '/assets/basic-turret-10.png'
     },{
-<<<<<<< HEAD
+
         key: 'drone',
         source: '/assets/drone.png'
     },{
         key: 'spider',
         source: '/assets/spider.png'
-=======
+    },{
         key: 'laser_basic',
         source: '/assets/laser.png'
     },{
@@ -197,7 +197,6 @@ MyGame.loader = (function () {
     },{
         key: 'laser_acid',
         source: '/assets/laser-acid.png'
->>>>>>> 7a22bc3cdf0ce34adcc9d90a6db3ec9805f3db1b
     },{
         key: 'menu_hover',
         source: '/soundFX/menu-hover.wav'

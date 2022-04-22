@@ -18,7 +18,7 @@ MyGame.graphics = (function () {
     // --------------------------------------------------------------
     function drawTexture(image, center, rotation, size) {
         context.save();
-
+        
         context.translate(center.x, center.y);
         context.rotate(rotation);
         context.translate(-center.x, -center.y);
@@ -30,6 +30,7 @@ MyGame.graphics = (function () {
             size.x, size.y);
 
         context.restore();
+        //drawRectangle({center:center, size:{x:10,y:10}}, "black","black");
     }
 
     function drawSubTexture(image, index, subTexture, center, rotation, size) {
@@ -52,6 +53,7 @@ MyGame.graphics = (function () {
             size.x, size.y);
 
         context.restore();
+        //drawRectangle({center:center, size:{x:10,y:10}}, "black","black");
     }
 
     // --------------------------------------------------------------

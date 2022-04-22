@@ -16,12 +16,16 @@ MyGame.objects.Magic = function (graphics) {
         W: { x: 0, y: CANVAS_SIZE / 2 },
         S: { x: CANVAS_SIZE / 2, y: CANVAS_SIZE - GRID_SIZE },
     }
-    function sethitbox(thing) {
-
-        thing.hitbox.xmax = thing.center.x;
-        thing.hitbox.xmin = thing.center.x - CELL_SIZE;
+    function sethitbox(thing, size) {
+         thing.hitbox.ymin = thing.center.y - size.y * .45,
+         thing.hitbox.ymax = thing.center.y + size.y * .45,
+         thing.hitbox.xmin = thing.center.x - size.x * .45,
+         thing.hitbox.xmax = thing.center.x + size.x * .45 
+        /*
+        thing.hitbox.xmax = thing.center.x -2; 
+        thing.hitbox.xmin = thing.center.x - CELL_SIZE+2;
         thing.hitbox.ymin = thing.center.y - CELL_SIZE + 2;
-        thing.hitbox.ymax = thing.center.y - 2;
+        thing.hitbox.ymax = thing.center.y - 2;*/
     }
     function gridToPixel(point) {
         let x = (parseInt(point.x) + .5) * CELL_SIZE;
@@ -130,11 +134,17 @@ MyGame.objects.Magic = function (graphics) {
             y =  Math.sin(angle) * -1;
             x =  Math.cos(angle) * -1;
         }
+        if(x == 0){
+            x =0;
+        }
+        if(y == 0){
+            y =0;
+        }
         return { x: x, y: y }
     }
 
     function computeRotation(vel){
-        return Math.atan(vel.y / vel.x);
+        return Math.atan2(vel.y , vel.x);
     }
 
 
