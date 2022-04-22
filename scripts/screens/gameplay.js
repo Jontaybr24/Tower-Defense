@@ -23,7 +23,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let myTowers = objects.Towers(assets, graphics, magic);
 
     let myWaves = objects.Waves(myEnemies, magic);
-    let myUpgrades = objects.Menu(assets, graphics, magic, myTowers);
+    let myUpgrades = objects.Menu(assets, graphics, magic, myTowers, myInfo);
 
 
 
@@ -95,11 +95,11 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         graphics.clear();
         myGameBoard.render();
 
-        myUpgrades.render();
         myTowers.render();
         myEnemies.render();
         myHealthbars.render();
         myInfo.render();
+        myUpgrades.render();
         if (myEnemies.length == 0)
             myWaves.render();
         myParticles.render();
@@ -111,7 +111,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             let coords = magic.pixelToGrid(tower.center);
             let obj = myGameBoard.removeObject(coords);
             myTowers.deleteTower(obj);
-            myInfo.addCoins(Math.floor(obj.cost * .90));
+            myInfo.addCoins(Math.floor(obj.cost * magic.SELL_PRICE));
             myUpgrades.setTower(null);
             myEnemies.updatePath();
         }
@@ -127,8 +127,10 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myKeyboard.register(data.controls.startWave.key, function () {
             //myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
             //myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")
-            if (myEnemies.length == 0)
+            if (myEnemies.length == 0){
                 myWaves.nextWave();
+                myInfo.plusWave();
+            }
         });
         myMouse.register('mousedown', function (e) {
             let coords = magic.mouseToGrid({ x: e.clientX, y: e.clientY })

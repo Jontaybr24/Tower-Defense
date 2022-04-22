@@ -1,9 +1,11 @@
 MyGame.objects.Info = function (assets, graphics, magic, cursor) {
     'use strict';
 
-    let coins = 10000;
+    let coins = 2000;
     let lives = 50;
+    let wave = 1;
     let step = 40;
+    let padding = 45;
     let towerYStep = 200;
     let towerStep = 20;
     let towerOffset = .7;
@@ -15,18 +17,22 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
     let currentTower = null;
 
     function render() {
-        let x = graphics.canvas.width - (magic.X_OFFSET * full_offset);
-        let y = step;
-        let text = ": " + coins;
-        graphics.drawTexture(assets.coin, { x: x + asset_offset_x, y: y + asset_offset_y }, 0, { x: magic.MENU_SIZE / 2, y: magic.MENU_SIZE / 2 })
-        graphics.drawText(text, { x: x, y: y }, "white", "30px Arial");
-        text = ": " + lives;
-        graphics.drawTexture(assets.life, { x: x + asset_offset_x, y: y + asset_offset_y + step }, 0, { x: magic.MENU_SIZE / 2, y: magic.MENU_SIZE / 2 })
-        graphics.drawText(text, { x: x, y: y + step }, "white", "30px Arial");
-
         if (placing) {
             cursor.render();
         }
+        graphics.drawRectangle({center: {x: graphics.canvas.width - magic.X_OFFSET / 2, y:graphics.canvas.height / 2}, size: {x: magic.X_OFFSET, y: graphics.canvas.height}}, "#572c15", "black")
+        let x = graphics.canvas.width - (magic.X_OFFSET * full_offset);
+        let y = step;
+
+        let text = "Wave: " + wave;
+        graphics.drawText(text, { x: x - 30, y: y}, "white", "30px Arial");        
+        text = ": " + coins;
+        graphics.drawTexture(assets.coin, { x: x + asset_offset_x, y: y + asset_offset_y + padding }, 0, { x: magic.MENU_SIZE / 2, y: magic.MENU_SIZE / 2 })
+        graphics.drawText(text, { x: x, y: y + padding}, "white", "30px Arial");
+        text = ": " + lives;
+        graphics.drawTexture(assets.life, { x: x + asset_offset_x, y: y + asset_offset_y + padding * 2 }, 0, { x: magic.MENU_SIZE / 2, y: magic.MENU_SIZE / 2 })
+        graphics.drawText(text, { x: x, y: y + padding * 2 }, "white", "30px Arial");
+
 
         renderTowers();
     }
@@ -34,10 +40,15 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
     function renderTowers() {
         for (let idx in towerDictionary) {
             let tower = towerDictionary[idx];
-            graphics.drawTexture(assets.buy_cell, tower.center, 0, { x: magic.MENU_SIZE, y: magic.MENU_SIZE})
-            tower.renderPreview(tower, tower.center, 0, 3, { x: magic.MENU_SIZE, y: magic.MENU_SIZE });
-            if (tower.selected)
-                graphics.drawRectangle({ size: { x: magic.MENU_SIZE, y: magic.MENU_SIZE }, center: tower.center, rotation: 0 }, "rgba(255, 255, 255, .5)", "black")
+            graphics.drawTexture(assets.buy_cell, tower.center, 0, { x: magic.MENU_SIZE, y: magic.MENU_SIZE })
+            tower.renderPreview(tower, tower.center, 0, 3, { x: magic.MENU_SIZE * .75, y: magic.MENU_SIZE * .75 });
+            graphics.drawText("$" + tower.cost, {x: tower.center.x - magic.MENU_SIZE / 2 + 5, y: tower.center.y - 10}, "white", "18px Arial")
+            if (tower.selected) {
+                if (coins >= tower.cost)
+                    graphics.drawRectangle({ size: { x: magic.MENU_SIZE, y: magic.MENU_SIZE }, center: tower.center, rotation: 0 }, "rgba(255, 255, 255, .5)", "black");
+                else
+                    graphics.drawRectangle({ size: { x: magic.MENU_SIZE, y: magic.MENU_SIZE }, center: tower.center, rotation: 0 }, "rgba(255, 0, 0, .5)", "black");
+            }
 
         }
     }
@@ -48,6 +59,10 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
 
     function addCoins(amount) {
         coins += amount;
+    }
+
+    function plusWave(){
+        wave++;
     }
 
     function hasFunds(amount) {
@@ -115,7 +130,7 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
         }
     }
 
-    function loseLife(amount){
+    function loseLife(amount) {
         lives -= amount;
     }
 
@@ -129,7 +144,9 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
         checkHover: checkHover,
         checkBuy: checkBuy,
         loseLife: loseLife,
-        get placing() { return placing; }
+        plusWave: plusWave,
+        get placing() { return placing; },
+        get coins() { return coins; }
     };
 
     return api;

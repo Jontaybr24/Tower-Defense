@@ -1,4 +1,4 @@
-MyGame.objects.Menu = function (assets, graphics, magic, towers) {
+MyGame.objects.Menu = function (assets, graphics, magic, towers, info) {
     'use strict';
     let tower = null;
     let smallBoxHeight = graphics.canvas.height / 11;
@@ -63,24 +63,25 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers) {
 
     let bgColor = "#6e3e1b";
     let highlight = "rgba(69, 69, 69, .5)";
+    let rhighlight = "rgba(255, 69, 69, .5)";
     let locked = "#693a19";
 
     function render() {
         graphics.drawRectangle({ center: bigBoxPos, size: { x: bigBoxWidth, y: bigBoxHeight } }, bgColor, "black");
+        graphics.drawRectangle({ center: dataBox.center, size: dataBox.size }, bgColor, "black");
+        graphics.drawRectangle({ center: sellBox.center, size: sellBox.size }, bgColor, "black");
         if (tower != null) {
             graphics.drawRectangle({ center: box1.center, size: box1.size }, "#85481d", "black");
             graphics.drawRectangle({ center: box2.center, size: box2.size }, "#85481d", "black");
             graphics.drawRectangle({ center: box3.center, size: box3.size }, "#85481d", "black");
 
-            graphics.drawRectangle({ center: sellBox.center, size: sellBox.size }, bgColor, "black");
-            graphics.drawRectangle({ center: dataBox.center, size: dataBox.size }, bgColor, "black");
 
             graphics.drawText(tower.name, { x: dataBox.center.x, y: dataBox.center.y - 25 }, "black", "28px Arial", true);
             graphics.drawText("Damage:", { x: dataBox.center.x - dataBox.size.x / 2 + padding / 2, y: dataBox.center.y }, "black", "16px Arial");
             graphics.drawText("Rate of Fire:", { x: dataBox.center.x - dataBox.size.x / 2 + padding / 2, y: dataBox.center.y + textPadding }, "black", "16px Arial");
             graphics.drawText("Radius:", { x: dataBox.center.x - dataBox.size.x / 2 + padding / 2, y: dataBox.center.y + textPadding * 2 }, "black", "16px Arial");
 
-            graphics.drawText("Sell", { x: sellBox.center.x, y: sellBox.center.y + 10 }, "white", "24px Arial", true);
+            graphics.drawText("Sell $" + Math.floor(tower.cost * magic.SELL_PRICE), { x: sellBox.center.x, y: sellBox.center.y + 10 }, "white", "24px Arial", true);
 
             if (box1.selected && tower.path != 1 && tower.path != 2 && tower.level < 3) {
                 if (tower.upgrades["radius"][0][0] == 0) {
@@ -158,6 +159,33 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers) {
                 tower.renderPreview(tower, box1.center, tower.level + 1, 0, { x: magic.MENU_SIZE, y: magic.MENU_SIZE });
                 tower.renderPreview(tower, box2.center, tower.level + 1, 1, { x: magic.MENU_SIZE, y: magic.MENU_SIZE });
                 tower.renderPreview(tower, box3.center, tower.level + 1, 2, { x: magic.MENU_SIZE, y: magic.MENU_SIZE });
+                if (tower.path == 3 || tower.path == 0) {
+                    graphics.drawText("$" + tower.upgrades["cost"][0][0], { x: box1.center.x - box1.size.x / 2 + padding / 2, y: box1.center.y - padding }, "white", "22px Arial");
+                }
+                if (tower.path == 3 || tower.path == 1) {
+                    graphics.drawText("$" + tower.upgrades["cost"][1][0], { x: box2.center.x - box2.size.x / 2 + padding / 2, y: box2.center.y - padding }, "white", "22px Arial");
+                }
+                if (tower.path == 3 || tower.path == 2) {
+                    graphics.drawText("$" + tower.upgrades["cost"][2][0], { x: box3.center.x - box3.size.x / 2 + padding / 2, y: box3.center.y - padding }, "white", "22px Arial");
+                }
+                if (box1.selected && tower.path != 1 && tower.path != 2) {
+                    if (info.coins >= tower.upgrades["cost"][0][0])
+                        graphics.drawRectangle({ center: box1.center, size: box1.size }, highlight, "black");
+                    else
+                        graphics.drawRectangle({ center: box1.center, size: box1.size }, rhighlight, "black");
+                }
+                else if (box2.selected && tower.path != 0 && tower.path != 2) {
+                    if (info.coins >= tower.upgrades["cost"][1][0])
+                        graphics.drawRectangle({ center: box2.center, size: box2.size }, highlight, "black");
+                    else
+                        graphics.drawRectangle({ center: box2.center, size: box2.size }, rhighlight, "black");
+                }
+                else if (box3.selected && tower.path != 0 && tower.path != 1) {
+                    if (info.coins >= tower.upgrades["cost"][2][0])
+                        graphics.drawRectangle({ center: box3.center, size: box3.size }, highlight, "black");
+                    else
+                        graphics.drawRectangle({ center: box3.center, size: box3.size }, rhighlight, "black");
+                }
             }
             else {
                 graphics.drawText("MAX LEVEL", box1.center, "white", "24px Arial", true);
@@ -165,16 +193,8 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers) {
                 graphics.drawText("MAX LEVEL", box3.center, "white", "24px Arial", true);
             }
 
-            if (box1.selected && tower.path != 1 && tower.path != 2) {
-                graphics.drawRectangle({ center: box1.center, size: box1.size }, highlight, "black");
-            }
-            else if (box2.selected && tower.path != 0 && tower.path != 2) {
-                graphics.drawRectangle({ center: box2.center, size: box2.size }, highlight, "black");
-            }
-            else if (box3.selected && tower.path != 0 && tower.path != 2) {
-                graphics.drawRectangle({ center: box3.center, size: box3.size }, highlight, "black");
-            }
-            else if (sellBox.selected) {
+            
+            if (sellBox.selected) {
                 graphics.drawRectangle({ center: sellBox.center, size: sellBox.size }, "rgba(255, 0, 0, .5)", "black");
             }
             if (tower.path == 0) {
@@ -200,15 +220,21 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers) {
     }
 
     function buyUpgrade() {
-        if (tower != null) {
+        if (tower != null && tower.level < 3) {
             if (box1.selected && tower.path != 1 && tower.path != 2) {
-                return towers.upgrade(tower, 0)
+                if (info.coins >= tower.upgrades["cost"][0][0]) {
+                    return towers.upgrade(tower, 0)
+                }
             }
             if (box2.selected && tower.path != 0 && tower.path != 2) {
-                return towers.upgrade(tower, 1)
+                if (info.coins >= tower.upgrades["cost"][1][0]) {
+                    return towers.upgrade(tower, 1)
+                }
             }
             if (box3.selected && tower.path != 0 && tower.path != 1) {
-                return towers.upgrade(tower, 2)
+                if (info.coins >= tower.upgrades["cost"][2][0]) {
+                    return towers.upgrade(tower, 2)
+                }
             }
         }
         return 0;

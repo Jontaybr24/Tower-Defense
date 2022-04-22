@@ -7,6 +7,9 @@ MyGame.objects.Magic = function (graphics) {
     const X_OFFSET = graphics.canvas.width - graphics.canvas.height;
     const RPS = Math.PI / 500 // 1 Rotation per second
     const CANVAS_SIZE = graphics.canvas.height
+    
+    const SELL_PRICE = 1; // The percentage you get from selling a tower
+
     let spawnPoints = {
         N: { x: CANVAS_SIZE / 2, y: 0 },
         E: { x: CANVAS_SIZE-GRID_SIZE, y: CANVAS_SIZE / 2 },
@@ -133,6 +136,7 @@ MyGame.objects.Magic = function (graphics) {
         get MENU_SIZE() {return MENU_SIZE;},
         get RPS() { return RPS; },
         get CANVAS_SIZE() { return CANVAS_SIZE; },
+        get SELL_PRICE() { return SELL_PRICE; },
     };
 
     return api;
