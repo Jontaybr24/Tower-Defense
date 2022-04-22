@@ -1,4 +1,4 @@
-MyGame.objects.Laser = function (assets, graphics, magic) {
+MyGame.objects.Laser = function (assets, graphics, magic, sounds) {
     'use strict';
     let lasers = {};
     let count = 0;

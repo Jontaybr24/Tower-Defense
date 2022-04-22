@@ -14,17 +14,17 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let myParticles = objects.Particles(assets, graphics, magic);
 
     let myCursor = objects.Cursor(assets, graphics, magic);
-    let myInfo = objects.Info(assets, graphics, magic, myCursor);
+    let myInfo = objects.Info(assets, graphics, magic, myCursor, soundManager);
 
     let myPathfinder = objects.Path(myGameBoard.board, magic)
     let myHealthbars = objects.Healthbars(graphics, magic);
-    let myLasers = objects.Laser(assets, graphics, magic);
+    let myLasers = objects.Laser(assets, graphics, magic, soundManager);
     let myTowers = objects.Towers(assets, graphics, magic, myLasers);
     let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder, myInfo, myParticles, myHealthbars, myTowers);
 
 
     let myWaves = objects.Waves(myEnemies, magic);
-    let myUpgrades = objects.Menu(assets, graphics, magic, myTowers, myInfo);
+    let myUpgrades = objects.Menu(assets, graphics, magic, myTowers, myInfo, soundManager);
 
 
 

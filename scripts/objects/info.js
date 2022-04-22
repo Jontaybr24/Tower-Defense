@@ -1,4 +1,4 @@
-MyGame.objects.Info = function (assets, graphics, magic, cursor) {
+MyGame.objects.Info = function (assets, graphics, magic, cursor, sounds) {
     'use strict';
 
     let coins = 2000;
@@ -20,15 +20,15 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
         if (placing) {
             cursor.render();
         }
-        graphics.drawRectangle({center: {x: graphics.canvas.width - magic.X_OFFSET / 2, y:graphics.canvas.height / 2}, size: {x: magic.X_OFFSET, y: graphics.canvas.height}}, "#572c15", "black")
+        graphics.drawRectangle({ center: { x: graphics.canvas.width - magic.X_OFFSET / 2, y: graphics.canvas.height / 2 }, size: { x: magic.X_OFFSET, y: graphics.canvas.height } }, "#572c15", "black")
         let x = graphics.canvas.width - (magic.X_OFFSET * full_offset);
         let y = step;
 
         let text = "Wave: " + wave;
-        graphics.drawText(text, { x: x - 30, y: y}, "white", "30px Arial");        
+        graphics.drawText(text, { x: x - 30, y: y }, "white", "30px Arial");
         text = ": " + coins;
         graphics.drawTexture(assets.coin, { x: x + asset_offset_x, y: y + asset_offset_y + padding }, 0, { x: magic.MENU_SIZE / 2, y: magic.MENU_SIZE / 2 })
-        graphics.drawText(text, { x: x, y: y + padding}, "white", "30px Arial");
+        graphics.drawText(text, { x: x, y: y + padding }, "white", "30px Arial");
         text = ": " + lives;
         graphics.drawTexture(assets.life, { x: x + asset_offset_x, y: y + asset_offset_y + padding * 2 }, 0, { x: magic.MENU_SIZE / 2, y: magic.MENU_SIZE / 2 })
         graphics.drawText(text, { x: x, y: y + padding * 2 }, "white", "30px Arial");
@@ -42,7 +42,7 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
             let tower = towerDictionary[idx];
             graphics.drawTexture(assets.buy_cell, tower.center, 0, { x: magic.MENU_SIZE, y: magic.MENU_SIZE })
             tower.renderPreview(tower, tower.center, 0, 3, { x: magic.MENU_SIZE * .75, y: magic.MENU_SIZE * .75 });
-            graphics.drawText("$" + tower.cost, {x: tower.center.x - magic.MENU_SIZE / 2 + 5, y: tower.center.y - 10}, "white", "18px Arial")
+            graphics.drawText("$" + tower.cost, { x: tower.center.x - magic.MENU_SIZE / 2 + 5, y: tower.center.y - 10 }, "white", "18px Arial")
             if (tower.selected) {
                 if (coins >= tower.cost)
                     graphics.drawRectangle({ size: { x: magic.MENU_SIZE, y: magic.MENU_SIZE }, center: tower.center, rotation: 0 }, "rgba(255, 255, 255, .5)", "black");
@@ -61,7 +61,7 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
         coins += amount;
     }
 
-    function plusWave(){
+    function plusWave() {
         wave++;
     }
 
@@ -116,6 +116,8 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor) {
                 point.x < box1.xmin ||
                 point.y > box1.ymax ||
                 point.y < box1.ymin);
+            if (!towerDictionary[idx].selected && collision)
+                sounds.play(assets.menu_hover);
             towerDictionary[idx].selected = collision;
         }
     }
