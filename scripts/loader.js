@@ -218,6 +218,12 @@ MyGame.loader = (function () {
     },{
         key: 'pauseBtn',
         source: '/assets/pause.png'
+    },{
+        key: 'wave',
+        source: '/assets/play.png'
+    },{
+        key: 'waveHover',
+        source: '/assets/play-hover.png'
     },
     ];
 

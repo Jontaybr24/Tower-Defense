@@ -18,7 +18,7 @@ MyGame.graphics = (function () {
     // --------------------------------------------------------------
     function drawTexture(image, center, rotation, size) {
         context.save();
-        
+
         context.translate(center.x, center.y);
         context.rotate(rotation);
         context.translate(-center.x, -center.y);
@@ -34,13 +34,13 @@ MyGame.graphics = (function () {
     }
 
     function drawSubTexture(image, index, subTexture, center, rotation, size) {
-        
+
         context.save();
         context.translate(center.x, center.y);
         context.rotate(rotation);
         context.translate(-center.x, -center.y);
 
-        
+
         //
         // Pick the selected sprite from the sprite sheet to render
         //console.log(subTexture.x * index.x, subTexture.x * index.y)
@@ -107,15 +107,21 @@ MyGame.graphics = (function () {
         context.stroke();
     }
 
-    function drawText(text, position, fillStyle, font, centered) {
-        //console.log("test");
+    function drawText(text, position, fillStyle, font, centered, lineHeight) {
+        text = String(text);
+        if(lineHeight == undefined)
+            lineHeight = 0;
         context.font = font;
         if (centered)
             context.textAlign = 'center';
         else
             context.textAlign = "left";
         context.fillStyle = fillStyle;
-        context.fillText(text, position.x, position.y);
+        let lines = text.split("\n");
+        for (let i = 0; i < lines.length; i++) {
+            context.fillText(lines[i], position.x, position.y + (i * lineHeight));
+
+        }
     }
 
     let api = {

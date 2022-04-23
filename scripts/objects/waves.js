@@ -2,6 +2,7 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets) {
     'use strict';
     let spawnRate = 1000 / 1.5 // time in ms for an enemy to spawn
     let timePassed = 0;
+    let waveCount = 0;
 
     // Waves in the format [Name, Amount, Location] ie ["Spider", 5, "N"]
     let waves = null;
@@ -21,12 +22,17 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets) {
     let wBox = { center: { x: magic.CELL_SIZE / 2, y: graphics.canvas.height / 2 }, size: { x: boxSize, y: boxSize }, hitbox: { xmin: 0, xmax: 0, ymin: 0, ymax: 0 }, selected: false };
     magic.sethitbox(wBox, wBox.size);
 
-    let prevSize = 200;
+    let prevSize = 150;
     let prevPadding = 25;
+    let text = "";
+    let prevText = "20px Arial";
+    let prevStyle = "black";
+    let pBoxStyle = "rgba(255, 255, 255, .5)";
     let prevBox = { center: { x: 0, y: 0 }, size: { x: prevSize, y: 0 } }
     let mousePos = { x: graphics.canvas.height / 2, y: 0 };
     let mouseOffset = 40;
-
+    let button = { center: { x: graphics.canvas.height + magic.X_OFFSET * .25, y: graphics.canvas.height - 50 }, size: { x: magic.MENU_SIZE, y: magic.MENU_SIZE }, hitbox: { xmin: 0, xmax: 0, ymin: 0, ymax: 0 }, selected: false }
+    magic.sethitbox(button, button.size);
 
     function update(elapsedTime) {
         timePassed += elapsedTime;
@@ -46,72 +52,98 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets) {
 
 
     function render() {
-        if (!spawning) {
+        if (!spawning && enemies.length == 0) {
+            let string = ""
             if (length(renderData["N"]) != 0) {
-                graphics.drawTexture(assets.playBtnHover, nBox.center, Math.PI / 2, nBox.size);
                 if (nBox.selected) {
                     let y = (prevPadding) * (length(renderData["N"]) + 1);
                     prevBox.size.y = y;
                     prevBox.center.x = mousePos.x;
                     prevBox.center.y = mousePos.y + prevBox.size.y / 2 + mouseOffset;
-                    graphics.drawRectangle(prevBox, "white", "black");
-                    let offset = 0;
+                    graphics.drawRectangle(prevBox, pBoxStyle, "black");
                     for (let i in renderData["N"]) {
-                        y = mousePos.y + offset + prevPadding + mouseOffset;
-                        graphics.drawText(i + ": " + renderData["N"][i], { x: prevBox.center.x, y: y }, "black", "20px Arial", true)
-                        offset += prevPadding;
+                        let newString = i + ": " + renderData["N"][i] + "\n"
+                        string = string + newString;
                     }
+                    graphics.drawTexture(assets.waveHover, nBox.center, Math.PI / 2, nBox.size);
+                    graphics.drawText(string, { x: prevBox.center.x, y: prevBox.center.y - prevBox.size.y / 2 + prevPadding * 1.2 }, prevStyle, prevText, true, prevPadding)
+                }
+                else {
+                    graphics.drawTexture(assets.wave, nBox.center, Math.PI / 2, nBox.size);
                 }
             }
             if (length(renderData["W"]) != 0) {
-                graphics.drawTexture(assets.playBtnHover, wBox.center, 0, wBox.size);
                 if (wBox.selected) {
                     let y = (prevPadding) * (length(renderData["W"]) + 1);
                     prevBox.size.y = y;
                     prevBox.center.x = mousePos.x + prevBox.size.x / 2;;
                     prevBox.center.y = mousePos.y + prevBox.size.y / 2 + mouseOffset;
-                    graphics.drawRectangle(prevBox, "white", "black");
-                    let offset = 0;
+                    graphics.drawRectangle(prevBox, pBoxStyle, "black");
                     for (let i in renderData["W"]) {
-                        y = mousePos.y + offset + prevPadding + mouseOffset;
-                        graphics.drawText(i + ": " + renderData["W"][i], { x: prevBox.center.x, y: y }, "black", "20px Arial", true)
-                        offset += prevPadding;
+                        let newString = i + ": " + renderData["W"][i] + "\n"
+                        string = string + newString;
                     }
+                    graphics.drawTexture(assets.waveHover, wBox.center, 0, wBox.size);
+                    graphics.drawText(string, { x: prevBox.center.x, y: prevBox.center.y - prevBox.size.y / 2 + prevPadding * 1.2 }, prevStyle, prevText, true, prevPadding)
+                }
+                else {
+                    graphics.drawTexture(assets.wave, wBox.center, 0, wBox.size);
                 }
             }
             if (length(renderData["E"]) != 0) {
-                graphics.drawTexture(assets.playBtnHover, eBox.center, Math.PI, eBox.size);
                 if (eBox.selected) {
                     let y = (prevPadding) * (length(renderData["E"]) + 1);
                     prevBox.size.y = y;
                     prevBox.center.x = mousePos.x - prevBox.size.x / 2;
                     prevBox.center.y = mousePos.y + prevBox.size.y / 2 + mouseOffset;
-                    graphics.drawRectangle(prevBox, "white", "black");
-                    let offset = 0;
+                    graphics.drawRectangle(prevBox, pBoxStyle, "black");
                     for (let i in renderData["E"]) {
-                        y = mousePos.y + offset + prevPadding + mouseOffset;
-                        graphics.drawText(i + ": " + renderData["E"][i], { x: prevBox.center.x, y: y }, "black", "20px Arial", true)
-                        offset += prevPadding;
+                        let newString = i + ": " + renderData["E"][i] + "\n";
+                        string = string + newString;
                     }
+                    graphics.drawTexture(assets.waveHover, eBox.center, Math.PI, eBox.size);
+                    graphics.drawText(string, { x: prevBox.center.x, y: prevBox.center.y - prevBox.size.y / 2 + prevPadding * 1.2 }, prevStyle, prevText, true, prevPadding)
+                }
+                else {
+                    graphics.drawTexture(assets.wave, eBox.center, Math.PI, eBox.size);
                 }
             }
             if (length(renderData["S"]) != 0) {
-                graphics.drawTexture(assets.playBtnHover, sBox.center, -Math.PI / 2, sBox.size);
                 if (sBox.selected) {
-                    let y = (prevPadding) * (length(renderData["S"]) + 1);
+                    let y = (prevPadding) * (parseInt(length(renderData["S"]) + 1));
                     prevBox.size.y = y;
                     prevBox.center.x = mousePos.x;
                     prevBox.center.y = mousePos.y - prevBox.size.y / 2 - mouseOffset;
-                    graphics.drawRectangle(prevBox, "white", "black");
-                    let offset = 0;
+                    graphics.drawRectangle(prevBox, pBoxStyle, "black");
                     for (let i in renderData["S"]) {
-                        y = mousePos.y - offset - prevPadding - mouseOffset;
-                        graphics.drawText(i + ": " + renderData["S"][i], { x: prevBox.center.x, y: y }, "black", "20px Arial", true)
-                        offset += prevPadding;
+                        let newString = i + ": " + renderData["S"][i] + "\n";
+                        string = string + newString;
                     }
+                    graphics.drawTexture(assets.waveHover, sBox.center, -Math.PI / 2, sBox.size);
+                    graphics.drawText(string, { x: prevBox.center.x, y: prevBox.center.y - prevBox.size.y / 2 + prevPadding * 1.2 }, prevStyle, prevText, true, prevPadding)
+                }
+                else {
+                    graphics.drawTexture(assets.wave, sBox.center, -Math.PI / 2, sBox.size);
                 }
             }
+            text = "Start\nWave";
+            if (button.selected) {
+                graphics.drawTexture(assets.playBtnHover, button.center, 0, button.size);
+            }
+            else {
+                graphics.drawTexture(assets.playBtn, button.center, 0, button.size);
+            }
         }
+        else {
+            text = "Pause\nGame";
+            if (button.selected) {
+                graphics.drawTexture(assets.pauseBtnHover, button.center, 0, button.size);
+            }
+            else {
+                graphics.drawTexture(assets.pauseBtn, button.center, 0, button.size);
+            }
+        }
+        graphics.drawText(text, { x: button.center.x + button.size.x + 20, y: button.center.y }, "white", "20px Arial", true, 20);
     }
 
     function length(obj) {
@@ -125,6 +157,16 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets) {
         eBox.selected = magic.collision(point, eBox.hitbox);
         sBox.selected = magic.collision(point, sBox.hitbox);
         wBox.selected = magic.collision(point, wBox.hitbox);
+        button.selected = magic.collision(point, button.hitbox);
+    }
+
+    function checkPress() {
+        if (button.selected) {
+            if (!spawning && enemies.length == 0)
+                nextWave();
+            else
+            console.log("Paused");
+        }
     }
 
     // returns true if the wave is done
@@ -145,10 +187,10 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets) {
     }
 
     function loadWaves(file) {
-        waves = [
+        waves = [/*
             [
                 ["Spider", 20, "W"],
-            ],
+            ],*/
             [
                 ["Drone", 1, "N"],
                 ["Drone", 1, "E"],
@@ -229,7 +271,8 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets) {
     }
 
     function nextWave() {
-        if (!spawning) {
+        if (!spawning && enemies.length == 0) {
+            waveCount++;
             spawning = true;
             for (let enemy in currentWave) {
                 for (let i = 0; i < currentWave[enemy][1]; i++) {
@@ -248,7 +291,9 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets) {
         nextWave: nextWave,
         checkWaves: checkWaves,
         checkHover: checkHover,
-        get spawning() { return spawning; }
+        checkPress: checkPress,
+        get spawning() { return spawning; },
+        get waveCount() { return waveCount; },
     };
 
     return api;

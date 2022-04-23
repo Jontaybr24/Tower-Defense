@@ -3,6 +3,9 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     let lastTimeStamp = performance.now();
 
+    let paused = false;
+    let cancelNextRequest = true;
+
     let myKeyboard = input.Keyboard();
     let myMouse = input.Mouse();
 
@@ -14,21 +17,18 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let myParticles = objects.Particles(assets, graphics, magic);
 
     let myCursor = objects.Cursor(assets, graphics, magic);
-    let myInfo = objects.Info(assets, graphics, magic, myCursor, soundManager);
 
     let myPathfinder = objects.Path(myGameBoard.board, magic)
     let myHealthbars = objects.Healthbars(graphics, magic);
+    let myInfo = objects.Info(assets, graphics, magic, myCursor, soundManager);
 
     let myLasers = objects.Laser(assets, graphics, magic, soundManager);
     let myTowers = objects.Towers(assets, graphics, magic, myLasers);
     let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder, myInfo, myParticles, myHealthbars, renderer.AnimatedModel, myTowers);
-
-
-
     let myWaves = objects.Waves(myEnemies, graphics, magic, assets);
+    myInfo.plusWave(myWaves);
+
     let myUpgrades = objects.Menu(assets, graphics, magic, myTowers, myInfo, soundManager);
-
-
 
     function cursorCollision() {
 
@@ -40,7 +40,6 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                 break;
             }
         }
-
     }
 
     function enemiesInRadius() {
@@ -75,7 +74,6 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     function loadLevel() {
         myGameBoard.genBoard();
         myWaves.loadWaves("temp");
-        //myPathfinder.findPath({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, false);
         myInfo.loadTowers(myTowers.towerDictionary);
     }
 
@@ -85,6 +83,29 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         }
     }
 
+    function togglePause() {
+        if (!paused)
+            showMenu();
+        else
+            hideMenu();
+    }
+
+    function hideMenu() {
+        paused = false;
+        document.getElementById('pause-menu').style.display = "none";
+        soundManager.playAll();
+    }
+    function showMenu() {
+        paused = true;
+        document.getElementById('pause-menu').style.display = "block";
+        soundManager.pauseAll();
+    }
+
+    function endGame() {
+        cancelNextRequest = true;
+        game.showScreen('main-menu');
+        soundManager.clearAll();
+    }
 
     function processInput(elapsedTime) {
         myKeyboard.update(elapsedTime);
@@ -120,8 +141,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myLasers.render();
         myInfo.render();
         myUpgrades.render();
-        if (myEnemies.length == 0)
-            myWaves.render();
+        myWaves.render();
         myParticles.render();
     }
 
@@ -139,6 +159,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
 
     function setControls() {
+        myKeyboard.register("Escape", togglePause);
         myKeyboard.register(data.controls.grid.key, myGameBoard.toggleGrid);
         myKeyboard.register(data.controls.upgrade1.key, function () {
             if (myInfo.coins >= myUpgrades.tower?.upgrades["cost"][0][0]) {
@@ -156,14 +177,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             }
         });
         myKeyboard.register(data.controls.sell.key, sellaTower);
-        myKeyboard.register(data.controls.startWave.key, function () {
-            //myPathfinder.groundPathfinding({ x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 });
-            //myEnemies.spawnEnemy("thing", { x: 0, y: magic.CANVAS_SIZE / 2 }, { x: magic.CANVAS_SIZE, y: magic.CANVAS_SIZE / 2 }, "ground")
-            if (myEnemies.length == 0) {
-                myWaves.nextWave();
-                myInfo.plusWave();
-            }
-        });
+        myKeyboard.register(data.controls.startWave.key, myWaves.nextWave);
         myMouse.register('mousedown', function (e) {
             if (e.button == 2) {
                 myInfo.cancelTower();
@@ -182,6 +196,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                     myInfo.addCoins(-myUpgrades.buyUpgrade());
                     if (myUpgrades.sellTower())
                         sellaTower()
+                    myWaves.checkPress();
                 }
                 if (e.ctrlKey) {
                     let obj = myGameBoard.removeObject(coords);
@@ -265,18 +280,51 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     function gameLoop(time) {
         let elapsedTime = time - lastTimeStamp;
         lastTimeStamp = time;
-        update(elapsedTime);
+        if (!paused) {
+            update(elapsedTime);
+        }
         processInput(elapsedTime);
         render();
 
-        requestAnimationFrame(gameLoop);
+        if (!cancelNextRequest) {
+            requestAnimationFrame(gameLoop);
+        }
     }
 
     function initialize() {
+        document.getElementById('id-pause-back').addEventListener(
+            'click',
+            endGame);
+        document.getElementById('id-pause-back').addEventListener(
+            "mouseenter",
+            function () { soundManager.play(assets.menu_hover); });
+        document.getElementById('id-resume').addEventListener(
+            'click',
+            function () { hideMenu(); });
+        document.getElementById('id-resume').addEventListener(
+            "mouseenter",
+            function () { soundManager.play(assets.menu_hover); });
+
+        document.getElementById('id-death-back').addEventListener(
+            'click',
+            function () {
+                game.showScreen('main-menu');
+                soundManager.clearAll();
+            });
+        document.getElementById('id-death-back').addEventListener(
+            "mouseenter",
+            function () { soundManager.play(assets.menu_hover); });
+        document.getElementById('id-retry').addEventListener(
+            'click',
+            function () { startGame(); });
+        document.getElementById('id-retry').addEventListener(
+            "mouseenter",
+            function () { soundManager.play(assets.menu_hover); });
     }
 
     function run() {
         lastTimeStamp = performance.now();
+        cancelNextRequest = false;
         loadLevel();
         setControls();
         requestAnimationFrame(gameLoop);

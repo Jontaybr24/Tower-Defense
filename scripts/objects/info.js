@@ -3,7 +3,7 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor, sounds) {
 
     let coins = 2000;
     let lives = 50;
-    let wave = 0;
+    let waves = null;
     let step = 40;
     let padding = 45;
     let towerYStep = 180;
@@ -24,7 +24,7 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor, sounds) {
         let x = graphics.canvas.width - (magic.X_OFFSET * full_offset);
         let y = step;
 
-        let text = "Wave: " + wave;
+        let text = "Wave: " + waves.waveCount;
         graphics.drawText(text, { x: x - 30, y: y }, "white", "30px Arial");
         text = ": " + coins;
         graphics.drawTexture(assets.coin, { x: x + asset_offset_x, y: y + asset_offset_y + padding }, 0, { x: magic.MENU_SIZE / 2, y: magic.MENU_SIZE / 2 })
@@ -61,10 +61,6 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor, sounds) {
         coins += amount;
     }
 
-    function plusWave() {
-        wave++;
-    }
-
     function hasFunds(amount) {
         if (coins >= amount) {
             return true;
@@ -91,6 +87,10 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor, sounds) {
                 y += magic.MENU_SIZE + towerStep;
             }
         }
+    }
+
+    function plusWave(wave){
+        waves = wave;
     }
 
     function buyTower(tower) {
