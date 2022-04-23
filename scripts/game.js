@@ -2,12 +2,12 @@ MyGame.game = (function(screens) {
     'use strict';
 
     // Change the screen to a new active screen
-    function showScreen(id){
+    function showScreen(id, level){
         let active = document.getElementsByClassName('active');
         for (let screen = 0; screen < active.length; screen++) {
             active[screen].classList.remove('active');
         }
-        screens[id].run();
+        screens[id].run(level);
 
         document.getElementById(id).classList.add('active');
     }

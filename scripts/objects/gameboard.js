@@ -9,26 +9,27 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
     let board = [];
     let gridOn = false; // The grid is off by default
 
-    function genBoard() {
-        for (let i = 0; i < magic.GRID_SIZE; i++) {
+    function genBoard(data) {
+        board = [];
+        for (let i = 0; i < data.size; i++) {
             board.push([]);
-            for (let j = 0; j < magic.GRID_SIZE; j++) {
+            for (let j = 0; j < data.size; j++) {
                 board[i].push({
                     x: i,
                     y: j,
                     object: null, // The object here will help with pathfinding ie towers and walls
                 });
-                let mid = Math.floor(magic.GRID_SIZE / 2);
-                let gap = Math.floor(GAP / 2);
+                let mid = Math.floor(data.size / 2);
+                let gap = Math.floor(data.gap / 2);
                 // make a border around the gamespace leaving space for the enemies to spawn on the 4 sides of the map
                 if (i == 0 && j < mid - gap ||
                     i == 0 && j > mid + gap ||
-                    i == magic.GRID_SIZE - 1 && j < mid - gap ||
-                    i == magic.GRID_SIZE - 1 && j > mid + gap ||
+                    i == data.size - 1 && j < mid - gap ||
+                    i == data.size - 1 && j > mid + gap ||
                     j == 0 && i < mid - gap ||
                     j == 0 && i > mid + gap ||
-                    j == magic.GRID_SIZE - 1 && i < mid - gap ||
-                    j == magic.GRID_SIZE - 1 && i > mid + gap) {
+                    j == data.size - 1 && i < mid - gap ||
+                    j == data.size - 1 && i > mid + gap) {
                     board[i][j].object = "wall";
                 }
             }
@@ -42,9 +43,6 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
                 graphics.drawTexture(assets.snow, center, ROTATION, { x: magic.CELL_SIZE, y: magic.CELL_SIZE }); // Renders grass in every cell incase the tower has transperency
                 if (board[row][col].object == "wall") { // there is a wall here so render the wall
                     graphics.drawTexture(assets.wall, center, ROTATION, { x: magic.CELL_SIZE, y: magic.CELL_SIZE });
-                }
-                else if (board[row][col].object != null) {
-                    graphics.drawTexture(assets.snow_imprint, center, ROTATION, { x: magic.CELL_SIZE, y: magic.CELL_SIZE });
                 }
             }
         }

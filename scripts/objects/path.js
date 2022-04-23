@@ -1,4 +1,5 @@
-MyGame.objects.Path = function (board, magic) {
+MyGame.objects.Path = function (magic) {
+  let board = null;
 
   //paths = {}
   queue = [];
@@ -7,7 +8,6 @@ MyGame.objects.Path = function (board, magic) {
 
     goal = magic.pixelToGrid(end);
     start = magic.pixelToGrid(center);
-    //console.log(start)
 
     queue = [];
     visited = {};
@@ -133,8 +133,13 @@ MyGame.objects.Path = function (board, magic) {
     return false;
   }
 
+  function loadBoard(data){
+    board = data;
+  }
+
   let api = {
     findPath: findPath,
+    loadBoard: loadBoard,
     get paths() { return paths; },
   };
 

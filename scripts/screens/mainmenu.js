@@ -7,7 +7,7 @@ MyGame.screens['main-menu'] = (function (game, sounds, assets) {
         // Setup each of menu events for the screens
         document.getElementById('id-new-game').addEventListener(
             'click',
-            function () { game.showScreen('game-play'); });
+            function () { game.showScreen('level-select'); });
 
         document.getElementById('id-settings').addEventListener(
             'click',

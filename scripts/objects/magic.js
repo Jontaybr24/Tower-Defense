@@ -1,8 +1,8 @@
 MyGame.objects.Magic = function (graphics) {
     'use strict';
 
-    const GRID_SIZE = 21;
-    const CELL_SIZE = graphics.canvas.height / GRID_SIZE;
+    let GRID_SIZE = 0;
+    let CELL_SIZE = 0;
     const MENU_SIZE = 60;
     const X_OFFSET = graphics.canvas.width - graphics.canvas.height;
     const RPS = Math.PI / 500 // 1 Rotation per second
@@ -17,10 +17,10 @@ MyGame.objects.Magic = function (graphics) {
         S: { x: CANVAS_SIZE / 2, y: CANVAS_SIZE - CELL_SIZE },
     }
     function sethitbox(thing, size) {
-         thing.hitbox.ymin = thing.center.y - size.y * .45,
-         thing.hitbox.ymax = thing.center.y + size.y * .45,
-         thing.hitbox.xmin = thing.center.x - size.x * .45,
-         thing.hitbox.xmax = thing.center.x + size.x * .45 
+        thing.hitbox.ymin = thing.center.y - size.y * .45,
+            thing.hitbox.ymax = thing.center.y + size.y * .45,
+            thing.hitbox.xmin = thing.center.x - size.x * .45,
+            thing.hitbox.xmax = thing.center.x + size.x * .45
     }
     function gridToPixel(point) {
         let x = (parseInt(point.x) + .5) * CELL_SIZE;
@@ -121,25 +121,36 @@ MyGame.objects.Magic = function (graphics) {
         let x = position.x - target.x;
         let y = position.y - target.y;
         let angle = Math.atan(y / x);
-        if (x < 0){
-            y =  Math.sin(angle);
-            x =  Math.cos(angle);
+        if (x < 0) {
+            y = Math.sin(angle);
+            x = Math.cos(angle);
         }
-        else{
-            y =  Math.sin(angle) * -1;
-            x =  Math.cos(angle) * -1;
+        else {
+            y = Math.sin(angle) * -1;
+            x = Math.cos(angle) * -1;
         }
-        if(x == 0){
-            x =0;
+        if (x == 0) {
+            x = 0;
         }
-        if(y == 0){
-            y =0;
+        if (y == 0) {
+            y = 0;
         }
         return { x: x, y: y }
     }
 
-    function computeRotation(vel){
-        return Math.atan2(vel.y , vel.x);
+    function computeRotation(vel) {
+        return Math.atan2(vel.y, vel.x);
+    }
+
+    function setGridSize(size) {
+        GRID_SIZE = size;
+        CELL_SIZE = graphics.canvas.height / GRID_SIZE;
+        spawnPoints = {
+            N: { x: CANVAS_SIZE / 2, y: 0 },
+            E: { x: CANVAS_SIZE - CELL_SIZE, y: CANVAS_SIZE / 2 },
+            W: { x: 0, y: CANVAS_SIZE / 2 },
+            S: { x: CANVAS_SIZE / 2, y: CANVAS_SIZE - CELL_SIZE },
+        }
     }
 
 
@@ -155,6 +166,7 @@ MyGame.objects.Magic = function (graphics) {
         testTolerance: testTolerance,
         computeVelocity: computeVelocity,
         computeRotation: computeRotation,
+        setGridSize: setGridSize,
         get spawnPoints() { return spawnPoints },
         get GRID_SIZE() { return GRID_SIZE; },
         get CELL_SIZE() { return CELL_SIZE; },

@@ -9,7 +9,6 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
   let threshold = 10;
   const BUFFER = 100 // time in ms for button presses to register after being held
   let timePassed = 0;
-  let spawnPoints = magic.spawnPoints;
 
   let enemiesDictionary = {
     Spider: {
@@ -47,24 +46,25 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
     let end = null;
     switch (location) {
       case "E":
-        spawn = spawnPoints.E;
-        end = spawnPoints.W;
+        spawn = magic.spawnPoints.E;
+        end = magic.spawnPoints.W;
         break;
       case "S":
-        spawn = spawnPoints.S;
-        end = spawnPoints.N;
+        spawn = magic.spawnPoints.S;
+        end = magic.spawnPoints.N;
         break;
       case "W":
-        spawn = spawnPoints.W;
-        end = spawnPoints.E;
+        spawn = magic.spawnPoints.W;
+        end = magic.spawnPoints.E;
         break;
       default:
-        spawn = spawnPoints.N;
-        end = spawnPoints.S;
+        spawn = magic.spawnPoints.N;
+        end = magic.spawnPoints.S;
     }
     let enemy = JSON.parse(JSON.stringify(enemiesDictionary[name]));
     spawn = JSON.parse(JSON.stringify(spawn));
     end = JSON.parse(JSON.stringify(end));
+    //console.log(spawn, end);
     
     let cpath = Pathfinder.findPath(spawn, end, enemy.type)
     enemy.spec = enemiesDictionary[name].spec;
@@ -103,6 +103,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
   function update(elapsedTime) {
     timePassed += elapsedTime;
     for (let index in enemies) {
+      //console.log(enemies[index].target);
       enemies[index].rig.update(elapsedTime);
       enemies[index].velocity = magic.computeVelocity(enemies[index].center, enemies[index].target);
       enemies[index].rotation = magic.computeRotation(enemies[index].velocity);

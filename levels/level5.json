@@ -1,7 +1,7 @@
 {
-    "unlocked": true,
-    "board": {"size":11, "gap":3},
-    "towerCount": 1,
+    "unlocked": false,
+    "board": {"size":17, "gap":5},
+    "towerCount": 0,
     "info": {"coins": 2000, "lives": 50},
     "waveData":[
         [

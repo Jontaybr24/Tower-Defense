@@ -60,12 +60,12 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets) {
                     prevBox.size.y = y;
                     prevBox.center.x = mousePos.x;
                     prevBox.center.y = mousePos.y + prevBox.size.y / 2 + mouseOffset;
-                    graphics.drawRectangle(prevBox, pBoxStyle, "black");
                     for (let i in renderData["N"]) {
                         let newString = i + ": " + renderData["N"][i] + "\n"
                         string = string + newString;
                     }
                     graphics.drawTexture(assets.waveHover, nBox.center, Math.PI / 2, nBox.size);
+                    graphics.drawRectangle(prevBox, pBoxStyle, "black");
                     graphics.drawText(string, { x: prevBox.center.x, y: prevBox.center.y - prevBox.size.y / 2 + prevPadding * 1.2 }, prevStyle, prevText, true, prevPadding)
                 }
                 else {
@@ -78,12 +78,12 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets) {
                     prevBox.size.y = y;
                     prevBox.center.x = mousePos.x + prevBox.size.x / 2;;
                     prevBox.center.y = mousePos.y + prevBox.size.y / 2 + mouseOffset;
-                    graphics.drawRectangle(prevBox, pBoxStyle, "black");
                     for (let i in renderData["W"]) {
                         let newString = i + ": " + renderData["W"][i] + "\n"
                         string = string + newString;
                     }
                     graphics.drawTexture(assets.waveHover, wBox.center, 0, wBox.size);
+                    graphics.drawRectangle(prevBox, pBoxStyle, "black");
                     graphics.drawText(string, { x: prevBox.center.x, y: prevBox.center.y - prevBox.size.y / 2 + prevPadding * 1.2 }, prevStyle, prevText, true, prevPadding)
                 }
                 else {
@@ -96,11 +96,11 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets) {
                     prevBox.size.y = y;
                     prevBox.center.x = mousePos.x - prevBox.size.x / 2;
                     prevBox.center.y = mousePos.y + prevBox.size.y / 2 + mouseOffset;
-                    graphics.drawRectangle(prevBox, pBoxStyle, "black");
                     for (let i in renderData["E"]) {
                         let newString = i + ": " + renderData["E"][i] + "\n";
                         string = string + newString;
                     }
+                    graphics.drawRectangle(prevBox, pBoxStyle, "black");
                     graphics.drawTexture(assets.waveHover, eBox.center, Math.PI, eBox.size);
                     graphics.drawText(string, { x: prevBox.center.x, y: prevBox.center.y - prevBox.size.y / 2 + prevPadding * 1.2 }, prevStyle, prevText, true, prevPadding)
                 }
@@ -114,12 +114,12 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets) {
                     prevBox.size.y = y;
                     prevBox.center.x = mousePos.x;
                     prevBox.center.y = mousePos.y - prevBox.size.y / 2 - mouseOffset;
-                    graphics.drawRectangle(prevBox, pBoxStyle, "black");
                     for (let i in renderData["S"]) {
                         let newString = i + ": " + renderData["S"][i] + "\n";
                         string = string + newString;
                     }
                     graphics.drawTexture(assets.waveHover, sBox.center, -Math.PI / 2, sBox.size);
+                    graphics.drawRectangle(prevBox, pBoxStyle, "black");
                     graphics.drawText(string, { x: prevBox.center.x, y: prevBox.center.y - prevBox.size.y / 2 + prevPadding * 1.2 }, prevStyle, prevText, true, prevPadding)
                 }
                 else {
@@ -187,6 +187,15 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets) {
     }
 
     function loadWaves(data) {
+        boxSize = magic.CELL_SIZE;
+        nBox = { center: { x: graphics.canvas.height / 2, y: magic.CELL_SIZE / 2 }, size: { x: boxSize, y: boxSize }, hitbox: { xmin: 0, xmax: 0, ymin: 0, ymax: 0 }, selected: false };
+        magic.sethitbox(nBox, nBox.size);
+        sBox = { center: { x: graphics.canvas.height / 2, y: graphics.canvas.height - magic.CELL_SIZE / 2 }, size: { x: boxSize, y: boxSize }, hitbox: { xmin: 0, xmax: 0, ymin: 0, ymax: 0 }, selected: false };
+        magic.sethitbox(sBox, sBox.size);
+        eBox = { center: { x: graphics.canvas.height - magic.CELL_SIZE / 2, y: graphics.canvas.height / 2 }, size: { x: boxSize, y: boxSize }, hitbox: { xmin: 0, xmax: 0, ymin: 0, ymax: 0 }, selected: false };
+        magic.sethitbox(eBox, eBox.size);
+        wBox = { center: { x: magic.CELL_SIZE / 2, y: graphics.canvas.height / 2 }, size: { x: boxSize, y: boxSize }, hitbox: { xmin: 0, xmax: 0, ymin: 0, ymax: 0 }, selected: false };
+        magic.sethitbox(wBox, wBox.size);
         waves = data;
         previewWave();
     }

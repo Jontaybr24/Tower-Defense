@@ -1,4 +1,4 @@
-MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphics, input, sounds, data, levels) {
+MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphics, input, sounds, data) {
     'use strict';
 
     let lastTimeStamp = performance.now();
@@ -18,7 +18,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     let myCursor = objects.Cursor(assets, graphics, magic);
 
-    let myPathfinder = objects.Path(myGameBoard.board, magic)
+    let myPathfinder = objects.Path(magic)
     let myHealthbars = objects.Healthbars(graphics, magic);
     let myInfo = objects.Info(assets, graphics, magic, myCursor, soundManager);
 
@@ -71,9 +71,10 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         enemiesToLaser();
     }
 
-    function loadLevel() {
-        let level = levels.level1;
-        myGameBoard.genBoard();
+    function loadLevel(level) {
+        magic.setGridSize(level.board.size);
+        myGameBoard.genBoard(level.board);
+        myPathfinder.loadBoard(myGameBoard.board);
         myWaves.loadWaves(level.waveData);
         myTowers.loadTowers(level.towerCount);
         myInfo.loadTowers(myTowers.towerDictionary);
@@ -105,9 +106,13 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         soundManager.pauseAll();
     }
 
-    function endGame() {
+    function endGame(menu) {
         cancelNextRequest = true;
-        game.showScreen('main-menu');
+        hideMenu();
+        if (menu == "main")
+            game.showScreen('main-menu');
+        else
+            game.showScreen('level-select');
         soundManager.clearAll();
     }
 
@@ -295,8 +300,20 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     }
 
     function initialize() {
-        document.getElementById('id-pause-back').addEventListener('click', endGame);
         document.getElementById('id-pause-back').addEventListener(
+            'click',
+            function () {
+                endGame("back");
+            });
+        document.getElementById('id-pause-main').addEventListener(
+            'click',
+            function () {
+                endGame("main");
+            });
+        document.getElementById('id-pause-back').addEventListener(
+            "mouseenter",
+            function () { soundManager.play(assets.menu_hover); });
+        document.getElementById('id-pause-main').addEventListener(
             "mouseenter",
             function () { soundManager.play(assets.menu_hover); });
         document.getElementById('id-resume').addEventListener(
@@ -318,10 +335,10 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             function () { soundManager.play(assets.menu_hover); });
     }
 
-    function run() {
+    function run(level) {
         lastTimeStamp = performance.now();
         cancelNextRequest = false;
-        loadLevel();
+        loadLevel(level);
         setControls();
         requestAnimationFrame(gameLoop);
     }
@@ -331,4 +348,4 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         run: run
     };
 
-}(MyGame.game, MyGame.objects, MyGame.assets, MyGame.render, MyGame.graphics, MyGame.input, MyGame.sounds, MyGame.data, MyGame.levels));
+}(MyGame.game, MyGame.objects, MyGame.assets, MyGame.render, MyGame.graphics, MyGame.input, MyGame.sounds, MyGame.data));

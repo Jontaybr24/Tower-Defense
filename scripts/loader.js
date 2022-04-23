@@ -126,6 +126,11 @@ MyGame.loader = (function () {
         onComplete: null
     },
     {
+        scripts: ['screens/levelselect'],
+        message: 'Level select Page loaded',
+        onComplete: null
+    },
+    {
         scripts: ['screens/gameplay'],
         message: 'Game loop and model loaded',
         onComplete: null
@@ -231,7 +236,19 @@ MyGame.loader = (function () {
     let levelOrder = [{
         key: 'level1',
         source: 'levels/level1.json'
-    }]
+    },{
+        key: 'level2',
+        source: 'levels/level2.json'
+    },{
+        key: 'level3',
+        source: 'levels/level3.json'
+    },{
+        key: 'level4',
+        source: 'levels/level4.json'
+    },{
+        key: 'level5',
+        source: 'levels/level5.json'
+    },]
 
     //------------------------------------------------------------------
     //
