@@ -1,4 +1,4 @@
-MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphics, input, sounds, data) {
+MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphics, input, sounds, data, levels) {
     'use strict';
 
     let lastTimeStamp = performance.now();
@@ -72,9 +72,13 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     }
 
     function loadLevel() {
+        let level = levels.level1;
         myGameBoard.genBoard();
-        myWaves.loadWaves("temp");
+        myWaves.loadWaves(level.waveData);
+        myTowers.loadTowers(level.towerCount);
         myInfo.loadTowers(myTowers.towerDictionary);
+        myInfo.loadInfo(level.info)
+        myEnemies.clearAll();
     }
 
     function checkWin() {
@@ -263,7 +267,6 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                                 }
                                 lastGrid = coords;
                             }
-
                         }
                     }
                 }
@@ -292,9 +295,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     }
 
     function initialize() {
-        document.getElementById('id-pause-back').addEventListener(
-            'click',
-            endGame);
+        document.getElementById('id-pause-back').addEventListener('click', endGame);
         document.getElementById('id-pause-back').addEventListener(
             "mouseenter",
             function () { soundManager.play(assets.menu_hover); });
@@ -305,12 +306,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             "mouseenter",
             function () { soundManager.play(assets.menu_hover); });
 
-        document.getElementById('id-death-back').addEventListener(
-            'click',
-            function () {
-                game.showScreen('main-menu');
-                soundManager.clearAll();
-            });
+        document.getElementById('id-death-back').addEventListener('click', endGame);
         document.getElementById('id-death-back').addEventListener(
             "mouseenter",
             function () { soundManager.play(assets.menu_hover); });
@@ -335,4 +331,4 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         run: run
     };
 
-}(MyGame.game, MyGame.objects, MyGame.assets, MyGame.render, MyGame.graphics, MyGame.input, MyGame.sounds, MyGame.data));
+}(MyGame.game, MyGame.objects, MyGame.assets, MyGame.render, MyGame.graphics, MyGame.input, MyGame.sounds, MyGame.data, MyGame.levels));

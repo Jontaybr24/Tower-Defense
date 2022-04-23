@@ -186,74 +186,8 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets) {
 
     }
 
-    function loadWaves(file) {
-        waves = [/*
-            [
-                ["Spider", 20, "W"],
-            ],*/
-            [
-                ["Drone", 1, "N"],
-                ["Drone", 1, "E"],
-                ["Drone", 1, "S"],
-                ["Drone", 1, "W"],
-                ["Spider", 1, "S"],
-                ["Spider", 1, "E"],
-                ["Spider", 1, "W"],
-                ["Spider", 1, "N"],
-            ],
-            [
-                ["Spider", 2, "S"],
-                ["Drone", 2, "W"],
-                ["Spider", 2, "E"],
-            ],
-            [
-                ["Spider", 50, "N"],
-                ["Drone", 50, "N"],
-            ],
-            [
-                ["Spider", 5, "N"],
-                ["Drone", 5, "N"],
-                ["Spider", 5, "N"],
-                ["Drone", 5, "N"],
-                ["Spider", 5, "N"],
-                ["Drone", 5, "N"],
-                ["Spider", 5, "N"],
-                ["Drone", 5, "N"],
-                ["Spider", 5, "N"],
-                ["Drone", 5, "N"],
-                ["Spider", 5, "N"],
-                ["Drone", 5, "N"],
-                ["Spider", 5, "N"],
-                ["Drone", 5, "N"],
-                ["Spider", 5, "N"],
-                ["Drone", 5, "N"],
-                ["Spider", 5, "N"],
-                ["Drone", 5, "N"],
-                ["Spider", 5, "N"],
-                ["Drone", 5, "N"],
-                ["Spider", 5, "N"],
-                ["Drone", 5, "N"],
-                ["Spider", 5, "N"],
-                ["Drone", 5, "N"],
-                ["Spider", 5, "N"],
-                ["Drone", 5, "N"],
-                ["Spider", 5, "N"],
-                ["Drone", 5, "N"],
-                ["Spider", 5, "N"],
-                ["Drone", 5, "N"],
-                ["Spider", 5, "N"],
-                ["Drone", 5, "N"],
-                ["Spider", 5, "N"],
-                ["Drone", 5, "N"],
-                ["Spider", 5, "N"],
-                ["Drone", 5, "N"],
-                ["Spider", 5, "N"],
-                ["Drone", 5, "N"],
-                ["Spider", 5, "N"],
-                ["Drone", 5, "N"],
-
-            ],
-        ];
+    function loadWaves(data) {
+        waves = data;
         previewWave();
     }
 

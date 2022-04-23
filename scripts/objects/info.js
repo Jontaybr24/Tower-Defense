@@ -1,8 +1,8 @@
 MyGame.objects.Info = function (assets, graphics, magic, cursor, sounds) {
     'use strict';
 
-    let coins = 2000;
-    let lives = 50;
+    let coins = 0;
+    let lives = 0;
     let waves = null;
     let step = 40;
     let padding = 45;
@@ -89,6 +89,11 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor, sounds) {
         }
     }
 
+    function loadInfo(info){
+        coins = info.coins;
+        lives = info.lives;
+    }
+
     function plusWave(wave){
         waves = wave;
     }
@@ -142,6 +147,7 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor, sounds) {
         addCoins: addCoins,
         hasFunds: hasFunds,
         loadTowers: loadTowers,
+        loadInfo: loadInfo,
         buyTower: buyTower,
         checkHover: checkHover,
         checkBuy: checkBuy,

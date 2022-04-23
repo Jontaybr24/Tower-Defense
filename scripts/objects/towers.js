@@ -1,6 +1,7 @@
 MyGame.objects.Towers = function (assets, graphics, magic, lasers) {
     'use strict';
     let RADS = magic.CELL_SIZE;
+    let towerNum = 0;
 
     let towerDictionary = {
         Wall: {
@@ -67,6 +68,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers) {
             },
         },
     };
+    let partialDict = {};
 
     let towers = {};
     let count = 0;
@@ -201,6 +203,22 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers) {
         return spent;
     }
 
+    function clearAll() {
+        for (let idx in towers) {
+            deleteTower(towers[idx]);
+        }
+    }
+
+    function loadTowers(num) {
+        clearAll();
+        let i = 0;
+        for (let idx in towerDictionary) {
+            if (i++ < num) {
+                partialDict[idx] = towerDictionary[idx];
+            }
+        }
+    }
+
     let api = {
         update: update,
         render: render,
@@ -210,7 +228,9 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers) {
         addEnemy: addEnemy,
         upgrade: upgrade,
         removeTarget: removeTarget,
-        get towerDictionary() { return towerDictionary; },
+        clearAll: clearAll,
+        loadTowers: loadTowers,
+        get towerDictionary() { return partialDict; },
         get towers() { return towers; },
     };
 

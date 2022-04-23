@@ -7,6 +7,7 @@ MyGame = {
     objects: {},
     sounds: {},
     data: {},
+    levels: {},
 };
 
 //------------------------------------------------------------------
@@ -133,10 +134,10 @@ MyGame.loader = (function () {
     let assetOrder = [{
         key: 'snow',
         source: '/assets/snow.png'
-    },{
+    }, {
         key: 'snow_imprint',
         source: '/assets/snow_imprint.png'
-    },{
+    }, {
         key: 'buy_cell',
         source: '/assets/buy_cell.png'
     }, {
@@ -145,87 +146,92 @@ MyGame.loader = (function () {
     }, {
         key: 'coin',
         source: '/assets/coin.png'
-    },{
+    }, {
         key: 'life',
         source: '/assets/life.png'
-    },{
+    }, {
         key: 'Wall_base',
         source: '/assets/wall.png'
-    },{
+    }, {
         key: 'Wall_3_0',
         source: '/assets/wall.png'
-    },{
+    }, {
         key: 'Turret_base',
         source: '/assets/tower-base.png'
-    },{
+    }, {
         key: 'Turret_3_0',
         source: '/assets/basic-turret-1.png'
-    },{
+    }, {
         key: 'Turret_0_1',
         source: '/assets/basic-turret-2.png'
-    },{
+    }, {
         key: 'Turret_0_2',
         source: '/assets/basic-turret-3.png'
-    },{
+    }, {
         key: 'Turret_0_3',
         source: '/assets/basic-turret-4.png'
-    },{
+    }, {
         key: 'Turret_1_1',
         source: '/assets/basic-turret-5.png'
-    },{
+    }, {
         key: 'Turret_1_2',
         source: '/assets/basic-turret-6.png'
-    },{
+    }, {
         key: 'Turret_1_3',
         source: '/assets/basic-turret-7.png'
-    },{
+    }, {
         key: 'Turret_2_1',
         source: '/assets/basic-turret-8.png'
-    },{
+    }, {
         key: 'Turret_2_2',
         source: '/assets/basic-turret-9.png'
-    },{
+    }, {
         key: 'Turret_2_3',
         source: '/assets/basic-turret-10.png'
-    },{
+    }, {
 
         key: 'Drone',
         source: '/assets/drone.png'
-    },{
+    }, {
         key: 'Spider',
         source: '/assets/spider.png'
-    },{
+    }, {
         key: 'laser_basic',
         source: '/assets/laser.png'
-    },{
+    }, {
         key: 'laser_ice',
         source: '/assets/laser-ice.png'
-    },{
+    }, {
         key: 'laser_acid',
         source: '/assets/laser-acid.png'
-    },{
+    }, {
         key: 'menu_hover',
         source: '/soundFX/menu-hover.wav'
-    },{
+    }, {
         key: 'playBtnHover',
         source: '/assets/play-hover.png'
-    },{
+    }, {
         key: 'playBtn',
         source: '/assets/play.png'
-    },{
+    }, {
         key: 'pauseBtnHover',
         source: '/assets/pause-hover.png'
-    },{
+    }, {
         key: 'pauseBtn',
         source: '/assets/pause.png'
-    },{
+    }, {
         key: 'wave',
         source: '/assets/play.png'
-    },{
+    }, {
         key: 'waveHover',
         source: '/assets/play-hover.png'
     },
     ];
+
+    let levelOrder = [{
+        key: 'level1',
+        source: 'levels/level1.json'
+    }]
 
     //------------------------------------------------------------------
     //
@@ -319,7 +325,7 @@ MyGame.loader = (function () {
                         if (onError) { onError('Unknown file extension: ' + fileExtension); }
                     }
                     if (xhr.responseType === 'blob') {
-                        if (fileExtension === 'mp3'|| fileExtension === 'wav') {
+                        if (fileExtension === 'mp3' || fileExtension === 'wav') {
                             asset.oncanplaythrough = function () {
                                 window.URL.revokeObjectURL(asset.src);
                                 if (onSuccess) { onSuccess(asset); }
@@ -355,14 +361,54 @@ MyGame.loader = (function () {
                     grid: { label: 'Toggle Grid', key: 'h' },
                     startWave: { label: 'Start Wave', key: 'g' },
                     sell: { label: 'Sell', key: 's' },
-                    upgrade1: {label: 'Upgrade Path 1', key: 'u'},
-                    upgrade2: {label: 'Upgrade Path 2', key: '2'},
-                    upgrade3: {label: 'Upgrade Path 3', key: '3'},
+                    upgrade1: { label: 'Upgrade Path 1', key: 'u' },
+                    upgrade2: { label: 'Upgrade Path 2', key: '2' },
+                    upgrade3: { label: 'Upgrade Path 3', key: '3' },
                 },
                 volume: .3,
             }
             localStorage['data'] = JSON.stringify(MyGame.data);
         }
+    }
+
+    function readTextFile(file, callback) {
+        var rawFile = new XMLHttpRequest();
+        rawFile.overrideMimeType("application/json");
+        rawFile.open("GET", file, true);
+        rawFile.onreadystatechange = function () {
+            if (rawFile.readyState === 4 && rawFile.status == "200") {
+                callback(rawFile.responseText);
+            }
+        }
+        rawFile.send(null);
+    }
+
+    function loadLevels(levels, onSuccess, onError, onComplete) {
+        //
+        // When we run out of things to load, that is when we call onComplete.
+        if (levels.length > 0) {
+            let entry = levels[0];
+            loadLevel(entry.source,
+                function (asset) {
+                    onSuccess(entry, asset);
+                    levels.shift(); 
+                    loadLevels(levels, onSuccess, onError, onComplete);
+                },
+                function (error) {
+                    onError(error);
+                    levels.shift();
+                    loadLevels(levels, onSuccess, onError, onComplete);
+                });
+        } else {
+            onComplete();
+        }
+    }
+
+    function loadLevel(level, onSuccess, onError){
+        readTextFile(level, function(text){
+            let result = JSON.parse(text);
+            onSuccess(result);
+        })
     }
 
     //------------------------------------------------------------------
@@ -375,6 +421,19 @@ MyGame.loader = (function () {
         MyGame.game.initialize();
     }
 
+    console.log('Loading Levels');
+    loadLevels(levelOrder,
+        function (source, level) {
+            MyGame.levels[source.key] = level;
+        },
+        function (error) {
+            console.log(error);
+        },
+        function () {
+            console.log("All levels loaded");
+        }
+    );
+    
     console.log('Loading saved data');
     loadData();
 

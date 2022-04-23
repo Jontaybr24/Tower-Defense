@@ -147,11 +147,19 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
     }
   }
 
+  function clearAll(){
+      for(let idx in enemies){
+          kill(enemies[idx]);
+      }
+  }
+
+
   let api = {
     spawnEnemy: spawnEnemy,
     updatePath: updatePath,
     update: update,
     render: render,
+    clearAll: clearAll,
     get enemies() { return enemies; },
     get length() { return Object.keys(enemies).length }
   };
