@@ -89,11 +89,11 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers, info, sounds) {
                 if (box1.selected && tower.path != 1 && tower.path != 2 && tower.level < 3) {
                     if (tower.upgrades["radius"][0][0] == 0) {
                         graphics.drawEllipse({ center: tower.center, radius: tower.radius }, "rgba(0, 25, 0, .25)", "black");
-                        graphics.drawText(Math.floor(tower.radius / magic.CELL_SIZE), { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "white", "16px Arial");
+                        graphics.drawText((tower.radius / magic.CELL_SIZE - .5).toFixed(1), { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "white", "16px Arial");
                     }
                     else {
                         graphics.drawEllipse({ center: tower.center, radius: tower.radius + (tower.upgrades["radius"][0][0] * magic.CELL_SIZE) }, "rgba(0, 225, 0, .25)", "black");
-                        graphics.drawText(Math.floor(tower.radius / magic.CELL_SIZE) + tower.upgrades["radius"][0][0], { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "green", "16px Arial");
+                        graphics.drawText((tower.radius / magic.CELL_SIZE+ tower.upgrades["radius"][0][0] - .5).toFixed(1) , { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "green", "16px Arial");
                     }
                     if (tower.upgrades["damage"][0][0] == 0) {
                         graphics.drawText(tower.damage, { x: dataBox.center.x - 10, y: dataBox.center.y }, "white", "16px Arial");
@@ -111,11 +111,11 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers, info, sounds) {
                 else if (box2.selected && tower.path != 0 && tower.path != 2 && tower.level < 3) {
                     if (tower.upgrades["radius"][1][0] == 0) {
                         graphics.drawEllipse({ center: tower.center, radius: tower.radius }, "rgba(0, 25, 0, .25)", "black");
-                        graphics.drawText(Math.floor(tower.radius / magic.CELL_SIZE), { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "white", "16px Arial");
+                        graphics.drawText((tower.radius / magic.CELL_SIZE - .5).toFixed(1), { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "white", "16px Arial");
                     }
                     else {
                         graphics.drawEllipse({ center: tower.center, radius: tower.radius + (tower.upgrades["radius"][1][0] * magic.CELL_SIZE) }, "rgba(0, 225, 0, .25)", "black");
-                        graphics.drawText(Math.floor(tower.radius / magic.CELL_SIZE) + tower.upgrades["radius"][1][0], { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "green", "16px Arial");
+                        graphics.drawText((tower.radius / magic.CELL_SIZE+ tower.upgrades["radius"][1][0] - .5).toFixed(1) , { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "green", "16px Arial");
                     }
                     if (tower.upgrades["damage"][1][0] == 0) {
                         graphics.drawText(tower.damage, { x: dataBox.center.x - 10, y: dataBox.center.y }, "white", "16px Arial");
@@ -133,11 +133,11 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers, info, sounds) {
                 else if (box3.selected && tower.path != 1 && tower.path != 0 && tower.level < 3) {
                     if (tower.upgrades["radius"][2][0] == 0) {
                         graphics.drawEllipse({ center: tower.center, radius: tower.radius }, "rgba(0, 25, 0, .25)", "black");
-                        graphics.drawText(Math.floor(tower.radius / magic.CELL_SIZE), { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "white", "16px Arial");
+                        graphics.drawText((tower.radius / magic.CELL_SIZE - .5).toFixed(1), { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "white", "16px Arial");
                     }
                     else {
                         graphics.drawEllipse({ center: tower.center, radius: tower.radius + (tower.upgrades["radius"][2][0] * magic.CELL_SIZE) }, "rgba(0, 225, 0, .25)", "black");
-                        graphics.drawText(Math.floor(tower.radius / magic.CELL_SIZE) + tower.upgrades["radius"][2][0], { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "green", "16px Arial");
+                        graphics.drawText((tower.radius / magic.CELL_SIZE+ tower.upgrades["radius"][2][0] - .5).toFixed(1) , { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "green", "16px Arial");
                     }
                     if (tower.upgrades["damage"][2][0] == 0) {
                         graphics.drawText(tower.damage, { x: dataBox.center.x - 10, y: dataBox.center.y }, "white", "16px Arial");
@@ -156,7 +156,7 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers, info, sounds) {
                     graphics.drawEllipse({ center: tower.center, radius: tower.radius }, "rgba(0, 25, 0, .25)", "black");
                     graphics.drawText(tower.damage, { x: dataBox.center.x - 10, y: dataBox.center.y }, "white", "16px Arial");
                     graphics.drawText(tower.fireRate, { x: dataBox.center.x + 12, y: dataBox.center.y + textPadding }, "white", "16px Arial");
-                    graphics.drawText(Math.floor(tower.radius / magic.CELL_SIZE), { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "white", "16px Arial");
+                    graphics.drawText((tower.radius / magic.CELL_SIZE - .5).toFixed(1), { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "white", "16px Arial");
                 }
                 if (tower.level < 3) {
                     tower.renderPreview(tower, box1.center, tower.level + 1, 0, { x: magic.MENU_SIZE, y: magic.MENU_SIZE });

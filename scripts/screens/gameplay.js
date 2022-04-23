@@ -80,7 +80,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     }
 
     function checkWin() {
-        if (!myWaves.checkWaves()) {
+        if (!myWaves.checkWaves() && myEnemies.length == 0) {
             console.log("All waves complete");
         }
     }
