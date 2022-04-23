@@ -21,9 +21,13 @@
 			<h1>Level Select</h1>
 			<div id="level-grid" class="grid-container">
 			</div>
+			<ul class="menu">
+				<li><button id="id-level-back">Back</button></li>
+			</ul>
 		</div>
 		<div id="game-play" class="screen">
-			<canvas id="canvas-main" width="1200" height="1000" style="width: 59%; height: 100%; background: url('assets/background.jpg')" ></canvas>
+			<canvas id="canvas-main" width="1200" height="1000"
+				style="width: 59%; height: 100%; background: url('assets/background.jpg')"></canvas>
 			<ul id="pause-menu" class="menu">
 				<h1>Paused</h1>
 				<li><button id="id-resume">Resume&nbsp;Game</button></li>
@@ -47,16 +51,20 @@
 		</div>
 		<div id="about" class="screen">
 			<h1>About</h1>
-			<p>Developed by</p>
+			<h2>Developed by</h2>
 			<p>Jontay Reaves and Noah Hammons</p>
-			<p>Code Base Provided by</p>
+			<h2>Artwork by</h2>
+			<p>Jontay Reaves and Noah Hammons</p>
+			<h2>Sounds by</h2>
+			<p>Jontay Reaves and Noah Hammons</p>
+			<h2>Code Base Provided by</h2>
 			<p>Dr. James Dean Mathias</p>
 			<ul class="menu">
 				<li><button id="id-about-back">Back</button></li>
 			</ul>
 		</div>
 	</div>
-    <script data-main = "scripts/loader" src = "scripts/require.js"></script>
+	<script data-main="scripts/loader" src="scripts/require.js"></script>
 </body>
 
 </html>

@@ -3,11 +3,17 @@ MyGame.screens['level-select'] = (function (game, sounds, assets, levels) {
     let soundManager = sounds.manager();
 
     function initialize() {
+        document.getElementById('id-level-back').addEventListener(
+            'click',
+            function () { game.showScreen('main-menu'); });
+        document.getElementById('id-level-back').addEventListener(
+            "mouseenter",
+            function () { soundManager.play(assets.menu_hover); });
         let container = document.getElementById("level-grid");
         for (let level in levels) {
             let newDiv = document.createElement("div");
             newDiv.className = "grid-item";
-            newDiv.innerHTML = level;
+            newDiv.innerHTML = level.replace("level", "");
             if (levels[level].unlocked) {
                 newDiv.classList.add("unlocked");
                 newDiv.addEventListener(
