@@ -1,6 +1,6 @@
-MyGame.objects.Waves = function (enemies, graphics, magic, assets) {
+MyGame.objects.Waves = function (enemies, graphics, magic, assets, sounds) {
     'use strict';
-    let spawnRate = 1000 / 1.5 // time in ms for an enemy to spawn
+    let spawnRate = 0
     let timePassed = 0;
     let waveCount = 0;
 
@@ -27,7 +27,7 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets) {
     let text = "";
     let prevText = "20px Arial";
     let prevStyle = "black";
-    let pBoxStyle = "rgba(255, 255, 255, .5)";
+    let pBoxStyle = "rgba(125, 152, 201, .5)";
     let prevBox = { center: { x: 0, y: 0 }, size: { x: prevSize, y: 0 } }
     let mousePos = { x: graphics.canvas.height / 2, y: 0 };
     let mouseOffset = 40;
@@ -157,6 +157,8 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets) {
         eBox.selected = magic.collision(point, eBox.hitbox);
         sBox.selected = magic.collision(point, sBox.hitbox);
         wBox.selected = magic.collision(point, wBox.hitbox);
+        if(!button.selected && magic.collision(point, button.hitbox))
+        sounds.play(assets.menu_hover);
         button.selected = magic.collision(point, button.hitbox);
     }
 
@@ -187,6 +189,8 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets) {
     }
 
     function loadWaves(data) {
+        spawnRate = 1000 / 1.5 // time in ms for an enemy to spawn
+        spawning = false;
         boxSize = magic.CELL_SIZE;
         nBox = { center: { x: graphics.canvas.height / 2, y: magic.CELL_SIZE / 2 }, size: { x: boxSize, y: boxSize }, hitbox: { xmin: 0, xmax: 0, ymin: 0, ymax: 0 }, selected: false };
         magic.sethitbox(nBox, nBox.size);
@@ -216,6 +220,7 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets) {
     function nextWave() {
         if (!spawning && enemies.length == 0) {
             waveCount++;
+            spawnRate *= .98;
             spawning = true;
             for (let enemy in currentWave) {
                 for (let i = 0; i < currentWave[enemy][1]; i++) {

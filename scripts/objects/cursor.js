@@ -45,11 +45,11 @@ MyGame.objects.Cursor = function (assets, graphics, magic) {
     }
 
     function setCursor(point) {
-        cursor.center = point
+        cursor.center = point;
     }
 
     function isClear() {
-        return (cursor.state == "clear")
+        return (cursor.state == "clear");
     }
 
     function blocked(status) {

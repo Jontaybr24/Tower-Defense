@@ -232,15 +232,24 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers, info, sounds) {
                 if (info.coins >= tower.upgrades["cost"][0][0]) {
                     return towers.upgrade(tower, 0)
                 }
+                else{
+                    sounds.play(assets.deny);
+                }
             }
             if (box2.selected && tower.path != 0 && tower.path != 2) {
                 if (info.coins >= tower.upgrades["cost"][1][0]) {
                     return towers.upgrade(tower, 1)
                 }
+                else{
+                    sounds.play(assets.deny);
+                }
             }
             if (box3.selected && tower.path != 0 && tower.path != 1) {
                 if (info.coins >= tower.upgrades["cost"][2][0]) {
                     return towers.upgrade(tower, 2)
+                }
+                else{
+                    sounds.play(assets.deny);
                 }
             }
         }

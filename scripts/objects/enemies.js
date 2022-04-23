@@ -1,13 +1,11 @@
 
-MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, particles, bars, model, towers) {
+MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, particles, bars, model, towers, sounds) {
 
   'use strict';
 
   let enemies = {};
   let count = 0; // the number for hte id of the enemies
-  const ROTATION = 0;
   let threshold = 10;
-  const BUFFER = 100 // time in ms for button presses to register after being held
   let timePassed = 0;
 
   let enemiesDictionary = {
@@ -88,7 +86,8 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
     enemy.health -= amount;
     if (enemy.health <= 0) {
       particles.makeCoin(enemy.center);
-      info.addCoins(10)
+      info.addCoins(10);
+      sounds.play(assets.death);
       kill(enemy);
       return true;
     }

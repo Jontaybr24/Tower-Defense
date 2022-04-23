@@ -1,7 +1,5 @@
-MyGame.objects.Towers = function (assets, graphics, magic, lasers) {
+MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds) {
     'use strict';
-    let RADS = magic.CELL_SIZE;
-    let towerNum = 0;
 
     let towerDictionary = {
         Wall: {
@@ -13,7 +11,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers) {
             renderPreview: renderPreview, // the piction image
             needTarget: false, // if the tower needs to turn to target before activating
             targetAir: false,
-            activate: function (tower, targets) { },
+            activate: function () { },
         },
         Turret: {
             name: "Turret",
@@ -193,6 +191,8 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers) {
             }
             if (tower.level < 3 && path == tower.path) {
                 tower.level += 1;
+                let string = "upgrade" + tower.level;
+                sounds.play(assets[string]);
                 spent = tower.upgrades["cost"][path].shift();
                 tower.cost += spent;
                 tower.damage += tower.upgrades["damage"][path].shift();

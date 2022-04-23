@@ -2,8 +2,8 @@ MyGame.objects.Healthbars = function (graphics, magic) {
     'use strict';
 
     let allBars = {};
-    const WIDTH = magic.CELL_SIZE;
-    const HEIGHT = magic.CELL_SIZE / 10;
+    let WIDTH = magic.CELL_SIZE;
+    let HEIGHT = magic.CELL_SIZE / 10;
 
     function update(elapsedTime) {
         for (let idx in allBars) {
@@ -32,9 +32,9 @@ MyGame.objects.Healthbars = function (graphics, magic) {
         let right = left + lengthG / 2 + lengthR / 2;
         let green = { x: lengthG, y: HEIGHT };
         let red = { x: lengthR, y: HEIGHT };
-        let greenCenter = {x: left, y: bar.center.y};
-        let redCenter = {x: right, y: bar.center.y};
-        return { green: {size: green, center: greenCenter}, red: {size: red, center: redCenter} };
+        let greenCenter = { x: left, y: bar.center.y };
+        let redCenter = { x: right, y: bar.center.y };
+        return { green: { size: green, center: greenCenter }, red: { size: red, center: redCenter } };
     }
 
     function newHealthbar(enemy) {
@@ -50,11 +50,20 @@ MyGame.objects.Healthbars = function (graphics, magic) {
         delete allBars[id];
     }
 
+    function loadHP() {
+        WIDTH = magic.CELL_SIZE;
+        HEIGHT = magic.CELL_SIZE / 10;
+        for(let i in allBars){
+            removeBar(i);
+        }
+    }
+
     let api = {
         update: update,
         render: render,
         removeBar: removeBar,
         newHealthbar: newHealthbar,
+        loadHP: loadHP,
     };
 
     return api;

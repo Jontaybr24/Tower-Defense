@@ -230,6 +230,24 @@ MyGame.loader = (function () {
     }, {
         key: 'waveHover',
         source: '/assets/play-hover.png'
+    },{
+        key: 'deny',
+        source: '/soundFX/deny.wav'
+    },{
+        key: 'sell',
+        source: '/soundFX/sell.wav'
+    },{
+        key: 'death',
+        source: '/soundFX/death.wav'
+    },{
+        key: 'upgrade1',
+        source: '/soundFX/upgrade1.wav'
+    },{
+        key: 'upgrade2',
+        source: '/soundFX/upgrade2.wav'
+    },{
+        key: 'upgrade3',
+        source: '/soundFX/upgrade3.wav'
     },
     ];
 

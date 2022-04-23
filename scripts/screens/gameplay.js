@@ -23,17 +23,15 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let myInfo = objects.Info(assets, graphics, magic, myCursor, soundManager);
 
     let myLasers = objects.Laser(assets, graphics, magic, soundManager);
-    let myTowers = objects.Towers(assets, graphics, magic, myLasers);
-    let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder, myInfo, myParticles, myHealthbars, renderer.AnimatedModel, myTowers);
-    let myWaves = objects.Waves(myEnemies, graphics, magic, assets);
+    let myTowers = objects.Towers(assets, graphics, magic, myLasers, soundManager);
+    let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder, myInfo, myParticles, myHealthbars, renderer.AnimatedModel, myTowers, soundManager);
+    let myWaves = objects.Waves(myEnemies, graphics, magic, assets, soundManager);
     myInfo.plusWave(myWaves);
 
     let myUpgrades = objects.Menu(assets, graphics, magic, myTowers, myInfo, soundManager);
 
     function cursorCollision() {
-
         myCursor.blocked(!myGameBoard.checkCell(magic.pixelToGrid(myCursor.cursor.center)));
-
         for (let index in myEnemies.enemies) {
             if (magic.collision(myCursor.cursor.hitbox, myEnemies.enemies[index].hitbox)) {
                 myCursor.blocked(true);
@@ -71,8 +69,11 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         enemiesToLaser();
     }
 
+    // clears all data in objects and sets the data to the level parameters
     function loadLevel(level) {
         magic.setGridSize(level.board.size);
+        myLasers.loadLaser();
+        myHealthbars.loadHP();
         myGameBoard.genBoard(level.board);
         myPathfinder.loadBoard(myGameBoard.board);
         myWaves.loadWaves(level.waveData);
@@ -163,6 +164,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             myInfo.addCoins(Math.floor(obj.cost * magic.SELL_PRICE));
             myUpgrades.setTower(null);
             myEnemies.updatePath();
+            soundManager.play(assets.sell);
         }
     }
 
@@ -204,7 +206,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                     myInfo.checkBuy();
                     myInfo.addCoins(-myUpgrades.buyUpgrade());
                     if (myUpgrades.sellTower())
-                        sellaTower()
+                        sellaTower();
                     myWaves.checkPress();
                 }
                 if (e.ctrlKey) {
@@ -214,6 +216,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                         myInfo.addCoins(Math.floor(obj.cost * magic.SELL_PRICE));
                         myUpgrades.setTower(null);
                         myEnemies.updatePath();
+                        soundManager.play(assets.sell);
                     }
                 }
                 else if (myInfo.placing) {
@@ -225,8 +228,9 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                             myGameBoard.addObject(coords, tower);
                         }
                         myEnemies.updatePath();
-
-
+                    }
+                    else if (!myCursor.placing && coords.x <= magic.GRID_SIZE){
+                        soundManager.play(assets.deny);
                     }
                 }
                 else {

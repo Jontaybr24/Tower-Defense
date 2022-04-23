@@ -1,9 +1,7 @@
 MyGame.objects.Gameboard = function (assets, graphics, magic) {
     'use strict';
 
-    const GAP = 5; // works best with odd numbers
     const ROTATION = 0;
-    const BUFFER = 100 // time in ms for button presses to register after being held
     let timePassed = 0;
 
     let board = [];

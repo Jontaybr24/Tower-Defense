@@ -1,21 +1,108 @@
 {
+    "name": "Level 1",
     "unlocked": true,
-    "board": {"size":11, "gap":3},
-    "towerCount": 1,
+    "board": {"size":17, "gap":5},
+    "towerCount": 8,
     "info": {"coins": 2000, "lives": 50},
     "waveData":[
         [
             ["Spider", 20, "W"]
         ],
         [
-            ["Drone", 1, "N"],
-            ["Drone", 1, "E"],
-            ["Drone", 1, "S"],
-            ["Drone", 1, "W"],
-            ["Spider", 1, "S"],
-            ["Spider", 1, "E"],
-            ["Spider", 1, "W"],
-            ["Spider", 1, "N"]
+            ["Spider", 20, "S"],
+            ["Spider", 20, "E"],
+            ["Spider", 20, "W"],
+            ["Spider", 20, "N"]
+        ],
+        [
+            ["Spider", 20, "S"],
+            ["Spider", 20, "E"],
+            ["Spider", 20, "W"],
+            ["Spider", 20, "N"]
+        ],
+        [
+            ["Spider", 20, "S"],
+            ["Spider", 20, "E"],
+            ["Spider", 20, "W"],
+            ["Spider", 20, "N"]
+        ],
+        [
+            ["Spider", 20, "S"],
+            ["Spider", 20, "E"],
+            ["Spider", 20, "W"],
+            ["Spider", 20, "N"]
+        ],
+        [
+            ["Spider", 20, "S"],
+            ["Spider", 20, "E"],
+            ["Spider", 20, "W"],
+            ["Spider", 20, "N"]
+        ],
+        [
+            ["Spider", 20, "S"],
+            ["Spider", 20, "E"],
+            ["Spider", 20, "W"],
+            ["Spider", 20, "N"]
+        ],
+        [
+            ["Spider", 20, "S"],
+            ["Spider", 20, "E"],
+            ["Spider", 20, "W"],
+            ["Spider", 20, "N"]
+        ],
+        [
+            ["Spider", 20, "S"],
+            ["Spider", 20, "E"],
+            ["Spider", 20, "W"],
+            ["Spider", 20, "N"]
+        ],
+        [
+            ["Spider", 20, "S"],
+            ["Spider", 20, "E"],
+            ["Spider", 20, "W"],
+            ["Spider", 20, "N"]
+        ],
+        [
+            ["Spider", 20, "S"],
+            ["Spider", 20, "E"],
+            ["Spider", 20, "W"],
+            ["Spider", 20, "N"]
+        ],
+        [
+            ["Spider", 20, "S"],
+            ["Spider", 20, "E"],
+            ["Spider", 20, "W"],
+            ["Spider", 20, "N"]
+        ],
+        [
+            ["Spider", 20, "S"],
+            ["Spider", 20, "E"],
+            ["Spider", 20, "W"],
+            ["Spider", 20, "N"]
+        ],
+        [
+            ["Spider", 20, "S"],
+            ["Spider", 20, "E"],
+            ["Spider", 20, "W"],
+            ["Spider", 20, "N"]
+        ],
+        [
+            ["Spider", 20, "S"],
+            ["Spider", 20, "E"],
+            ["Spider", 20, "W"],
+            ["Spider", 20, "N"]
+        ],
+        [
+            ["Spider", 20, "S"],
+            ["Spider", 20, "E"],
+            ["Spider", 20, "W"],
+            ["Spider", 20, "N"]
+        ],
+        [
+            ["Spider", 20, "S"],
+            ["Spider", 20, "E"],
+            ["Spider", 20, "W"],
+            ["Spider", 20, "N"]
         ],
         [
             ["Spider", 2, "S"],

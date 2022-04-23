@@ -52,6 +52,10 @@ MyGame.objects.Laser = function (assets, graphics, magic, sounds) {
         };
         
     }
+    function loadLaser(){
+        lasers = {};
+        size = magic.CELL_SIZE * .3; // The size of the hitbox for the lasers
+    }
 
     let api = {
         update: update,
@@ -59,6 +63,7 @@ MyGame.objects.Laser = function (assets, graphics, magic, sounds) {
         createLaser: createLaser,
         deleteLaser: deleteLaser,
         hitLaser: hitLaser,
+        loadLaser: loadLaser,
         get lasers() { return lasers }
     };
 
