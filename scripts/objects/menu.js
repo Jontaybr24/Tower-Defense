@@ -1,11 +1,11 @@
 MyGame.objects.Menu = function (assets, graphics, magic, towers, info, sounds) {
     'use strict';
     let tower = null;
-    let smallBoxHeight = graphics.canvas.height / 11;
+    let smallBoxHeight = graphics.canvas.height / 12;
     let smallBoxWidth = magic.X_OFFSET * .8;
     let padding = 20;
     let textPadding = 22;
-    let y_bottom = 140;
+    let y_bottom = 125; // distance from the bottom of the screen
     let bigBoxHeight = (smallBoxHeight + padding) * 3;
     let bigBoxWidth = magic.X_OFFSET * .9;
     let dataBoxHeight = smallBoxHeight * 1.3;
@@ -71,143 +71,144 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers, info, sounds) {
         graphics.drawRectangle({ center: dataBox.center, size: dataBox.size }, bgColor, "black");
         graphics.drawRectangle({ center: sellBox.center, size: sellBox.size }, bgColor, "black");
         if (tower != null) {
+            graphics.drawText(tower.name, { x: dataBox.center.x, y: dataBox.center.y - 25 }, "black", "28px Arial", true);
+            graphics.drawText("Sell $" + Math.floor(tower.cost * magic.SELL_PRICE), { x: sellBox.center.x, y: sellBox.center.y + 8 }, "white", "24px Arial", true);
+            if (sellBox.selected) {
+                graphics.drawRectangle({ center: sellBox.center, size: sellBox.size }, "rgba(255, 0, 0, .5)", "black");
+            }
+            graphics.drawRectangle({ center: tower.center, size: { x: magic.CELL_SIZE, y: magic.CELL_SIZE }, rotation: 0 }, "rgba(12, 170, 7, .5)", "black");
             graphics.drawRectangle({ center: box1.center, size: box1.size }, "#85481d", "black");
             graphics.drawRectangle({ center: box2.center, size: box2.size }, "#85481d", "black");
             graphics.drawRectangle({ center: box3.center, size: box3.size }, "#85481d", "black");
 
-
-            graphics.drawText(tower.name, { x: dataBox.center.x, y: dataBox.center.y - 25 }, "black", "28px Arial", true);
             graphics.drawText("Damage:", { x: dataBox.center.x - dataBox.size.x / 2 + padding / 2, y: dataBox.center.y }, "black", "16px Arial");
             graphics.drawText("Rate of Fire:", { x: dataBox.center.x - dataBox.size.x / 2 + padding / 2, y: dataBox.center.y + textPadding }, "black", "16px Arial");
             graphics.drawText("Radius:", { x: dataBox.center.x - dataBox.size.x / 2 + padding / 2, y: dataBox.center.y + textPadding * 2 }, "black", "16px Arial");
 
-            graphics.drawText("Sell $" + Math.floor(tower.cost * magic.SELL_PRICE), { x: sellBox.center.x, y: sellBox.center.y + 10 }, "white", "24px Arial", true);
-
-            if (box1.selected && tower.path != 1 && tower.path != 2 && tower.level < 3) {
-                if (tower.upgrades["radius"][0][0] == 0) {
+            if ("upgrades" in tower) {
+                if (box1.selected && tower.path != 1 && tower.path != 2 && tower.level < 3) {
+                    if (tower.upgrades["radius"][0][0] == 0) {
+                        graphics.drawEllipse({ center: tower.center, radius: tower.radius }, "rgba(0, 25, 0, .25)", "black");
+                        graphics.drawText(Math.floor(tower.radius / magic.CELL_SIZE), { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "white", "16px Arial");
+                    }
+                    else {
+                        graphics.drawEllipse({ center: tower.center, radius: tower.radius + (tower.upgrades["radius"][0][0] * magic.CELL_SIZE) }, "rgba(0, 225, 0, .25)", "black");
+                        graphics.drawText(Math.floor(tower.radius / magic.CELL_SIZE) + tower.upgrades["radius"][0][0], { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "green", "16px Arial");
+                    }
+                    if (tower.upgrades["damage"][0][0] == 0) {
+                        graphics.drawText(tower.damage, { x: dataBox.center.x - 10, y: dataBox.center.y }, "white", "16px Arial");
+                    }
+                    else {
+                        graphics.drawText(tower.damage + tower.upgrades["damage"][0][0], { x: dataBox.center.x - 10, y: dataBox.center.y }, "green", "16px Arial");
+                    }
+                    if (tower.upgrades["fireRate"][0][0] == 0) {
+                        graphics.drawText(tower.fireRate, { x: dataBox.center.x + 12, y: dataBox.center.y + textPadding }, "white", "16px Arial");
+                    }
+                    else {
+                        graphics.drawText(tower.fireRate + tower.upgrades["fireRate"][0][0], { x: dataBox.center.x + 12, y: dataBox.center.y + textPadding }, "green", "16px Arial");
+                    }
+                }
+                else if (box2.selected && tower.path != 0 && tower.path != 2 && tower.level < 3) {
+                    if (tower.upgrades["radius"][1][0] == 0) {
+                        graphics.drawEllipse({ center: tower.center, radius: tower.radius }, "rgba(0, 25, 0, .25)", "black");
+                        graphics.drawText(Math.floor(tower.radius / magic.CELL_SIZE), { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "white", "16px Arial");
+                    }
+                    else {
+                        graphics.drawEllipse({ center: tower.center, radius: tower.radius + (tower.upgrades["radius"][1][0] * magic.CELL_SIZE) }, "rgba(0, 225, 0, .25)", "black");
+                        graphics.drawText(Math.floor(tower.radius / magic.CELL_SIZE) + tower.upgrades["radius"][1][0], { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "green", "16px Arial");
+                    }
+                    if (tower.upgrades["damage"][1][0] == 0) {
+                        graphics.drawText(tower.damage, { x: dataBox.center.x - 10, y: dataBox.center.y }, "white", "16px Arial");
+                    }
+                    else {
+                        graphics.drawText(tower.damage + tower.upgrades["damage"][1][0], { x: dataBox.center.x - 10, y: dataBox.center.y }, "green", "16px Arial");
+                    }
+                    if (tower.upgrades["fireRate"][1][0] == 0) {
+                        graphics.drawText(tower.fireRate, { x: dataBox.center.x + 12, y: dataBox.center.y + textPadding }, "white", "16px Arial");
+                    }
+                    else {
+                        graphics.drawText(tower.fireRate + tower.upgrades["fireRate"][1][0], { x: dataBox.center.x + 12, y: dataBox.center.y + textPadding }, "green", "16px Arial");
+                    }
+                }
+                else if (box3.selected && tower.path != 1 && tower.path != 0 && tower.level < 3) {
+                    if (tower.upgrades["radius"][2][0] == 0) {
+                        graphics.drawEllipse({ center: tower.center, radius: tower.radius }, "rgba(0, 25, 0, .25)", "black");
+                        graphics.drawText(Math.floor(tower.radius / magic.CELL_SIZE), { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "white", "16px Arial");
+                    }
+                    else {
+                        graphics.drawEllipse({ center: tower.center, radius: tower.radius + (tower.upgrades["radius"][2][0] * magic.CELL_SIZE) }, "rgba(0, 225, 0, .25)", "black");
+                        graphics.drawText(Math.floor(tower.radius / magic.CELL_SIZE) + tower.upgrades["radius"][2][0], { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "green", "16px Arial");
+                    }
+                    if (tower.upgrades["damage"][2][0] == 0) {
+                        graphics.drawText(tower.damage, { x: dataBox.center.x - 10, y: dataBox.center.y }, "white", "16px Arial");
+                    }
+                    else {
+                        graphics.drawText(tower.damage + tower.upgrades["damage"][2][0], { x: dataBox.center.x - 10, y: dataBox.center.y }, "green", "16px Arial");
+                    }
+                    if (tower.upgrades["fireRate"][2][0] == 0) {
+                        graphics.drawText(tower.fireRate, { x: dataBox.center.x + 12, y: dataBox.center.y + textPadding }, "white", "16px Arial");
+                    }
+                    else {
+                        graphics.drawText(tower.fireRate + tower.upgrades["fireRate"][2][0], { x: dataBox.center.x + 12, y: dataBox.center.y + textPadding }, "green", "16px Arial");
+                    }
+                }
+                else {
                     graphics.drawEllipse({ center: tower.center, radius: tower.radius }, "rgba(0, 25, 0, .25)", "black");
+                    graphics.drawText(tower.damage, { x: dataBox.center.x - 10, y: dataBox.center.y }, "white", "16px Arial");
+                    graphics.drawText(tower.fireRate, { x: dataBox.center.x + 12, y: dataBox.center.y + textPadding }, "white", "16px Arial");
                     graphics.drawText(Math.floor(tower.radius / magic.CELL_SIZE), { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "white", "16px Arial");
                 }
-                else {
-                    graphics.drawEllipse({ center: tower.center, radius: tower.radius + (tower.upgrades["radius"][0][0] * magic.CELL_SIZE) }, "rgba(0, 225, 0, .25)", "black");
-                    graphics.drawText(Math.floor(tower.radius / magic.CELL_SIZE) + tower.upgrades["radius"][0][0], { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "green", "16px Arial");
-                }
-                if (tower.upgrades["damage"][0][0] == 0) {
-                    graphics.drawText(tower.damage, { x: dataBox.center.x - 10, y: dataBox.center.y }, "white", "16px Arial");
-                }
-                else {
-                    graphics.drawText(tower.damage + tower.upgrades["damage"][0][0], { x: dataBox.center.x - 10, y: dataBox.center.y }, "green", "16px Arial");
-                }
-                if (tower.upgrades["fireRate"][0][0] == 0) {
-                    graphics.drawText(tower.fireRate, { x: dataBox.center.x + 12, y: dataBox.center.y + textPadding }, "white", "16px Arial");
-                }
-                else {
-                    graphics.drawText(tower.fireRate + tower.upgrades["fireRate"][0][0], { x: dataBox.center.x + 12, y: dataBox.center.y + textPadding }, "green", "16px Arial");
-                }
-            }
-            else if (box2.selected && tower.path != 0 && tower.path != 2 && tower.level < 3) {
-                if (tower.upgrades["radius"][1][0] == 0) {
-                    graphics.drawEllipse({ center: tower.center, radius: tower.radius }, "rgba(0, 25, 0, .25)", "black");
-                    graphics.drawText(Math.floor(tower.radius / magic.CELL_SIZE), { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "white", "16px Arial");
-                }
-                else {
-                    graphics.drawEllipse({ center: tower.center, radius: tower.radius + (tower.upgrades["radius"][1][0] * magic.CELL_SIZE) }, "rgba(0, 225, 0, .25)", "black");
-                    graphics.drawText(Math.floor(tower.radius / magic.CELL_SIZE) + tower.upgrades["radius"][1][0], { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "green", "16px Arial");
-                }
-                if (tower.upgrades["damage"][1][0] == 0) {
-                    graphics.drawText(tower.damage, { x: dataBox.center.x - 10, y: dataBox.center.y }, "white", "16px Arial");
-                }
-                else {
-                    graphics.drawText(tower.damage + tower.upgrades["damage"][1][0], { x: dataBox.center.x - 10, y: dataBox.center.y }, "green", "16px Arial");
-                }
-                if (tower.upgrades["fireRate"][1][0] == 0) {
-                    graphics.drawText(tower.fireRate, { x: dataBox.center.x + 12, y: dataBox.center.y + textPadding }, "white", "16px Arial");
+                if (tower.level < 3) {
+                    tower.renderPreview(tower, box1.center, tower.level + 1, 0, { x: magic.MENU_SIZE, y: magic.MENU_SIZE });
+                    tower.renderPreview(tower, box2.center, tower.level + 1, 1, { x: magic.MENU_SIZE, y: magic.MENU_SIZE });
+                    tower.renderPreview(tower, box3.center, tower.level + 1, 2, { x: magic.MENU_SIZE, y: magic.MENU_SIZE });
+                    if (tower.path == 3 || tower.path == 0) {
+                        graphics.drawText("$" + tower.upgrades["cost"][0][0], { x: box1.center.x - box1.size.x / 2 + padding / 2, y: box1.center.y - padding }, "white", "22px Arial");
+                    }
+                    if (tower.path == 3 || tower.path == 1) {
+                        graphics.drawText("$" + tower.upgrades["cost"][1][0], { x: box2.center.x - box2.size.x / 2 + padding / 2, y: box2.center.y - padding }, "white", "22px Arial");
+                    }
+                    if (tower.path == 3 || tower.path == 2) {
+                        graphics.drawText("$" + tower.upgrades["cost"][2][0], { x: box3.center.x - box3.size.x / 2 + padding / 2, y: box3.center.y - padding }, "white", "22px Arial");
+                    }
+                    if (box1.selected && tower.path != 1 && tower.path != 2) {
+                        if (info.coins >= tower.upgrades["cost"][0][0])
+                            graphics.drawRectangle({ center: box1.center, size: box1.size }, highlight, "black");
+                        else
+                            graphics.drawRectangle({ center: box1.center, size: box1.size }, rhighlight, "black");
+                    }
+                    else if (box2.selected && tower.path != 0 && tower.path != 2) {
+                        if (info.coins >= tower.upgrades["cost"][1][0])
+                            graphics.drawRectangle({ center: box2.center, size: box2.size }, highlight, "black");
+                        else
+                            graphics.drawRectangle({ center: box2.center, size: box2.size }, rhighlight, "black");
+                    }
+                    else if (box3.selected && tower.path != 0 && tower.path != 1) {
+                        if (info.coins >= tower.upgrades["cost"][2][0])
+                            graphics.drawRectangle({ center: box3.center, size: box3.size }, highlight, "black");
+                        else
+                            graphics.drawRectangle({ center: box3.center, size: box3.size }, rhighlight, "black");
+                    }
                 }
                 else {
-                    graphics.drawText(tower.fireRate + tower.upgrades["fireRate"][1][0], { x: dataBox.center.x + 12, y: dataBox.center.y + textPadding }, "green", "16px Arial");
+                    graphics.drawText("MAX LEVEL", box1.center, "white", "24px Arial", true);
+                    graphics.drawText("MAX LEVEL", box2.center, "white", "24px Arial", true);
+                    graphics.drawText("MAX LEVEL", box3.center, "white", "24px Arial", true);
                 }
-            }
-            else if (box3.selected && tower.path != 1 && tower.path != 0 && tower.level < 3) {
-                if (tower.upgrades["radius"][2][0] == 0) {
-                    graphics.drawEllipse({ center: tower.center, radius: tower.radius }, "rgba(0, 25, 0, .25)", "black");
-                    graphics.drawText(Math.floor(tower.radius / magic.CELL_SIZE), { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "white", "16px Arial");
-                }
-                else {
-                    graphics.drawEllipse({ center: tower.center, radius: tower.radius + (tower.upgrades["radius"][2][0] * magic.CELL_SIZE) }, "rgba(0, 225, 0, .25)", "black");
-                    graphics.drawText(Math.floor(tower.radius / magic.CELL_SIZE) + tower.upgrades["radius"][2][0], { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "green", "16px Arial");
-                }
-                if (tower.upgrades["damage"][2][0] == 0) {
-                    graphics.drawText(tower.damage, { x: dataBox.center.x - 10, y: dataBox.center.y }, "white", "16px Arial");
-                }
-                else {
-                    graphics.drawText(tower.damage + tower.upgrades["damage"][2][0], { x: dataBox.center.x - 10, y: dataBox.center.y }, "green", "16px Arial");
-                }
-                if (tower.upgrades["fireRate"][2][0] == 0) {
-                    graphics.drawText(tower.fireRate, { x: dataBox.center.x + 12, y: dataBox.center.y + textPadding }, "white", "16px Arial");
-                }
-                else {
-                    graphics.drawText(tower.fireRate + tower.upgrades["fireRate"][2][0], { x: dataBox.center.x + 12, y: dataBox.center.y + textPadding }, "green", "16px Arial");
-                }
-            }
-            else {
-                graphics.drawEllipse({ center: tower.center, radius: tower.radius }, "rgba(0, 25, 0, .25)", "black");
-                graphics.drawText(tower.damage, { x: dataBox.center.x - 10, y: dataBox.center.y }, "white", "16px Arial");
-                graphics.drawText(tower.fireRate, { x: dataBox.center.x + 12, y: dataBox.center.y + textPadding }, "white", "16px Arial");
-                graphics.drawText(Math.floor(tower.radius / magic.CELL_SIZE), { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "white", "16px Arial");
-            }
-            if (tower.level < 3) {
-                tower.renderPreview(tower, box1.center, tower.level + 1, 0, { x: magic.MENU_SIZE, y: magic.MENU_SIZE });
-                tower.renderPreview(tower, box2.center, tower.level + 1, 1, { x: magic.MENU_SIZE, y: magic.MENU_SIZE });
-                tower.renderPreview(tower, box3.center, tower.level + 1, 2, { x: magic.MENU_SIZE, y: magic.MENU_SIZE });
-                if (tower.path == 3 || tower.path == 0) {
-                    graphics.drawText("$" + tower.upgrades["cost"][0][0], { x: box1.center.x - box1.size.x / 2 + padding / 2, y: box1.center.y - padding }, "white", "22px Arial");
-                }
-                if (tower.path == 3 || tower.path == 1) {
-                    graphics.drawText("$" + tower.upgrades["cost"][1][0], { x: box2.center.x - box2.size.x / 2 + padding / 2, y: box2.center.y - padding }, "white", "22px Arial");
-                }
-                if (tower.path == 3 || tower.path == 2) {
-                    graphics.drawText("$" + tower.upgrades["cost"][2][0], { x: box3.center.x - box3.size.x / 2 + padding / 2, y: box3.center.y - padding }, "white", "22px Arial");
-                }
-                if (box1.selected && tower.path != 1 && tower.path != 2) {
-                    if (info.coins >= tower.upgrades["cost"][0][0])
-                        graphics.drawRectangle({ center: box1.center, size: box1.size }, highlight, "black");
-                    else
-                        graphics.drawRectangle({ center: box1.center, size: box1.size }, rhighlight, "black");
-                }
-                else if (box2.selected && tower.path != 0 && tower.path != 2) {
-                    if (info.coins >= tower.upgrades["cost"][1][0])
-                        graphics.drawRectangle({ center: box2.center, size: box2.size }, highlight, "black");
-                    else
-                        graphics.drawRectangle({ center: box2.center, size: box2.size }, rhighlight, "black");
-                }
-                else if (box3.selected && tower.path != 0 && tower.path != 1) {
-                    if (info.coins >= tower.upgrades["cost"][2][0])
-                        graphics.drawRectangle({ center: box3.center, size: box3.size }, highlight, "black");
-                    else
-                        graphics.drawRectangle({ center: box3.center, size: box3.size }, rhighlight, "black");
-                }
-            }
-            else {
-                graphics.drawText("MAX LEVEL", box1.center, "white", "24px Arial", true);
-                graphics.drawText("MAX LEVEL", box2.center, "white", "24px Arial", true);
-                graphics.drawText("MAX LEVEL", box3.center, "white", "24px Arial", true);
-            }
 
 
-            if (sellBox.selected) {
-                graphics.drawRectangle({ center: sellBox.center, size: sellBox.size }, "rgba(255, 0, 0, .5)", "black");
-            }
-            if (tower.path == 0) {
-                graphics.drawRectangle({ center: box2.center, size: box2.size }, locked, "black");
-                graphics.drawRectangle({ center: box3.center, size: box3.size }, locked, "black");
-            }
-            else if (tower.path == 1) {
-                graphics.drawRectangle({ center: box1.center, size: box1.size }, locked, "black");
-                graphics.drawRectangle({ center: box3.center, size: box3.size }, locked, "black");
-            }
-            else if (tower.path == 2) {
-                graphics.drawRectangle({ center: box1.center, size: box1.size }, "#693a19", "black");
-                graphics.drawRectangle({ center: box2.center, size: box2.size }, "#693a19", "black");
+                if (tower.path == 0) {
+                    graphics.drawRectangle({ center: box2.center, size: box2.size }, locked, "black");
+                    graphics.drawRectangle({ center: box3.center, size: box3.size }, locked, "black");
+                }
+                else if (tower.path == 1) {
+                    graphics.drawRectangle({ center: box1.center, size: box1.size }, locked, "black");
+                    graphics.drawRectangle({ center: box3.center, size: box3.size }, locked, "black");
+                }
+                else if (tower.path == 2) {
+                    graphics.drawRectangle({ center: box1.center, size: box1.size }, "#693a19", "black");
+                    graphics.drawRectangle({ center: box2.center, size: box2.size }, "#693a19", "black");
+                }
             }
         }
     }
@@ -216,6 +217,12 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers, info, sounds) {
     }
 
     function setTower(obj) {
+        if (obj == null) {
+            box1.selected = false;
+            box2.selected = false;
+            box3.selected = false;
+            sellBox.selected = false;
+        }
         tower = obj;
     }
 
@@ -250,11 +257,11 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers, info, sounds) {
     function checkHover(point) {
         if (tower != null) {
             point = { xmin: point.x, xmax: point.x, ymin: point.y, ymax: point.y }
-            if (!box1.selected && magic.collision(point, box1.hitbox) && (tower.path == 3 || tower.path == 0))
+            if (!box1.selected && magic.collision(point, box1.hitbox) && (tower.path == 3 || tower.path == 0) && "upgrades" in tower)
                 sounds.play(assets.menu_hover);
-            if (!box2.selected && magic.collision(point, box2.hitbox) && (tower.path == 3 || tower.path == 1))
+            if (!box2.selected && magic.collision(point, box2.hitbox) && (tower.path == 3 || tower.path == 1) && "upgrades" in tower)
                 sounds.play(assets.menu_hover);
-            if (!box3.selected && magic.collision(point, box3.hitbox) && (tower.path == 3 || tower.path == 2))
+            if (!box3.selected && magic.collision(point, box3.hitbox) && (tower.path == 3 || tower.path == 2) && "upgrades" in tower)
                 sounds.play(assets.menu_hover);
             if (!sellBox.selected && magic.collision(point, sellBox.hitbox))
                 sounds.play(assets.menu_hover);

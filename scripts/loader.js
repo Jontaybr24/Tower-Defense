@@ -149,6 +149,12 @@ MyGame.loader = (function () {
         key: 'life',
         source: '/assets/life.png'
     },{
+        key: 'Wall_base',
+        source: '/assets/wall.png'
+    },{
+        key: 'Wall_3_0',
+        source: '/assets/wall.png'
+    },{
         key: 'Turret_base',
         source: '/assets/tower-base.png'
     },{
@@ -343,7 +349,9 @@ MyGame.loader = (function () {
                     grid: { label: 'Toggle Grid', key: 'h' },
                     startWave: { label: 'Start Wave', key: 'g' },
                     sell: { label: 'Sell', key: 's' },
-                    upgrade: {label: 'Upgrade', key: 'u'},
+                    upgrade1: {label: 'Upgrade Path 1', key: 'u'},
+                    upgrade2: {label: 'Upgrade Path 2', key: '2'},
+                    upgrade3: {label: 'Upgrade Path 3', key: '3'},
                 },
                 volume: .3,
             }

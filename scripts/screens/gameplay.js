@@ -140,8 +140,20 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     function setControls() {
         myKeyboard.register(data.controls.grid.key, myGameBoard.toggleGrid);
-        myKeyboard.register(data.controls.upgrade.key, function () {
-            myInfo.addCoins(-myTowers.upgrade(myUpgrades.tower, 0));
+        myKeyboard.register(data.controls.upgrade1.key, function () {
+            if (myInfo.coins >= myUpgrades.tower?.upgrades["cost"][0][0]) {
+                myInfo.addCoins(-myTowers.upgrade(myUpgrades.tower, 0));
+            }
+        });
+        myKeyboard.register(data.controls.upgrade2.key, function () {
+            if (myInfo.coins >= myUpgrades.tower?.upgrades["cost"][1][0]) {
+                myInfo.addCoins(-myTowers.upgrade(myUpgrades.tower, 1));
+            }
+        });
+        myKeyboard.register(data.controls.upgrade3.key, function () {
+            if (myInfo.coins >= myUpgrades.tower?.upgrades["cost"][2][0]) {
+                myInfo.addCoins(-myTowers.upgrade(myUpgrades.tower, 2));
+            }
         });
         myKeyboard.register(data.controls.sell.key, sellaTower);
         myKeyboard.register(data.controls.startWave.key, function () {
@@ -173,10 +185,12 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                 }
                 if (e.ctrlKey) {
                     let obj = myGameBoard.removeObject(coords);
-                    myTowers.deleteTower(obj);
-                    myInfo.addCoins(Math.floor(obj.cost * magic.SELL_PRICE));
-                    myUpgrades.setTower(null);
-                    myEnemies.updatePath();
+                    if (obj != null) {
+                        myTowers.deleteTower(obj);
+                        myInfo.addCoins(Math.floor(obj.cost * magic.SELL_PRICE));
+                        myUpgrades.setTower(null);
+                        myEnemies.updatePath();
+                    }
                 }
                 else if (myInfo.placing) {
                     if (myCursor.isClear() && myGameBoard.checkCell(coords)) {

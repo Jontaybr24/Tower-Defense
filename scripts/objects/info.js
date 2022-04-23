@@ -6,8 +6,8 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor, sounds) {
     let wave = 0;
     let step = 40;
     let padding = 45;
-    let towerYStep = 200;
-    let towerStep = 20;
+    let towerYStep = 180;
+    let towerStep = 15;
     let towerOffset = .7;
     let asset_offset_y = -10;
     let asset_offset_x = -15;
@@ -85,10 +85,10 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor, sounds) {
                 ymin: towerDictionary[idx].center.y - magic.MENU_SIZE / 2,
                 ymax: towerDictionary[idx].center.y + magic.MENU_SIZE / 2,
             }
-            x += magic.CELL_SIZE + towerStep;
+            x += magic.MENU_SIZE + towerStep;
             if (x > graphics.canvas.width) {
                 x = start;
-                y += magic.CELL_SIZE + towerStep;
+                y += magic.MENU_SIZE + towerStep;
             }
         }
     }

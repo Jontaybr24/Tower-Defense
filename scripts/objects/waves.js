@@ -147,6 +147,9 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets) {
     function loadWaves(file) {
         waves = [
             [
+                ["Spider", 20, "W"],
+            ],
+            [
                 ["Drone", 1, "N"],
                 ["Drone", 1, "E"],
                 ["Drone", 1, "S"],
@@ -162,8 +165,8 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets) {
                 ["Spider", 2, "E"],
             ],
             [
-                ["Spider", 5, "N"],
-                ["Drone", 5, "N"],
+                ["Spider", 50, "N"],
+                ["Drone", 50, "N"],
             ],
             [
                 ["Spider", 5, "N"],

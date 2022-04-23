@@ -3,6 +3,17 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers) {
     let RADS = magic.CELL_SIZE;
 
     let towerDictionary = {
+        Wall: {
+            name: "Wall",
+            cost: 5,
+            radius: 0,
+            damage: 0,
+            fireRate: 0, // times per second it can shoot in ms 
+            renderPreview: renderPreview, // the piction image
+            needTarget: false, // if the tower needs to turn to target before activating
+            targetAir: false,
+            activate: function (tower, targets) { },
+        },
         Turret: {
             name: "Turret",
             cost: 50,
@@ -29,17 +40,18 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers) {
             },
             renderPreview: renderPreview, // the piction image
             needTarget: true, // if the tower needs to turn to target before activating
+            targetAir: false,
             activate: function (tower, targets) {
                 let pos = JSON.parse(JSON.stringify(tower.center));
                 let color = assets.laser_basic;
-                let virus = function(enemy, data){
+                let virus = function (enemy, data) {
                     enemy.takeHit(enemy, data.damage)
                 }
                 let data = {
                     damage: tower.damage,
                 }
 
-                
+
                 if (tower.level >= 2) {
                     if (tower.path == 0) {
                         console.log("red tower");
@@ -127,9 +139,10 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers) {
     function removeTarget(target) {
         for (let idx in towers) {
             for (let enemy in towers[idx].enemies) {
-                if (towers[idx].enemies[enemy].id == target.id){
+                if (towers[idx].enemies[enemy].id == target.id) {
                     towers[idx].target = null;
-                towers[idx].enemies.splice(enemy, 1);}
+                    towers[idx].enemies.splice(enemy, 1);
+                }
             }
         }
     }
@@ -164,18 +177,19 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers) {
     }
 
     function addEnemy(tower, enemy) {
-        if (!(tower.enemies.includes(enemy)))
-            towers[tower.id].enemies.push(enemy);
+        if (enemy.type == "ground" || enemy.type == "flying" && tower.targetAir) {
+            if (!(tower.enemies.includes(enemy)))
+                towers[tower.id].enemies.push(enemy);
+        }
     }
 
     function upgrade(tower, path) {
         let spent = 0;
-        if (tower != null) {
+        if (tower != null && "upgrades" in tower) {
             if (tower.path == 3) {
                 tower.path = path;
             }
-            if (tower.level < 3) {
-                path = tower.path;
+            if (tower.level < 3 && path == tower.path) {
                 tower.level += 1;
                 spent = tower.upgrades["cost"][path].shift();
                 tower.cost += spent;

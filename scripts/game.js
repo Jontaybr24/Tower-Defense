@@ -20,7 +20,7 @@ MyGame.game = (function(screens) {
                 screens[screen].initialize();
             }
         }
-        showScreen('game-play');
+        showScreen('main-menu');
     }
 
     return {
