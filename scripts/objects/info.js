@@ -92,6 +92,8 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor, sounds) {
     function loadInfo(info){
         coins = info.coins;
         lives = info.lives;
+        placing = false;
+        currentTower = null;
     }
 
     function plusWave(wave){
@@ -155,7 +157,8 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor, sounds) {
         plusWave: plusWave,
         cancelTower: cancelTower,
         get placing() { return placing; },
-        get coins() { return coins; }
+        get coins() { return coins; },
+        get lives() { return lives; }
     };
 
     return api;

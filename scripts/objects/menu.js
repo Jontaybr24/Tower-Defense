@@ -281,6 +281,10 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers, info, sounds) {
         }
     }
 
+    function loadUpgrades(){
+        tower = null;
+    }
+
     let api = {
         update: update,
         render: render,
@@ -288,6 +292,7 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers, info, sounds) {
         checkHover: checkHover,
         buyUpgrade: buyUpgrade,
         sellTower: sellTower,
+        loadUpgrades: loadUpgrades,
         get tower() { return tower; },
     };
 

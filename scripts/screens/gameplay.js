@@ -5,6 +5,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     let paused = false;
     let cancelNextRequest = true;
+    let levelD = null;
 
     let myKeyboard = input.Keyboard();
     let myMouse = input.Mouse();
@@ -71,13 +72,19 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     // clears all data in objects and sets the data to the level parameters
     function loadLevel(level) {
+        hideMenu();
+        hideMenu2();
+        hideMenu3();
+        levelD = level;
         magic.setGridSize(level.board.size);
         myLasers.loadLaser();
         myHealthbars.loadHP();
         myGameBoard.genBoard(level.board);
         myPathfinder.loadBoard(myGameBoard.board);
-        myWaves.loadWaves(level.waveData);
+        myWaves.loadWaves(JSON.parse(JSON.stringify(level.waveData)));
         myTowers.loadTowers(level.towerCount);
+        myCursor.loadCursor();
+        myUpgrades.loadUpgrades();
         myInfo.loadTowers(myTowers.towerDictionary);
         myInfo.loadInfo(level.info)
         myEnemies.clearAll();
@@ -85,7 +92,13 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     function checkWin() {
         if (!myWaves.checkWaves() && myEnemies.length == 0) {
-            console.log("All waves complete");
+            showMenu3();
+        }
+    }
+
+    function checkLoss() {
+        if (myInfo.lives <= 0) {
+            showMenu2();
         }
     }
 
@@ -107,9 +120,30 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         soundManager.pauseAll();
     }
 
+    function hideMenu2() {
+        paused = false;
+        document.getElementById('death-menu').style.display = "none";
+        soundManager.playAll();
+    }
+    function showMenu2() {
+        paused = true;
+        document.getElementById('death-menu').style.display = "block";
+        soundManager.pauseAll();
+    }
+
+    function hideMenu3() {
+        paused = false;
+        document.getElementById('win-menu').style.display = "none";
+        soundManager.playAll();
+    }
+    function showMenu3() {
+        paused = true;
+        document.getElementById('win-menu').style.display = "block";
+        soundManager.pauseAll();
+    }
+
     function endGame(menu) {
         cancelNextRequest = true;
-        hideMenu();
         if (menu == "main")
             game.showScreen('main-menu');
         else
@@ -138,6 +172,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myLasers.update(elapsedTime);
 
         checkWin();
+        checkLoss();
         cursorCollision();
     }
 
@@ -229,7 +264,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                         }
                         myEnemies.updatePath();
                     }
-                    else if (!myCursor.placing && coords.x <= magic.GRID_SIZE){
+                    else if (!myCursor.isClear() && coords.x < magic.GRID_SIZE) {
                         soundManager.play(assets.deny);
                     }
                 }
@@ -327,14 +362,31 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             "mouseenter",
             function () { soundManager.play(assets.menu_hover); });
 
-        document.getElementById('id-death-back').addEventListener('click', endGame);
+        document.getElementById('id-death-back').addEventListener(
+            'click',
+            function () {
+                endGame("main");
+            });
         document.getElementById('id-death-back').addEventListener(
             "mouseenter",
             function () { soundManager.play(assets.menu_hover); });
         document.getElementById('id-retry').addEventListener(
             'click',
-            function () { startGame(); });
+            function () { loadLevel(levelD); });
         document.getElementById('id-retry').addEventListener(
+            "mouseenter",
+            function () { soundManager.play(assets.menu_hover); });
+
+        document.getElementById('id-win-back').addEventListener(
+            'click',
+            function () { endGame("back"); });
+        document.getElementById('id-win-back').addEventListener(
+            "mouseenter",
+            function () { soundManager.play(assets.menu_hover); });
+        document.getElementById('id-win-main').addEventListener(
+            'click',
+            function () { endGame("main"); });
+        document.getElementById('id-win-main').addEventListener(
             "mouseenter",
             function () { soundManager.play(assets.menu_hover); });
     }

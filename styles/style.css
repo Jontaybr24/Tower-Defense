@@ -72,6 +72,12 @@ body {
     width: 100%;
     top: 30%;
 }
+#win-menu {
+    display: none;
+    position: absolute;
+    width: 100%;
+    top: 30%;
+}
 
 #settings td {
     text-align: center;

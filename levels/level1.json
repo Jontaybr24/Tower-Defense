@@ -2,11 +2,11 @@
     "name": "Level 1",
     "unlocked": true,
     "board": {"size":17, "gap":5},
-    "towerCount": 8,
-    "info": {"coins": 2000, "lives": 50},
+    "towerCount": 1,
+    "info": {"coins": 2000, "lives": 1},
     "waveData":[
         [
-            ["Spider", 20, "W"]
+            ["Drone", 2, "W"]
         ],
         [
             ["Spider", 20, "S"],

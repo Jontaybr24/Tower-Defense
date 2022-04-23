@@ -39,7 +39,7 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets, sounds) {
         if (timePassed > spawnRate && spawning) {
             for (let loc in waveData) {
                 if (waveData[loc].length > 0) {
-                    enemies.spawnEnemy(waveData[loc][0], loc, "ground");
+                    enemies.spawnEnemy(waveData[loc][0], loc);
                     waveData[loc].shift();
                     timePassed = 0;
                 }
@@ -191,6 +191,9 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets, sounds) {
     function loadWaves(data) {
         spawnRate = 1000 / 1.5 // time in ms for an enemy to spawn
         spawning = false;
+        waveCount = 0;
+        waveData = { N: [], W: [], E: [], S: [] };
+        currentWave = null;
         boxSize = magic.CELL_SIZE;
         nBox = { center: { x: graphics.canvas.height / 2, y: magic.CELL_SIZE / 2 }, size: { x: boxSize, y: boxSize }, hitbox: { xmin: 0, xmax: 0, ymin: 0, ymax: 0 }, selected: false };
         magic.sethitbox(nBox, nBox.size);
