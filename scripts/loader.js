@@ -76,6 +76,11 @@ MyGame.loader = (function () {
         onComplete: null
     },
     {
+        scripts: ['objects/missiles'],
+        message: 'Bew Bew Loaded',
+        onComplete: null
+    },
+    {
         scripts: ['objects/info'],
         message: 'Info Loaded',
         onComplete: null
@@ -203,6 +208,39 @@ MyGame.loader = (function () {
     }, {
         key: 'Turret_2_3',
         source: '/assets/basic-turret-10.png'
+    },{
+        key: 'Launcher_base',
+        source: '/assets/tower-base.png'
+    }, {
+        key: 'Launcher_3_0',
+        source: '/assets/launcher-1.png'
+    }, {
+        key: 'Launcher_0_1',
+        source: '/assets/launcher-2.png'
+    }, {
+        key: 'Launcher_0_2',
+        source: '/assets/launcher-3.png'
+    }, {
+        key: 'Launcher_0_3',
+        source: '/assets/launcher-4.png'
+    }, {
+        key: 'Launcher_1_1',
+        source: '/assets/launcher-5.png'
+    }, {
+        key: 'Launcher_1_2',
+        source: '/assets/launcher-6.png'
+    }, {
+        key: 'Launcher_1_3',
+        source: '/assets/launcher-7.png'
+    }, {
+        key: 'Launcher_2_1',
+        source: '/assets/launcher-8.png'
+    }, {
+        key: 'Launcher_2_2',
+        source: '/assets/launcher-9.png'
+    }, {
+        key: 'Launcher_2_3',
+        source: '/assets/launcher-10.png'
     }, {
 
         key: 'Drone',

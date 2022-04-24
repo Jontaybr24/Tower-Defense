@@ -3,7 +3,7 @@
     "unlocked": true,
     "board": {"size":21, "gap":5},
     "towerCount": 8,
-    "info": {"coins": 200, "lives": 50},
+    "info": {"coins": 2000, "lives": 50},
     "waveData":[
         [
             ["Cube", 1, "W"]

@@ -1,4 +1,4 @@
-MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds) {
+MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missiles) {
     'use strict';
 
     let towerDictionary = {
@@ -10,7 +10,6 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds) {
             fireRate: 0, // times per second it can shoot in ms 
             renderPreview: renderPreview, // the piction image
             needTarget: false, // if the tower needs to turn to target before activating
-            targetAir: false,
             activate: function () { },
         },
         Turret: {
@@ -40,6 +39,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds) {
             renderPreview: renderPreview, // the piction image
             needTarget: true, // if the tower needs to turn to target before activating
             targetAir: false,
+            targetGround: true,
             activate: function (tower, targets) {
                 let pos = JSON.parse(JSON.stringify(tower.center));
                 let color = assets.laser_basic;
@@ -63,6 +63,45 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds) {
                     }
                 }
                 lasers.createLaser(targets[0], pos, virus, data, color);
+            },
+        },
+        Launcher: {
+            name: "Launcher",
+            cost: 500,
+            radius: 9.5,
+            damage: 100,
+            fireRate: .5, // times per second it can shoot in ms 
+            upgrades: {
+                cost: [
+                    [75, 150, 200],
+                    [50, 100, 150],
+                    [50, 100, 150],],
+                radius: [
+                    [1, 0, 0],
+                    [1, 1, 1],
+                    [0, 0, .5],],
+                damage: [
+                    [0, 1, 0],
+                    [0, 0, 50],
+                    [5, 0, 0],],
+                fireRate: [
+                    [0, 0, 1],
+                    [0, 1, 0],
+                    [0.1, .1, 0.1],],
+            },
+            renderPreview: renderPreview, // the piction image
+            needTarget: true, // if the tower needs to turn to target before activating
+            targetAir: true,
+            targetGround: true,
+            activate: function (tower, targets) {
+                let pos = JSON.parse(JSON.stringify(tower.center));
+                let virus = function (enemy, data) {
+                    enemy.takeHit(enemy, data.damage)
+                }
+                let data = {
+                    damage: tower.damage,
+                }
+                missiles.createMissile(targets[0], pos, virus, data);
             },
         },
     };
@@ -177,7 +216,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds) {
     }
 
     function addEnemy(tower, enemy) {
-        if (enemy.type == "ground" || enemy.type == "flying" && tower.targetAir) {
+        if (enemy.type == "ground" && tower.targetGround|| enemy.type == "flying" && tower.targetAir) {
             if (!(tower.enemies.includes(enemy)))
                 towers[tower.id].enemies.push(enemy);
         }

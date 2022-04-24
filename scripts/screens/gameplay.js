@@ -26,7 +26,8 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let myInfo = objects.Info(assets, graphics, magic, myCursor, soundManager, myCoins);
 
     let myLasers = objects.Laser(assets, graphics, magic, soundManager, myParticles);
-    let myTowers = objects.Towers(assets, graphics, magic, myLasers, soundManager);
+    let myMissiles = objects.Missile(assets, graphics, magic, soundManager, myParticles);
+    let myTowers = objects.Towers(assets, graphics, magic, myLasers, soundManager, myMissiles);
     let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder, myInfo, myParticles, myHealthbars, renderer.AnimatedModel, myTowers, soundManager);
     let myWaves = objects.Waves(myEnemies, graphics, magic, assets, soundManager);
     myInfo.plusWave(myWaves);
@@ -67,9 +68,24 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         }
     }
 
+    function enemiesToMissile() {
+        for (let enemy in myEnemies.enemies) {
+            for (let missile in myMissiles.missiles) {
+                if (myEnemies.enemies[enemy] !== undefined) {
+                    if (magic.collision(myMissiles.missiles[missile].hitbox, myEnemies.enemies[enemy].hitbox)) {
+                        if (myMissiles.missiles[missile].target.id == myEnemies.enemies[enemy].id) {
+                            myMissiles.hitMissile(myMissiles.missiles[missile], myEnemies.enemies[enemy]);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     function collinsions() {
         enemiesInRadius();
         enemiesToLaser();
+        enemiesToMissile();
     }
 
     // clears all data in objects and sets the data to the level parameters
@@ -81,6 +97,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         levelD = level;
         magic.setGridSize(level.board.size);
         myLasers.loadLaser();
+        myMissiles.loadMissile();
         myHealthbars.loadHP();
         myGameBoard.genBoard(level.board);
         myPathfinder.loadBoard(myGameBoard.board);
@@ -191,6 +208,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myInfo.update(elapsedTime);
         myUpgrades.update(elapsedTime);
         myLasers.update(elapsedTime);
+        myMissiles.update(elapsedTime);
 
         checkWin();
         checkLoss();
@@ -205,6 +223,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myEnemies.render();
         myHealthbars.render();
         myLasers.render();
+        myMissiles.render();
         myInfo.render();
         myUpgrades.render();
         myWaves.render();

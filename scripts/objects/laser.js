@@ -18,7 +18,6 @@ MyGame.objects.Laser = function (assets, graphics, magic, sounds, particles) {
             let laser = lasers[idx];
             laser.center.x += laser.velocity.x * laser.moveSpeed * elapsedTime;
             laser.center.y += laser.velocity.y * laser.moveSpeed * elapsedTime;
-            particles.makeBoomTrail(laser.center, laser.velocity);
             magic.sethitbox(laser,{x: size, y:size})
             if (laser.center.x < 0 || laser.center.x > graphics.canvas.height || laser.center.y < 0 || laser.center.y > graphics.canvas.height) {
                 deleteLaser(laser);
