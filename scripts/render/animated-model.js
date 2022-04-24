@@ -65,6 +65,7 @@ MyGame.render.AnimatedModel = function (spec, graphics) {
     let api = {
         update: update,
         render: render,
+        get xIndex() {return subImageIndex.x;}
     };
 
     return api;

@@ -13,15 +13,17 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
     Cube: {
       name: "Cube",
       type: "ground",
-      moveRate: 30/1000,
-      health: 40,
-      spec:{
+      moveRate: 130 / 1000,
+      health: 1000,
+      worth: 500,
+      spec: {
         spriteSheet: assets.Cube,
-        subIndex : {x: 0, y:0},
-        subTextureWidth: {x: 32, y:32},
-        spriteCount : 12,
-        spriteTime: 100 }  // ms per frame
-        
+        subIndex: { x: 0, y: 0 },
+        subTextureWidth: { x: 32, y: 32 },
+        spriteCount: 12,
+        spriteTime: 100
+      }  // ms per frame
+
     },
     Spider: {
       name: "Spider",
@@ -141,8 +143,10 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
         }
       }
       else {
-        enemies[index].center.x += (enemies[index].moveRate * elapsedTime * enemies[index].velocity.x)
-        enemies[index].center.y += (enemies[index].moveRate * elapsedTime * enemies[index].velocity.y)
+        if (enemies[index].name != "Cube" || enemies[index].name == "Cube" &&  [3, 4, 5, 9, 10, 11].includes(enemies[index].rig.xIndex)) {
+          enemies[index].center.x += (enemies[index].moveRate * elapsedTime * enemies[index].velocity.x)
+          enemies[index].center.y += (enemies[index].moveRate * elapsedTime * enemies[index].velocity.y)
+        }
 
         //console.log(enemies[index])
         magic.sethitbox(enemies[index], { x: magic.CELL_SIZE, y: magic.CELL_SIZE })

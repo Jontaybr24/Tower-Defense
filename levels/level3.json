@@ -9,6 +9,7 @@
             ["Cube", 1, "W"]
         ],
         [
+            ["Cube", 1, "E"],
             ["Drone", 1, "N"],
             ["Drone", 1, "E"],
             ["Drone", 1, "S"],
@@ -19,15 +20,18 @@
             ["Spider", 1, "N"]
         ],
         [
+            ["Cube", 1, "W"],
             ["Spider", 2, "S"],
             ["Drone", 2, "W"],
             ["Spider", 2, "E"]
         ],
         [
+            ["Cube", 1, "W"],
             ["Spider", 50, "N"],
             ["Drone", 50, "N"]
         ],
         [
+            ["Cube", 1, "W"],
             ["Spider", 5, "N"],
             ["Drone", 5, "N"],
             ["Spider", 5, "N"],
