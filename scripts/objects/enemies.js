@@ -20,7 +20,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
         spriteSheet: assets.Cube,
         subIndex: { x: 0, y: 0 },
         subTextureWidth: { x: 32, y: 32 },
-        spriteCount: 12,
+        spriteCount: 7,
         spriteTime: 100
       }  // ms per frame
 
@@ -143,7 +143,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
         }
       }
       else {
-        if (enemies[index].name != "Cube" || enemies[index].name == "Cube" &&  [3, 4, 5, 9, 10, 11].includes(enemies[index].rig.xIndex)) {
+        if (enemies[index].name != "Cube" || enemies[index].name == "Cube" &&  [5, 6, 7].includes(enemies[index].rig.xIndex)) {
           enemies[index].center.x += (enemies[index].moveRate * elapsedTime * enemies[index].velocity.x)
           enemies[index].center.y += (enemies[index].moveRate * elapsedTime * enemies[index].velocity.y)
         }
