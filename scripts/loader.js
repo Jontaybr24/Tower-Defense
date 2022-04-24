@@ -241,6 +241,39 @@ MyGame.loader = (function () {
     }, {
         key: 'Launcher_2_3',
         source: '/assets/launcher-10.png'
+    },{
+        key: 'Ringtrap_base',
+        source: '/assets/tower-base.png'
+    }, {
+        key: 'Ringtrap_3_0',
+        source: '/assets/launcher-1.png'
+    }, {
+        key: 'Ringtrap_0_1',
+        source: '/assets/launcher-2.png'
+    }, {
+        key: 'Ringtrap_0_2',
+        source: '/assets/launcher-3.png'
+    }, {
+        key: 'Ringtrap_0_3',
+        source: '/assets/launcher-4.png'
+    }, {
+        key: 'Ringtrap_1_1',
+        source: '/assets/launcher-5.png'
+    }, {
+        key: 'Ringtrap_1_2',
+        source: '/assets/launcher-6.png'
+    }, {
+        key: 'Ringtrap_1_3',
+        source: '/assets/launcher-7.png'
+    }, {
+        key: 'Ringtrap_2_1',
+        source: '/assets/launcher-8.png'
+    }, {
+        key: 'Ringtrap_2_2',
+        source: '/assets/launcher-9.png'
+    }, {
+        key: 'Ringtrap_2_3',
+        source: '/assets/launcher-10.png'
     }, {
 
         key: 'Drone',

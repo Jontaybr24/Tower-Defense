@@ -100,6 +100,16 @@ MyGame.objects.Particles = function (assets, graphics, magic) {
     "#ff8c21"
   ];
 
+  let smokePallet = [
+    "#c44910",
+    "#ff5b0f",
+    "#545454",
+    "#ff8c21",
+    "#454545",
+    "#38312b",
+    "#1c1c1c"
+  ];
+
   let icePallet = [
     "#0586ff",
     "#b0d9ff",
@@ -135,7 +145,7 @@ MyGame.objects.Particles = function (assets, graphics, magic) {
   }
 
   function makeBoomTrail(pos, vel) {
-    makeTrail(pos, 15, firePallet, vel);
+    makeTrail(pos, 15, smokePallet, vel);
   }
 
   let api = {

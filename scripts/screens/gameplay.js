@@ -27,7 +27,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     let myLasers = objects.Laser(assets, graphics, magic, soundManager, myParticles);
     let myMissiles = objects.Missile(assets, graphics, magic, soundManager, myParticles);
-    let myTowers = objects.Towers(assets, graphics, magic, myLasers, soundManager, myMissiles);
+    let myTowers = objects.Towers(assets, graphics, magic, myLasers, soundManager, myMissiles, myParticles);
     let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder, myInfo, myParticles, myHealthbars, renderer.AnimatedModel, myTowers, soundManager);
     let myWaves = objects.Waves(myEnemies, graphics, magic, assets, soundManager);
     myInfo.plusWave(myWaves);

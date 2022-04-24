@@ -3,7 +3,6 @@ MyGame.objects.Missile = function (assets, graphics, magic, sounds, particles) {
     let missiles = {};
     let count = 0;
     let size = magic.CELL_SIZE * .3; // The size of the hitbox for the missiles
-    let speed = 50 / 1000; // speed in pixels per ms
 
     function render() {
         for (let idx in missiles) {
@@ -41,7 +40,7 @@ MyGame.objects.Missile = function (assets, graphics, magic, sounds, particles) {
     }
 
     // takes a target as an enemy, pos as a spawn point, and virus as a function to execute when the collision happens
-    function createMissile(target, pos, virus, data, image) {
+    function createMissile(target, pos, virus, data, speed) {
         let vel = magic.computeVelocity(pos, target.center);
         let res = magic.computeRotation(vel);
         missiles[++count] = {
@@ -50,7 +49,6 @@ MyGame.objects.Missile = function (assets, graphics, magic, sounds, particles) {
             moveSpeed: speed,
             center: pos,
             virus: virus,
-            image: image,
             data: data,
             target: target,
             rotation: res + Math.PI / 2,

@@ -1,4 +1,4 @@
-MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missiles) {
+MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missiles, particles) {
     'use strict';
 
     let towerDictionary = {
@@ -67,7 +67,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
         },
         Launcher: {
             name: "Launcher",
-            cost: 500,
+            cost: 100,
             radius: 9.5,
             damage: 100,
             fireRate: .5, // times per second it can shoot in ms 
@@ -101,7 +101,47 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                 let data = {
                     damage: tower.damage,
                 }
-                missiles.createMissile(targets[0], pos, virus, data);
+                if(tower.level >= 2 && tower.path == 2){
+                    missiles.createMissile(targets[0], pos, virus, data, 100 / 1000);
+                }
+                else{
+                    missiles.createMissile(targets[0], pos, virus, data, 50 / 1000);
+                }
+            },
+        },
+        Ringtrap: {
+            name: "Ringtrap",
+            cost: 500,
+            radius: 1.5,
+            damage: 5,
+            fireRate: 2, // times per second it can shoot in ms 
+            upgrades: {
+                cost: [
+                    [75, 150, 200],
+                    [50, 100, 150],
+                    [50, 100, 150],],
+                radius: [
+                    [1, 0, 0],
+                    [1, 1, 1],
+                    [0, 0, .5],],
+                damage: [
+                    [0, 1, 0],
+                    [0, 0, 50],
+                    [5, 0, 0],],
+                fireRate: [
+                    [0, 0, 1],
+                    [0, 1, 0],
+                    [0.1, .1, 0.1],],
+            },
+            renderPreview: renderPreview, // the piction image
+            needTarget: false, // if the tower needs to turn to target before activating
+            targetAir: false,
+            targetGround: true,
+            activate: function (tower, targets) {
+                particles.makeFireRing(tower.center);
+                for(let enemy in targets){
+                    targets[enemy].takeHit(targets[enemy], tower.damage)
+                }
             },
         },
     };
@@ -167,7 +207,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                 else {
                     if (tower.lastShot > (1000 / tower.fireRate)) {
                         tower.lastShot = 0;
-                        tower.activate(tower);
+                        tower.activate(tower, tower.enemies);
                     }
                 }
             }
