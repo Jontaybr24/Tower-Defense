@@ -1,4 +1,5 @@
 {
+    "id": "level4",
     "unlocked": true,
     "board": {"size":17, "gap":5},
     "towerCount": 8,

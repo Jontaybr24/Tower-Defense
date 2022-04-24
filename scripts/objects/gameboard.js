@@ -9,7 +9,6 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
 
     function genBoard(data) {
         board = [];
-        console.log(board);
         for (let i = 0; i < data.size; i++) {
             board.push([]);
             for (let j = 0; j < data.size; j++) {

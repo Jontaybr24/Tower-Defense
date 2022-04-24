@@ -16,6 +16,10 @@ MyGame.screens['main-menu'] = (function (game, sounds, assets) {
         document.getElementById('id-about').addEventListener(
             'click',
             function () { game.showScreen('about'); });
+
+        document.getElementById('id-highscore').addEventListener(
+            'click',
+            function () { game.showScreen('highscores'); });
         document.getElementById('id-new-game').addEventListener(
             "mouseenter",
             function () { soundManager.play(assets.menu_hover); });
@@ -23,6 +27,9 @@ MyGame.screens['main-menu'] = (function (game, sounds, assets) {
             "mouseenter",
             function () { soundManager.play(assets.menu_hover); });
         document.getElementById('id-about').addEventListener(
+            "mouseenter",
+            function () { soundManager.play(assets.menu_hover); });
+        document.getElementById('id-highscore').addEventListener(
             "mouseenter",
             function () { soundManager.play(assets.menu_hover); });
     }

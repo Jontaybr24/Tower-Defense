@@ -213,7 +213,6 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds) {
     function loadTowers(num) {
         clearAll();
         let i = 0;
-        console.log(num);
         for (let idx in towerDictionary) {
             if (i++ < num) {
                 partialDict[idx] = towerDictionary[idx];

@@ -72,6 +72,7 @@ body {
     width: 100%;
     top: 30%;
 }
+
 #win-menu {
     display: none;
     position: absolute;
@@ -100,6 +101,10 @@ body {
 }
 
 .selected {
+    background-color: #8104a0;
+}
+
+.selecteds {
     background-color: #8104a0;
 }
 
@@ -184,9 +189,11 @@ ul.menu li button:active {
 .unlocked:hover {
     background-color: rgba(255, 162, 240, 0.8);
 }
-h1 {    
+
+h1 {
     font-size: 40px;
 }
+
 h2 {
     font-size: 30px;
 }

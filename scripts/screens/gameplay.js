@@ -6,6 +6,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let paused = false;
     let cancelNextRequest = true;
     let levelD = null;
+    let score = 0;
 
     let myKeyboard = input.Keyboard();
     let myMouse = input.Mouse();
@@ -73,10 +74,11 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     // clears all data in objects and sets the data to the level parameters
     function loadLevel(level) {
+        score = 11;
         hideMenu();
         hideMenu2();
         hideMenu3();
-        levelD = level;
+        levelD = level.id;
         magic.setGridSize(level.board.size);
         myLasers.loadLaser();
         myHealthbars.loadHP();
@@ -127,6 +129,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         soundManager.playAll();
     }
     function showMenu2() {
+        setScore()
         paused = true;
         document.getElementById('death-menu').style.display = "block";
         soundManager.pauseAll();
@@ -138,9 +141,24 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         soundManager.playAll();
     }
     function showMenu3() {
+        setScore()
         paused = true;
         document.getElementById('win-menu').style.display = "block";
         soundManager.pauseAll();
+    }
+
+    function setScore() {
+        let scores = data.score[levelD];
+        let currScore = score;
+        for (let i in scores) {
+            if (currScore > scores[i]) {
+                let temp = scores[i];
+                scores[i] = currScore;
+                currScore = temp;
+            }
+        }
+        data.score[levelD] = scores;
+        localStorage['data'] = JSON.stringify(data);
     }
 
     function endGame(menu) {
@@ -243,7 +261,6 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                 if (coords.x >= magic.GRID_SIZE) {
                     myInfo.checkBuy();
                     myInfo.addCoins(-myUpgrades.buyUpgrade(), pixelCoords);
-                    console.log("hehe")
                     if (myUpgrades.sellTower())
                         sellaTower();
                     myWaves.checkPress();

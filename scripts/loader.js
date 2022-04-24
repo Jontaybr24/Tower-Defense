@@ -131,6 +131,11 @@ MyGame.loader = (function () {
         onComplete: null
     },
     {
+        scripts: ['screens/highscores'],
+        message: 'Highscore Page loaded',
+        onComplete: null
+    },
+    {
         scripts: ['screens/levelselect'],
         message: 'Level select Page loaded',
         onComplete: null
@@ -436,6 +441,10 @@ MyGame.loader = (function () {
                     upgrade3: { label: 'Upgrade Path 3', key: '3' },
                 },
                 volume: .3,
+                score: {},
+            }
+            for (let level in MyGame.levels) {
+                MyGame.data.score[level] = [0, 0, 0, 0, 0];
             }
             localStorage['data'] = JSON.stringify(MyGame.data);
         }
@@ -501,11 +510,11 @@ MyGame.loader = (function () {
         },
         function () {
             console.log("All levels loaded");
+            console.log('Loading saved data');
+            loadData();
         }
     );
     
-    console.log('Loading saved data');
-    loadData();
 
     //
     // Start with loading the assets, then the scripts.
