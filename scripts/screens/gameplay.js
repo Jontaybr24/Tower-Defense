@@ -78,7 +78,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         hideMenu();
         hideMenu2();
         hideMenu3();
-        levelD = level.id;
+        levelD = level;
         magic.setGridSize(level.board.size);
         myLasers.loadLaser();
         myHealthbars.loadHP();
@@ -148,7 +148,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     }
 
     function setScore() {
-        let scores = data.score[levelD];
+        let scores = data.score[levelD.id];
         let currScore = score;
         for (let i in scores) {
             if (currScore > scores[i]) {
