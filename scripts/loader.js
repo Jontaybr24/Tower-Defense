@@ -207,6 +207,10 @@ MyGame.loader = (function () {
 
         key: 'Drone',
         source: '/assets/drone.png'
+    },{
+
+        key: 'Cube',
+        source: '/assets/cube.png'
     }, {
         key: 'Spider',
         source: '/assets/spider.png'
