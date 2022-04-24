@@ -35,12 +35,10 @@ MyGame.screens['highscores'] = (function (game, sounds, assets, levels, data) {
                 function () { soundManager.play(assets.menu_hover); });
             container.appendChild(newDiv);
         }
-        showLevel("level1");
     }
 
     function run() {
-        //
-        // I know this is empty, there isn't anything to do.
+        showLevel("level1");
     }
 
     return {
