@@ -9,6 +9,19 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
   let timePassed = 0;
 
   let enemiesDictionary = {
+    Cube: {
+      name: "Cube",
+      type: "ground",
+      moveRate: 30/1000,
+      health: 40,
+      spec:{
+        spriteSheet: assets.Cube,
+        subIndex : {x: 0, y:0},
+        subTextureWidth: {x: 32, y:32},
+        spriteCount : 12,
+        spriteTime: 100 }  // ms per frame
+        
+    },
     Spider: {
       name: "Spider",
       type: "ground",

@@ -6,7 +6,7 @@
     "info": {"coins": 200, "lives": 50},
     "waveData":[
         [
-            ["Spider", 20, "W"]
+            ["Cube", 1, "W"]
         ],
         [
             ["Drone", 1, "N"],
