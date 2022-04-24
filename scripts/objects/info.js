@@ -1,4 +1,4 @@
-MyGame.objects.Info = function (assets, graphics, magic, cursor, sounds) {
+MyGame.objects.Info = function (assets, graphics, magic, cursor, sounds, aParticles) {
     'use strict';
 
     let coins = 0;
@@ -37,6 +37,7 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor, sounds) {
         renderTowers();
     }
 
+
     function renderTowers() {
         for (let idx in towerDictionary) {
             let tower = towerDictionary[idx];
@@ -57,8 +58,9 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor, sounds) {
         cursor.blocked(currentTower?.cost > coins);
     }
 
-    function addCoins(amount) {
+    function addCoins(amount, location) {
         coins += amount;
+        aParticles.makeCoin(JSON.parse(JSON.stringify(location)), amount);
     }
 
     function hasFunds(amount) {
@@ -89,14 +91,14 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor, sounds) {
         }
     }
 
-    function loadInfo(info){
+    function loadInfo(info) {
         coins = info.coins;
         lives = info.lives;
         placing = false;
         currentTower = null;
     }
 
-    function plusWave(wave){
+    function plusWave(wave) {
         waves = wave;
     }
 

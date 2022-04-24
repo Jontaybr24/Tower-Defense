@@ -66,6 +66,11 @@ MyGame.loader = (function () {
         onComplete: null
     },
     {
+        scripts: ['objects/assetParticles'],
+        message: 'Asset Particles Loaded',
+        onComplete: null
+    },
+    {
         scripts: ['objects/laser'],
         message: 'Pew Pew Loaded',
         onComplete: null

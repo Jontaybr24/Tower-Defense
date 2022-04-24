@@ -16,12 +16,13 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     let myGameBoard = objects.Gameboard(assets, graphics, magic);
     let myParticles = objects.Particles(assets, graphics, magic);
+    let myCoins = objects.CoinFX(assets, graphics, magic);
 
     let myCursor = objects.Cursor(assets, graphics, magic);
 
     let myPathfinder = objects.Path(magic)
     let myHealthbars = objects.Healthbars(graphics, magic);
-    let myInfo = objects.Info(assets, graphics, magic, myCursor, soundManager);
+    let myInfo = objects.Info(assets, graphics, magic, myCursor, soundManager, myCoins);
 
     let myLasers = objects.Laser(assets, graphics, magic, soundManager);
     let myTowers = objects.Towers(assets, graphics, magic, myLasers, soundManager);
@@ -161,6 +162,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
         myWaves.update(elapsedTime);
         myParticles.update(elapsedTime);
+        myCoins.update(elapsedTime);
         myEnemies.update(elapsedTime);
         myHealthbars.update(elapsedTime);
         myTowers.update(elapsedTime);
@@ -188,6 +190,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myUpgrades.render();
         myWaves.render();
         myParticles.render();
+        myCoins.render();
     }
 
     function sellaTower() {
@@ -196,7 +199,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             let coords = magic.pixelToGrid(tower.center);
             let obj = myGameBoard.removeObject(coords);
             myTowers.deleteTower(obj);
-            myInfo.addCoins(Math.floor(obj.cost * magic.SELL_PRICE));
+            myInfo.addCoins(Math.floor(obj.cost * magic.SELL_PRICE), tower.center);
             myUpgrades.setTower(null);
             myEnemies.updatePath();
             soundManager.play(assets.sell);
@@ -209,17 +212,17 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myKeyboard.register(data.controls.grid.key, myGameBoard.toggleGrid);
         myKeyboard.register(data.controls.upgrade1.key, function () {
             if (myInfo.coins >= myUpgrades.tower?.upgrades["cost"][0][0]) {
-                myInfo.addCoins(-myTowers.upgrade(myUpgrades.tower, 0));
+                myInfo.addCoins(-myTowers.upgrade(myUpgrades.tower, 0), myUpgrades.tower.center);
             }
         });
         myKeyboard.register(data.controls.upgrade2.key, function () {
             if (myInfo.coins >= myUpgrades.tower?.upgrades["cost"][1][0]) {
-                myInfo.addCoins(-myTowers.upgrade(myUpgrades.tower, 1));
+                myInfo.addCoins(-myTowers.upgrade(myUpgrades.tower, 1), myUpgrades.tower.center);
             }
         });
         myKeyboard.register(data.controls.upgrade3.key, function () {
             if (myInfo.coins >= myUpgrades.tower?.upgrades["cost"][2][0]) {
-                myInfo.addCoins(-myTowers.upgrade(myUpgrades.tower, 2));
+                myInfo.addCoins(-myTowers.upgrade(myUpgrades.tower, 2), myUpgrades.tower.center);
             }
         });
         myKeyboard.register(data.controls.sell.key, sellaTower);
@@ -239,7 +242,8 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
                 if (coords.x >= magic.GRID_SIZE) {
                     myInfo.checkBuy();
-                    myInfo.addCoins(-myUpgrades.buyUpgrade());
+                    myInfo.addCoins(-myUpgrades.buyUpgrade(), pixelCoords);
+                    console.log("hehe")
                     if (myUpgrades.sellTower())
                         sellaTower();
                     myWaves.checkPress();
@@ -248,7 +252,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                     let obj = myGameBoard.removeObject(coords);
                     if (obj != null) {
                         myTowers.deleteTower(obj);
-                        myInfo.addCoins(Math.floor(obj.cost * magic.SELL_PRICE));
+                        myInfo.addCoins(Math.floor(obj.cost * magic.SELL_PRICE), obj.center);
                         myUpgrades.setTower(null);
                         myEnemies.updatePath();
                         soundManager.play(assets.sell);
@@ -258,7 +262,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                     if (myCursor.isClear() && myGameBoard.checkCell(coords)) {
                         let tower = myTowers.getTower(myCursor.tower.name);
                         if (myInfo.hasFunds(tower.cost)) {
-                            myInfo.addCoins(-tower.cost)
+                            myInfo.addCoins(-tower.cost, pixelCoords)
                             tower = myTowers.makeTower(pixelCoords, myCursor.tower.name);
                             myGameBoard.addObject(coords, tower);
                         }
@@ -321,7 +325,6 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                 myCursor.hideCursor();
             }
         );
-
     }
 
     function gameLoop(time) {

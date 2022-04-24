@@ -85,8 +85,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
   function takeHit(enemy, amount) {
     enemy.health -= amount;
     if (enemy.health <= 0) {
-      particles.makeCoin(enemy.center);
-      info.addCoins(10);
+      info.addCoins(10, enemy.center);
       sounds.play(assets.death);
       kill(enemy);
       return true;
