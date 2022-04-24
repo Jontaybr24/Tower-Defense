@@ -74,7 +74,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     // clears all data in objects and sets the data to the level parameters
     function loadLevel(level) {
-        score = 11;
+        score = 0;
         hideMenu();
         hideMenu2();
         hideMenu3();
@@ -89,7 +89,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myCursor.loadCursor();
         myUpgrades.loadUpgrades();
         myInfo.loadTowers(myTowers.towerDictionary);
-        myInfo.loadInfo(level.info)
+        myInfo.loadInfo(level.info);
         myEnemies.clearAll();
     }
 
@@ -148,6 +148,8 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     }
 
     function setScore() {
+        score += myTowers.getTowerValue();
+        score += myEnemies.score;
         let scores = data.score[levelD.id];
         let currScore = score;
         for (let i in scores) {
@@ -184,7 +186,6 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myEnemies.update(elapsedTime);
         myHealthbars.update(elapsedTime);
         myTowers.update(elapsedTime);
-
         myCursor.update(elapsedTime);
         myGameBoard.update(elapsedTime);
         myInfo.update(elapsedTime);

@@ -220,6 +220,14 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds) {
         }
     }
 
+    function getTowerValue(){
+        let score = 0;
+        for(let idx in towers){
+            score += towers[idx].cost;
+        }
+        return score;
+    }
+
     let api = {
         update: update,
         render: render,
@@ -231,6 +239,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds) {
         removeTarget: removeTarget,
         clearAll: clearAll,
         loadTowers: loadTowers,
+        getTowerValue: getTowerValue,
         get towerDictionary() { return partialDict; },
         get towers() { return towers; },
     };

@@ -7,33 +7,38 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
   let count = 0; // the number for hte id of the enemies
   let threshold = 10;
   let timePassed = 0;
+  let score = 0;
 
   let enemiesDictionary = {
     Spider: {
       name: "Spider",
       type: "ground",
-      moveRate: 100/1000,
+      moveRate: 100 / 1000,
       health: 40,
-      spec:{
+      worth: 5,
+      spec: {
         spriteSheet: assets.Spider,
-        subIndex : {x: 0, y:0},
-        subTextureWidth: {x: 32, y:32},
-        spriteCount : 4,
-        spriteTime: 70 }  // ms per frame
-        
+        subIndex: { x: 0, y: 0 },
+        subTextureWidth: { x: 32, y: 32 },
+        spriteCount: 4,
+        spriteTime: 70
+      }  // ms per frame
+
     },
     Drone: {
       name: "Drone",
       type: "flying",
-      moveRate: 200/1000,
+      moveRate: 200 / 1000,
       health: 20,
-      spec:{
+      worth: 50,
+      spec: {
         spriteSheet: assets.Drone,
-        subIndex : {x: 0, y:0},
-        subTextureWidth: {x: 32, y:32},
-        spriteCount : 4,
-        spriteTime: 60 }, 
-      
+        subIndex: { x: 0, y: 0 },
+        subTextureWidth: { x: 32, y: 32 },
+        spriteCount: 4,
+        spriteTime: 60
+      },
+
     },
   };
   // location takes one of the options: N, E, S, W
@@ -63,19 +68,19 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
     spawn = JSON.parse(JSON.stringify(spawn));
     end = JSON.parse(JSON.stringify(end));
     //console.log(spawn, end);
-    
+
     let cpath = Pathfinder.findPath(spawn, end, enemy.type)
     enemy.spec = enemiesDictionary[name].spec;
     enemy.target = spawn;
     enemy.center = spawn;
-    enemy.rotation =0;
+    enemy.rotation = 0;
     enemy.goal = end;
     enemy.id = count++;
     enemy.takeHit = takeHit;
     enemy.path = cpath;
-    enemy.rig = new model(enemy.spec,graphics)
-    enemy.hitbox = {xmin:0,xmax:0,ymin:0,ymax:0} 
-    magic.sethitbox(enemy,{x: magic.CELL_SIZE, y:magic.CELL_SIZE})
+    enemy.rig = new model(enemy.spec, graphics)
+    enemy.hitbox = { xmin: 0, xmax: 0, ymin: 0, ymax: 0 }
+    magic.sethitbox(enemy, { x: magic.CELL_SIZE, y: magic.CELL_SIZE })
     bars.newHealthbar(enemy);
     enemies[enemy.id] = enemy;
 
@@ -85,7 +90,8 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
   function takeHit(enemy, amount) {
     enemy.health -= amount;
     if (enemy.health <= 0) {
-      info.addCoins(10, enemy.center);
+      info.addCoins(enemy.worth, enemy.center);
+      score += enemy.worth;
       sounds.play(assets.death);
       kill(enemy);
       return true;
@@ -105,11 +111,11 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       enemies[index].rig.update(elapsedTime);
       enemies[index].velocity = magic.computeVelocity(enemies[index].center, enemies[index].target);
       enemies[index].rotation = magic.computeRotation(enemies[index].velocity);
-      enemies[index].rotation -= Math.PI/2;
-     
+      enemies[index].rotation -= Math.PI / 2;
+
       let movevector = { x: enemies[index].target.x - enemies[index].center.x, y: enemies[index].target.y - enemies[index].center.y }
       let magnitude = Math.sqrt((movevector.x * movevector.x) + (movevector.y * movevector.y))
-      
+
       if (magnitude < threshold) {
         if (enemies[index].path == null || enemies[index].path.length == 0) {
           info.loseLife(1);
@@ -124,13 +130,13 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       else {
         enemies[index].center.x += (enemies[index].moveRate * elapsedTime * enemies[index].velocity.x)
         enemies[index].center.y += (enemies[index].moveRate * elapsedTime * enemies[index].velocity.y)
-        
+
         //console.log(enemies[index])
-        magic.sethitbox(enemies[index],{x: magic.CELL_SIZE, y:magic.CELL_SIZE})
+        magic.sethitbox(enemies[index], { x: magic.CELL_SIZE, y: magic.CELL_SIZE })
       }
-      
+
     }
-    
+
   }
 
   function updatePath() {
@@ -140,16 +146,17 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
   }
   function render() {
     for (let index in enemies) {
-      enemies[index].rig.render({center:enemies[index].center, rotation:enemies[index].rotation,subSize:{x:magic.CELL_SIZE,y:magic.CELL_SIZE}});
+      enemies[index].rig.render({ center: enemies[index].center, rotation: enemies[index].rotation, subSize: { x: magic.CELL_SIZE, y: magic.CELL_SIZE } });
 
       //graphics.drawRectangle({center:{x:(enemies[index].hitbox.xmin +enemies[index].hitbox.xmax)/2,y:(enemies[index].hitbox.ymin +enemies[index].hitbox.ymax)/2}, size:{x:enemies[index].hitbox.xmin - enemies[index].hitbox.xmax, y:enemies[index].hitbox.ymin - enemies[index].hitbox.ymax}}, "red","red");
     }
   }
 
-  function clearAll(){
-      for(let idx in enemies){
-          kill(enemies[idx]);
-      }
+  function clearAll() {
+    score = 0;
+    for (let idx in enemies) {
+      kill(enemies[idx]);
+    }
   }
 
 
@@ -160,7 +167,8 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
     render: render,
     clearAll: clearAll,
     get enemies() { return enemies; },
-    get length() { return Object.keys(enemies).length }
+    get length() { return Object.keys(enemies).length },
+    get score() { return score; }
   };
 
   return api;
