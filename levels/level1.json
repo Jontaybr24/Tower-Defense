@@ -1,159 +1,39 @@
 {
     "id": "level1",
     "unlocked": true,
-    "board": {"size":17, "gap":5},
-    "towerCount": 1,
-    "info": {"coins": 2000, "lives": 1},
+    "board": {"size":11, "gap":3},
+    "towerCount": 2,
+    "info": {"coins": 100, "lives": 50},
     "waveData":[
         [
-            ["Drone", 2, "W"]
+            ["Spider", 5, "W"]
         ],
         [
-            ["Spider", 20, "S"],
-            ["Spider", 20, "E"],
-            ["Spider", 20, "W"],
+            ["Spider", 10, "W"]
+        ],
+        [
+            ["Spider", 20, "W"]
+        ],
+        [
+            ["Spider", 25, "W"]
+        ],
+        [
+            ["Spider", 10, "N"]
+        ],
+        [
+            ["Spider", 50, "W"]
+        ],
+        [
+            ["Spider", 50, "W"],
             ["Spider", 20, "N"]
         ],
         [
-            ["Spider", 20, "S"],
-            ["Spider", 20, "E"],
-            ["Spider", 20, "W"],
-            ["Spider", 20, "N"]
+            ["Spider", 50, "W"],
+            ["Spider", 50, "N"]
         ],
         [
-            ["Spider", 20, "S"],
-            ["Spider", 20, "E"],
-            ["Spider", 20, "W"],
-            ["Spider", 20, "N"]
-        ],
-        [
-            ["Spider", 20, "S"],
-            ["Spider", 20, "E"],
-            ["Spider", 20, "W"],
-            ["Spider", 20, "N"]
-        ],
-        [
-            ["Spider", 20, "S"],
-            ["Spider", 20, "E"],
-            ["Spider", 20, "W"],
-            ["Spider", 20, "N"]
-        ],
-        [
-            ["Spider", 20, "S"],
-            ["Spider", 20, "E"],
-            ["Spider", 20, "W"],
-            ["Spider", 20, "N"]
-        ],
-        [
-            ["Spider", 20, "S"],
-            ["Spider", 20, "E"],
-            ["Spider", 20, "W"],
-            ["Spider", 20, "N"]
-        ],
-        [
-            ["Spider", 20, "S"],
-            ["Spider", 20, "E"],
-            ["Spider", 20, "W"],
-            ["Spider", 20, "N"]
-        ],
-        [
-            ["Spider", 20, "S"],
-            ["Spider", 20, "E"],
-            ["Spider", 20, "W"],
-            ["Spider", 20, "N"]
-        ],
-        [
-            ["Spider", 20, "S"],
-            ["Spider", 20, "E"],
-            ["Spider", 20, "W"],
-            ["Spider", 20, "N"]
-        ],
-        [
-            ["Spider", 20, "S"],
-            ["Spider", 20, "E"],
-            ["Spider", 20, "W"],
-            ["Spider", 20, "N"]
-        ],
-        [
-            ["Spider", 20, "S"],
-            ["Spider", 20, "E"],
-            ["Spider", 20, "W"],
-            ["Spider", 20, "N"]
-        ],
-        [
-            ["Spider", 20, "S"],
-            ["Spider", 20, "E"],
-            ["Spider", 20, "W"],
-            ["Spider", 20, "N"]
-        ],
-        [
-            ["Spider", 20, "S"],
-            ["Spider", 20, "E"],
-            ["Spider", 20, "W"],
-            ["Spider", 20, "N"]
-        ],
-        [
-            ["Spider", 20, "S"],
-            ["Spider", 20, "E"],
-            ["Spider", 20, "W"],
-            ["Spider", 20, "N"]
-        ],
-        [
-            ["Spider", 20, "S"],
-            ["Spider", 20, "E"],
-            ["Spider", 20, "W"],
-            ["Spider", 20, "N"]
-        ],
-        [
-            ["Spider", 2, "S"],
-            ["Drone", 2, "W"],
-            ["Spider", 2, "E"]
-        ],
-        [
-            ["Spider", 50, "N"],
-            ["Drone", 50, "N"]
-        ],
-        [
-            ["Spider", 5, "N"],
-            ["Drone", 5, "N"],
-            ["Spider", 5, "N"],
-            ["Drone", 5, "N"],
-            ["Spider", 5, "N"],
-            ["Drone", 5, "N"],
-            ["Spider", 5, "N"],
-            ["Drone", 5, "N"],
-            ["Spider", 5, "N"],
-            ["Drone", 5, "N"],
-            ["Spider", 5, "N"],
-            ["Drone", 5, "N"],
-            ["Spider", 5, "N"],
-            ["Drone", 5, "N"],
-            ["Spider", 5, "N"],
-            ["Drone", 5, "N"],
-            ["Spider", 5, "N"],
-            ["Drone", 5, "N"],
-            ["Spider", 5, "N"],
-            ["Drone", 5, "N"],
-            ["Spider", 5, "N"],
-            ["Drone", 5, "N"],
-            ["Spider", 5, "N"],
-            ["Drone", 5, "N"],
-            ["Spider", 5, "N"],
-            ["Drone", 5, "N"],
-            ["Spider", 5, "N"],
-            ["Drone", 5, "N"],
-            ["Spider", 5, "N"],
-            ["Drone", 5, "N"],
-            ["Spider", 5, "N"],
-            ["Drone", 5, "N"],
-            ["Spider", 5, "N"],
-            ["Drone", 5, "N"],
-            ["Spider", 5, "N"],
-            ["Drone", 5, "N"],
-            ["Spider", 5, "N"],
-            ["Drone", 5, "N"],
-            ["Spider", 5, "N"],
-            ["Drone", 5, "N"]
+            ["Spider", 100, "W"],
+            ["Spider", 100, "N"]
         ]
     ]
 }

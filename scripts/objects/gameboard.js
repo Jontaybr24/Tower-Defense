@@ -82,7 +82,7 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
 
     function removeObject(point) {
         let copy = null;
-        if (point.x < board.length && point.y < board.length && point.x > 0 && point.y > 0) {
+        if (point.x < board.length - 1 && point.y < board.length - 1 && point.x > 0 && point.y > 0) {
             copy = JSON.parse(JSON.stringify(board[point.x][point.y].object));
             board[point.x][point.y].object = null;
         }

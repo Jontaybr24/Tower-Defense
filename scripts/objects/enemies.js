@@ -29,7 +29,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       name: "Spider",
       type: "ground",
       moveRate: 100 / 1000,
-      health: 40,
+      health: 20,
       worth: 5,
       spec: {
         spriteSheet: assets.Spider,
