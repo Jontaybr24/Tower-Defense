@@ -275,6 +275,9 @@ MyGame.loader = (function () {
         key: 'Ringtrap_2_3',
         source: '/assets/launcher-10.png'
     }, {
+        key: 'Wisp',
+        source: '/assets/wisp.png'
+    },{
 
         key: 'Drone',
         source: '/assets/drone.png'
@@ -514,6 +517,7 @@ MyGame.loader = (function () {
                     upgrade1: { label: 'Upgrade Path 1', key: 'u' },
                     upgrade2: { label: 'Upgrade Path 2', key: '2' },
                     upgrade3: { label: 'Upgrade Path 3', key: '3' },
+                    path: { label: 'Toggle Path', key: 'p' },
                 },
                 volume: .3,
                 score: {},

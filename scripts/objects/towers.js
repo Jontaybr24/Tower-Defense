@@ -16,8 +16,8 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
             name: "Turret",
             cost: 50,
             radius: 2.5,
-            damage: 3,
-            fireRate: 5, // times per second it can shoot in ms 
+            damage: 1,
+            fireRate: 1, // times per second it can shoot in ms 
             upgrades: {
                 cost: [
                     [50, 100, 150],
@@ -30,15 +30,15 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                 damage: [
                     [1, 1, 2],
                     [0, 0, 0],
-                    [0, 0, 1],],
+                    [0, 1, 1],],
                 fireRate: [
                     [0, 0, 0],
-                    [1, 0, 1],
-                    [0, 0, 0],],
+                    [0, -.5, 0],
+                    [0, -.8, 0],],
             },
             renderPreview: renderPreview, // the piction image
             needTarget: true, // if the tower needs to turn to target before activating
-            targetAir: false,
+            targetAir: true,
             targetGround: true,
             activate: function (tower, targets) {
                 let color = assets.laser_basic;
@@ -66,7 +66,9 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                         
                         virus = function (enemy, data) {
                             // add status effect here
+                            let status = {type:"ice", time: 500}
                             enemy.takeHit(enemy, data.damage)
+                            enemy.setStatus(enemy,status);
                         }
                     }
                     else if (tower.path == 2) {
@@ -74,7 +76,9 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                         data.message = "Enemy on Acid"
                         virus = function (enemy, data) {
                             // add status effect here
+                            let status = {type:"poison", time: 2500, interval:500, dmg: tower.damage}
                             enemy.takeHit(enemy, data.damage)
+                            enemy.setStatus(enemy,status)
                         }
                     }
                 }

@@ -9,6 +9,9 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets, sounds) {
     let waveData = { N: [], W: [], E: [], S: [] };
     let renderData = { N: {}, W: {}, E: {}, S: {} };
     let currentWave = null;
+    let pathOn = false;
+    let pathTimer = 3000;
+    let wispsClear = true;
 
     let spawning = false;
 
@@ -35,6 +38,25 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets, sounds) {
     magic.sethitbox(button, button.size);
 
     function update(elapsedTime) {
+        if (pathOn) {
+            if (isWaveDone()) {
+                if (pathTimer < 0) {
+                    pathTimer = 3000
+                    enemies.spawnEnemy("Wisp", "N");
+                    enemies.spawnEnemy("Wisp", "S");
+                    enemies.spawnEnemy("Wisp", "E");
+                    enemies.spawnEnemy("Wisp", "W");
+                    wispsClear = false;
+                }
+            }
+            else{
+                if(!wispsClear){
+                    enemies.clearWisps();
+                    wispsClear = true
+                }
+            }
+        }
+        pathTimer -= elapsedTime;
         timePassed += elapsedTime;
         if (timePassed > spawnRate && spawning) {
             for (let loc in waveData) {
@@ -157,8 +179,8 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets, sounds) {
         eBox.selected = magic.collision(point, eBox.hitbox);
         sBox.selected = magic.collision(point, sBox.hitbox);
         wBox.selected = magic.collision(point, wBox.hitbox);
-        if(!button.selected && magic.collision(point, button.hitbox))
-        sounds.play(assets.menu_hover);
+        if (!button.selected && magic.collision(point, button.hitbox))
+            sounds.play(assets.menu_hover);
         button.selected = magic.collision(point, button.hitbox);
     }
 
@@ -167,7 +189,7 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets, sounds) {
             if (!spawning && enemies.length == 0)
                 nextWave();
             else
-            console.log("Paused");
+                console.log("Paused");
         }
     }
 
@@ -179,6 +201,14 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets, sounds) {
                 res = false;
         }
         return res;
+    }
+
+    function isWaveDone() {
+        if (!(spawning) && enemies.length == 0) {
+            return true
+        }
+        else
+            return false
     }
 
     function checkWaves() {
@@ -235,6 +265,10 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets, sounds) {
         }
     }
 
+    function togglePath() {
+        pathOn = !pathOn;
+    }
+
     let api = {
         update: update,
         render: render,
@@ -243,6 +277,8 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets, sounds) {
         checkWaves: checkWaves,
         checkHover: checkHover,
         checkPress: checkPress,
+        isWaveDone: isWaveDone,
+        togglePath: togglePath,
         get spawning() { return spawning; },
         get waveCount() { return waveCount; },
     };

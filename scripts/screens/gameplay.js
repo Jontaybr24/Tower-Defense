@@ -8,6 +8,8 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let levelD = null;
     let score = 0;
 
+    
+
     let myKeyboard = input.Keyboard();
     let myMouse = input.Mouse();
 
@@ -244,6 +246,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         }
     }
 
+    
 
     function setControls() {
         myKeyboard.register("Escape", togglePause);
@@ -262,6 +265,9 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
             if (myInfo.coins >= myUpgrades.tower?.upgrades["cost"][2][0]) {
                 myInfo.addCoins(-myTowers.upgrade(myUpgrades.tower, 2), myUpgrades.tower.center);
             }
+        });
+        myKeyboard.register(data.controls.path.key, function () {
+            myWaves.togglePath();
         });
         myKeyboard.register(data.controls.sell.key, sellaTower);
         myKeyboard.register(data.controls.startWave.key, myWaves.nextWave);

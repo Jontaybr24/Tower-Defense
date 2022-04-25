@@ -59,7 +59,8 @@ MyGame.render.AnimatedModel = function (spec, graphics) {
     //
     //------------------------------------------------------------------
     function render(model) {
-        graphics.drawSubTexture(spec.spriteSheet, { x: subImageIndex.x , y: subImageIndex.y  }, spec.subTextureWidth, model.center, model.rotation, model.subSize);
+        
+        graphics.drawSubTexture(spec.spriteSheet, { x: subImageIndex.x , y: model.suby  }, spec.subTextureWidth, model.center, model.rotation, model.subSize);
     }
 
     let api = {
