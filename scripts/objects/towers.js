@@ -122,7 +122,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     missiles.createMissile(targets[0], pos, virus, data, 100 / 1000);
                 }
                 else {
-                    missiles.createMissile(targets[0], pos, virus, data, 50 / 1000);
+                    missiles.createMissile(targets[0], pos, virus, data, 100 / 1000);
                 }
             },
         },

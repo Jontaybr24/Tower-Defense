@@ -210,7 +210,7 @@ MyGame.loader = (function () {
         source: '/assets/basic-turret-10.png'
     },{
         key: 'Launcher_base',
-        source: '/assets/tower-base.png'
+        source: '/assets/launcher-base.png'
     }, {
         key: 'Launcher_3_0',
         source: '/assets/launcher-1.png'
@@ -243,7 +243,7 @@ MyGame.loader = (function () {
         source: '/assets/launcher-10.png'
     },{
         key: 'Ringtrap_base',
-        source: '/assets/tower-base.png'
+        source: '/assets/blank.png'
     }, {
         key: 'Ringtrap_3_0',
         source: '/assets/launcher-1.png'
@@ -294,6 +294,9 @@ MyGame.loader = (function () {
     }, {
         key: 'laser_acid',
         source: '/assets/laser-acid.png'
+    },{
+        key: 'missile',
+        source: '/assets/missile.png'
     }, {
         key: 'menu_hover',
         source: '/soundFX/menu-hover.wav'
