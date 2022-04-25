@@ -9,7 +9,7 @@ MyGame.objects.Missile = function (assets, graphics, magic, sounds, particles) {
     function render() {
         for (let idx in missiles) {
             let missile = missiles[idx];
-            graphics.drawTexture(assets.missile, missile.center, missile.rotation, { x: size, y: size });
+            graphics.drawTexture(missile.image, missile.center, missile.rotation, { x: size, y: size });
             //graphics.drawRectangle({center:{x:(missiles[idx].hitbox.xmin +missiles[idx].hitbox.xmax)/2,y:(missiles[idx].hitbox.ymin +missiles[idx].hitbox.ymax)/2}, size:{x:missiles[idx].hitbox.xmin - missiles[idx].hitbox.xmax, y:missiles[idx].hitbox.ymin - missiles[idx].hitbox.ymax}}, "red","red");
         }
     }
@@ -56,7 +56,7 @@ MyGame.objects.Missile = function (assets, graphics, magic, sounds, particles) {
     }
 
     // takes a target as an enemy, pos as a spawn point, and virus as a function to execute when the collision happens
-    function createMissile(target, pos, virus, data, speed) {
+    function createMissile(target, pos, virus, data, speed, image) {
         let vel = magic.computeVelocity(pos, target.center);
         let res = magic.computeRotation(vel);
         missiles[++count] = {
@@ -67,6 +67,7 @@ MyGame.objects.Missile = function (assets, graphics, magic, sounds, particles) {
             virus: virus,
             data: data,
             target: target,
+            image: image,
             rotation: res + Math.PI / 2,
             hitbox: { xmin: 0, xmax: 0, ymin: 0, ymax: 0 },
             lifetime: 0
