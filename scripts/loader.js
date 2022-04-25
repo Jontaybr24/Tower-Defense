@@ -326,10 +326,6 @@ MyGame.loader = (function () {
         key: 'MachineGun_1_1',
         source: '/assets/machinegun-5.png'
     }, {
-<<<<<<< HEAD
-        key: 'Wisp',
-        source: '/assets/wisp.png'
-=======
         key: 'MachineGun_1_2',
         source: '/assets/machinegun-6.png'
     }, {
@@ -410,9 +406,11 @@ MyGame.loader = (function () {
     }, {
         key: 'Trigun_2_3',
         source: '/assets/trigun-10.png'
->>>>>>> 265ef61a7f4c150063009c68b6f86f126dba3a82
     },{
-
+        key: 'Wisp',
+        source: '/assets/wisp.png'
+        
+    },{
         key: 'Drone',
         source: '/assets/drone.png'
     },{

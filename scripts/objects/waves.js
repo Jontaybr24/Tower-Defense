@@ -9,7 +9,7 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets, sounds) {
     let waveData = { N: [], W: [], E: [], S: [] };
     let renderData = { N: {}, W: {}, E: {}, S: {} };
     let currentWave = null;
-    let pathOn = false;
+    let pathOn = true;
     let pathTimer = 3000;
     let wispsClear = true;
 
@@ -42,10 +42,15 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets, sounds) {
             if (isWaveDone()) {
                 if (pathTimer < 0) {
                     pathTimer = 3000
-                    enemies.spawnEnemy("Wisp", "N");
-                    enemies.spawnEnemy("Wisp", "S");
-                    enemies.spawnEnemy("Wisp", "E");
-                    enemies.spawnEnemy("Wisp", "W");
+                    if((length(renderData["N"]) != 0))
+                        enemies.spawnEnemy("Wisp", "N");
+                    if((length(renderData["S"]) != 0))
+                        enemies.spawnEnemy("Wisp", "S");
+                    if((length(renderData["W"]) != 0))
+                        enemies.spawnEnemy("Wisp", "W");
+                    if((length(renderData["E"]) != 0))
+                        enemies.spawnEnemy("Wisp", "E");    
+                    
                     wispsClear = false;
                 }
             }
