@@ -246,35 +246,167 @@ MyGame.loader = (function () {
         source: '/assets/blank.png'
     }, {
         key: 'Ringtrap_3_0',
-        source: '/assets/launcher-1.png'
+        source: '/assets/ringtrap-1.png'
     }, {
         key: 'Ringtrap_0_1',
-        source: '/assets/launcher-2.png'
+        source: '/assets/ringtrap-2.png'
     }, {
         key: 'Ringtrap_0_2',
-        source: '/assets/launcher-3.png'
+        source: '/assets/ringtrap-3.png'
     }, {
         key: 'Ringtrap_0_3',
-        source: '/assets/launcher-4.png'
+        source: '/assets/ringtrap-4.png'
     }, {
         key: 'Ringtrap_1_1',
-        source: '/assets/launcher-5.png'
+        source: '/assets/ringtrap-5.png'
     }, {
         key: 'Ringtrap_1_2',
-        source: '/assets/launcher-6.png'
+        source: '/assets/ringtrap-6.png'
     }, {
         key: 'Ringtrap_1_3',
-        source: '/assets/launcher-7.png'
+        source: '/assets/ringtrap-7.png'
     }, {
         key: 'Ringtrap_2_1',
-        source: '/assets/launcher-8.png'
+        source: '/assets/ringtrap-8.png'
     }, {
         key: 'Ringtrap_2_2',
-        source: '/assets/launcher-9.png'
+        source: '/assets/ringtrap-9.png'
     }, {
         key: 'Ringtrap_2_3',
-        source: '/assets/launcher-10.png'
+        source: '/assets/ringtrap-10.png'
+    },{
+        key: 'Bomb_base',
+        source: '/assets/bomb-base.png'
     }, {
+        key: 'Bomb_3_0',
+        source: '/assets/bomb-1.png'
+    }, {
+        key: 'Bomb_0_1',
+        source: '/assets/bomb-2.png'
+    }, {
+        key: 'Bomb_0_2',
+        source: '/assets/bomb-3.png'
+    }, {
+        key: 'Bomb_0_3',
+        source: '/assets/bomb-4.png'
+    }, {
+        key: 'Bomb_1_1',
+        source: '/assets/bomb-5.png'
+    }, {
+        key: 'Bomb_1_2',
+        source: '/assets/bomb-6.png'
+    }, {
+        key: 'Bomb_1_3',
+        source: '/assets/bomb-7.png'
+    }, {
+        key: 'Bomb_2_1',
+        source: '/assets/bomb-8.png'
+    }, {
+        key: 'Bomb_2_2',
+        source: '/assets/bomb-9.png'
+    }, {
+        key: 'Bomb_2_3',
+        source: '/assets/bomb-10.png'
+    }, {
+        key: 'MachineGun_base',
+        source: '/assets/machinegun-base.png'
+    }, {
+        key: 'MachineGun_3_0',
+        source: '/assets/machinegun-1.png'
+    }, {
+        key: 'MachineGun_0_1',
+        source: '/assets/machinegun-2.png'
+    }, {
+        key: 'MachineGun_0_2',
+        source: '/assets/machinegun-3.png'
+    }, {
+        key: 'MachineGun_0_3',
+        source: '/assets/machinegun-4.png'
+    }, {
+        key: 'MachineGun_1_1',
+        source: '/assets/machinegun-5.png'
+    }, {
+        key: 'MachineGun_1_2',
+        source: '/assets/machinegun-6.png'
+    }, {
+        key: 'MachineGun_1_3',
+        source: '/assets/machinegun-7.png'
+    }, {
+        key: 'MachineGun_2_1',
+        source: '/assets/machinegun-8.png'
+    }, {
+        key: 'MachineGun_2_2',
+        source: '/assets/machinegun-9.png'
+    }, {
+        key: 'MachineGun_2_3',
+        source: '/assets/machinegun-10.png'
+    },{
+        key: 'AirTower_base',
+        source: '/assets/air-base.png'
+    }, {
+        key: 'AirTower_3_0',
+        source: '/assets/air-1.png'
+    }, {
+        key: 'AirTower_0_1',
+        source: '/assets/air-2.png'
+    }, {
+        key: 'AirTower_0_2',
+        source: '/assets/air-3.png'
+    }, {
+        key: 'AirTower_0_3',
+        source: '/assets/air-4.png'
+    }, {
+        key: 'AirTower_1_1',
+        source: '/assets/air-5.png'
+    }, {
+        key: 'AirTower_1_2',
+        source: '/assets/air-6.png'
+    }, {
+        key: 'AirTower_1_3',
+        source: '/assets/air-7.png'
+    }, {
+        key: 'AirTower_2_1',
+        source: '/assets/air-8.png'
+    }, {
+        key: 'AirTower_2_2',
+        source: '/assets/air-9.png'
+    }, {
+        key: 'AirTower_2_3',
+        source: '/assets/air-10.png'
+    },{
+        key: 'Trigun_base',
+        source: '/assets/trigun-base.png'
+    }, {
+        key: 'Trigun_3_0',
+        source: '/assets/trigun-1.png'
+    }, {
+        key: 'Trigun_0_1',
+        source: '/assets/trigun-2.png'
+    }, {
+        key: 'Trigun_0_2',
+        source: '/assets/trigun-3.png'
+    }, {
+        key: 'Trigun_0_3',
+        source: '/assets/trigun-4.png'
+    }, {
+        key: 'Trigun_1_1',
+        source: '/assets/trigun-5.png'
+    }, {
+        key: 'Trigun_1_2',
+        source: '/assets/trigun-6.png'
+    }, {
+        key: 'Trigun_1_3',
+        source: '/assets/trigun-7.png'
+    }, {
+        key: 'Trigun_2_1',
+        source: '/assets/trigun-8.png'
+    }, {
+        key: 'Trigun_2_2',
+        source: '/assets/trigun-9.png'
+    }, {
+        key: 'Trigun_2_3',
+        source: '/assets/trigun-10.png'
+    },{
 
         key: 'Drone',
         source: '/assets/drone.png'

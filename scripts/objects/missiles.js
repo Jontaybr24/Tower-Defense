@@ -4,6 +4,7 @@ MyGame.objects.Missile = function (assets, graphics, magic, sounds, particles) {
     let count = 0;
     let size = magic.CELL_SIZE * .3; // The size of the hitbox for the missiles
     let maxSpeed = 1000 / 1000;
+    let despawn = 2000;
 
     function render() {
         for (let idx in missiles) {
@@ -16,7 +17,7 @@ MyGame.objects.Missile = function (assets, graphics, magic, sounds, particles) {
     function update(elapsedTime) {
         for (let idx in missiles) {
             let missile = missiles[idx];
-            console.log(missile.target.center)
+            missile.lifetime += elapsedTime;
             let vel = magic.computeVelocity(missile.center, missile.target.center);
             let res = magic.computeRotation(vel);
             missile.velocity = vel;
@@ -30,6 +31,10 @@ MyGame.objects.Missile = function (assets, graphics, magic, sounds, particles) {
             if (missile.center.x < 0 || missile.center.x > graphics.canvas.height || missile.center.y < 0 || missile.center.y > graphics.canvas.height) {
                 deleteMissile(missile);
             }
+            else if (missile.lifetime > despawn) {
+                console.log(missile.center)
+                deleteMissile(missile);
+            }
         }
     }
 
@@ -40,6 +45,14 @@ MyGame.objects.Missile = function (assets, graphics, magic, sounds, particles) {
     function hitMissile(missile, enemy) {
         missile.virus(enemy, missile.data);
         deleteMissile(missile);
+    }
+
+    function newTarget(enemy, newEnemy) {
+        for (let idx in missiles) {
+            if (enemy.id == missiles[idx].target.id) {
+                missiles[idx].target = newEnemy;
+            }
+        }
     }
 
     // takes a target as an enemy, pos as a spawn point, and virus as a function to execute when the collision happens
@@ -55,7 +68,8 @@ MyGame.objects.Missile = function (assets, graphics, magic, sounds, particles) {
             data: data,
             target: target,
             rotation: res + Math.PI / 2,
-            hitbox: { xmin: 0, xmax: 0, ymin: 0, ymax: 0 }
+            hitbox: { xmin: 0, xmax: 0, ymin: 0, ymax: 0 },
+            lifetime: 0
         };
 
     }
@@ -71,6 +85,7 @@ MyGame.objects.Missile = function (assets, graphics, magic, sounds, particles) {
         deleteMissile: deleteMissile,
         hitMissile: hitMissile,
         loadMissile: loadMissile,
+        newTarget: newTarget,
         get missiles() { return missiles }
     };
 
