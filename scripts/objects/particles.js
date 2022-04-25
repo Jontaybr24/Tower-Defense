@@ -78,11 +78,12 @@ MyGame.objects.Particles = function (assets, graphics, magic) {
     for (let i = 0; i < amount; i++) {
       let x = -velocity.x + (Math.random() * .5) - .375; 
       let y = -velocity.y + (Math.random() * .5) - .375;
+      let center = {x: pos.x + x * magic.CELL_SIZE *.4, y:pos.y + y * magic.CELL_SIZE * .4}; 
       let vel = {x: x, y: y};
       let size = { x: Math.random() * 4 + 2, y: Math.random() * 4 + 2 }
       let color = colors[Math.floor(Math.random() * colors.length)]
       addSprite({
-        center: JSON.parse(JSON.stringify(pos)),
+        center: center,
         velocity: vel,
         speed: (Math.random() * 50 + 50) / 1000,
         decay: Math.random() * 400, //time in ms
@@ -145,7 +146,7 @@ MyGame.objects.Particles = function (assets, graphics, magic) {
   }
 
   function makeBoomTrail(pos, vel) {
-    makeTrail(pos, 15, smokePallet, vel);
+    makeTrail(pos, 5, smokePallet, vel);
   }
 
   let api = {

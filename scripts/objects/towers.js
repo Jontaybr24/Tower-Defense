@@ -52,18 +52,13 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                 }
 
                 if (tower.level >= 2) {
-                    if (tower.path == 0) {/*
-                        if (targets.length >= 2)
-                            lasers.createLaser(targets[1], JSON.parse(JSON.stringify(tower.center)), virus, data, color);
-                        if (tower.level == 3) {
-                            if (targets.length >= 3)
-                                lasers.createLaser(targets[2], JSON.parse(JSON.stringify(tower.center)), virus, data, color);
-                        }*/
+                    if (tower.path == 0) {
+
                     }
                     else if (tower.path == 1) {
                         color = assets.laser_ice;
                         data.message = "Enemy Frozen"
-                        
+
                         virus = function (enemy, data) {
                             // add status effect here
                             let status = {type:"ice", time: 500}
@@ -84,6 +79,45 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                 }
                 lasers.createLaser(targets[0], JSON.parse(JSON.stringify(tower.center)), virus, data, color);
 
+            },
+        },
+        AirTower: {
+            name: "AirTower",
+            cost: 60,
+            radius: 1.5,
+            damage: 5,
+            fireRate: 2, // times per second it can shoot in ms 
+            upgrades: {
+                cost: [
+                    [75, 150, 200],
+                    [50, 100, 150],
+                    [50, 100, 150],],
+                radius: [
+                    [1, 0, 0],
+                    [1, 1, 1],
+                    [0, 0, .5],],
+                damage: [
+                    [0, 1, 0],
+                    [0, 0, 50],
+                    [5, 0, 0],],
+                fireRate: [
+                    [0, 0, 1],
+                    [0, 1, 0],
+                    [0.1, .1, 0.1],],
+            },
+            renderPreview: renderPreview, // the piction image
+            needTarget: true, // if the tower needs to turn to target before activating
+            targetAir: true,
+            targetGround: false,
+            activate: function (tower, targets) {
+                let color = assets.laser_basic;
+                let virus = function (enemy, data) {
+                    enemy.takeHit(enemy, data.damage);
+                }
+                let data = {
+                    damage: tower.damage,
+                }
+                lasers.createLaser(targets[0], JSON.parse(JSON.stringify(tower.center)), virus, data, color);
             },
         },
         Launcher: {
@@ -126,12 +160,49 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     missiles.createMissile(targets[0], pos, virus, data, 100 / 1000);
                 }
                 else {
-                    missiles.createMissile(targets[0], pos, virus, data, 50 / 1000);
+                    missiles.createMissile(targets[0], pos, virus, data, 100 / 1000);
                 }
             },
         },
         Ringtrap: {
             name: "Ringtrap",
+            cost: 500,
+            radius: 1.5,
+            damage: 15,
+            fireRate: .5, // times per second it can shoot in ms 
+            upgrades: {
+                cost: [
+                    [50, 100, 150],
+                    [50, 100, 150],
+                    [50, 100, 150],],
+                radius: [
+                    [0, 0, 0],
+                    [1, 1, 1],
+                    [0, 0, 0],],
+                damage: [
+                    [1, 1, 3],
+                    [0, 0, 0],
+                    [0, 0, 0],],
+                fireRate: [
+                    [0, 0, 0],
+                    [0, 0, 0],
+                    [0.5, .5, 0.5],],
+            },
+            renderPreview: renderPreview, // the piction image
+            needTarget: false, // if the tower needs to turn to target before activating
+            targetAir: false,
+            targetGround: true,
+            activate: function (tower, targets) {
+
+                // need to add paths
+                particles.makeFireRing(tower.center);
+                for (let enemy in targets) {
+                    targets[enemy].takeHit(targets[enemy], tower.damage)
+                }
+            },
+        },
+        Bomb: {
+            name: "Bomb",
             cost: 500,
             radius: 1.5,
             damage: 5,
@@ -155,14 +226,95 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [0.1, .1, 0.1],],
             },
             renderPreview: renderPreview, // the piction image
-            needTarget: false, // if the tower needs to turn to target before activating
+            needTarget: true, // if the tower needs to turn to target before activating
             targetAir: false,
             targetGround: true,
             activate: function (tower, targets) {
-                particles.makeFireRing(tower.center);
-                for (let enemy in targets) {
-                    targets[enemy].takeHit(targets[enemy], tower.damage)
+                // spawn bomb
+            },
+        },
+        MachineGun: {
+            name: "MachineGun",
+            cost: 500,
+            radius: 1.5,
+            damage: 1,
+            fireRate: 10, // times per second it can shoot in ms 
+            upgrades: {
+                cost: [
+                    [75, 150, 200],
+                    [50, 100, 150],
+                    [50, 100, 150],],
+                radius: [
+                    [0, 0, 0],
+                    [1, 1, 1],
+                    [0, 0, 0],],
+                damage: [
+                    [1, 1, 1],
+                    [0, 0, 0],
+                    [0, 0, 0],],
+                fireRate: [
+                    [0, 0, 0],
+                    [0, 1, 0],
+                    [5, 5, 10],],
+            },
+            renderPreview: renderPreview, // the piction image
+            needTarget: true, // if the tower needs to turn to target before activating
+            targetAir: false,
+            targetGround: true,
+            activate: function (tower, targets) {
+                let color = assets.laser_basic;
+                let virus = function (enemy, data) {
+                    enemy.takeHit(enemy, data.damage);
                 }
+                let data = {
+                    damage: tower.damage,
+                }
+                lasers.createLaser(targets[0], JSON.parse(JSON.stringify(tower.center)), virus, data, color);
+            },
+        },
+        Trigun: {
+            name: "Trigun",
+            cost: 500,
+            radius: 1.5,
+            damage: 5,
+            fireRate: 2, // times per second it can shoot in ms 
+            upgrades: {
+                cost: [
+                    [75, 150, 200],
+                    [50, 100, 150],
+                    [50, 100, 150],],
+                radius: [
+                    [1, 0, 0],
+                    [1, 1, 1],
+                    [0, 0, .5],],
+                damage: [
+                    [0, 1, 0],
+                    [0, 0, 50],
+                    [5, 0, 0],],
+                fireRate: [
+                    [0, 0, 1],
+                    [0, 1, 0],
+                    [0.1, .1, 0.1],],
+            },
+            renderPreview: renderPreview, // the piction image
+            needTarget: true, // if the tower needs to turn to target before activating
+            targetAir: false,
+            targetGround: true,
+            activate: function (tower, targets) {
+                let color = assets.laser_basic;
+                let virus = function (enemy, data) {
+                    enemy.takeHit(enemy, data.damage);
+                }
+                let data = {
+                    damage: tower.damage,
+                }
+                if (targets.length >= 2)
+                    lasers.createLaser(targets[1], JSON.parse(JSON.stringify(tower.center)), virus, data, color);
+                if (tower.level == 3) {
+                    if (targets.length >= 3)
+                        lasers.createLaser(targets[2], JSON.parse(JSON.stringify(tower.center)), virus, data, color);
+                }
+                lasers.createLaser(targets[0], JSON.parse(JSON.stringify(tower.center)), virus, data, color);
             },
         },
     };

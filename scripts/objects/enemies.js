@@ -1,5 +1,5 @@
 
-MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, particles, bars, model, towers, sounds) {
+MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, particles, bars, model, towers, sounds, missiles) {
 
   'use strict';
 
@@ -147,12 +147,16 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       info.addCoins(enemy.worth, enemy.center);
       score += enemy.worth;
       sounds.play(assets.death);
+
       kill(enemy);
       return true;
     }
     return false;
   }
   function kill(enemy) {
+    let keys = Object.keys(enemies);
+    let newEnemy = keys[Math.floor(keys.length * Math.random())]
+    missiles.newTarget(enemy, enemies[newEnemy]);
     bars.removeBar(enemy.id);
     towers.removeTarget(enemy);
     delete enemies[enemy.id];
