@@ -8,7 +8,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let levelD = null;
     let score = 0;
 
-    
+
 
     let myKeyboard = input.Keyboard();
     let myMouse = input.Mouse();
@@ -57,13 +57,11 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     }
 
     function enemiesToLaser() {
-        for (let enemy in myEnemies.enemies) {
-            for (let laser in myLasers.lasers) {
-                if (myEnemies.enemies[enemy] !== undefined) {
-                    if (magic.collision(myLasers.lasers[laser].hitbox, myEnemies.enemies[enemy].hitbox)) {
-                        if (myLasers.lasers[laser].target.id == myEnemies.enemies[enemy].id) {
-                            myLasers.hitLaser(myLasers.lasers[laser], myEnemies.enemies[enemy]);
-                        }
+        for (let laser in myLasers.lasers) {
+            for (let target in myLasers.lasers[laser].targets) {
+                if (myLasers.lasers[laser] != undefined) {
+                    if (magic.collision(myLasers.lasers[laser].hitbox, myLasers.lasers[laser].targets[target].hitbox)) {
+                        myLasers.hitLaser(myLasers.lasers[laser], myLasers.lasers[laser].targets[target]);
                     }
                 }
             }
@@ -246,7 +244,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         }
     }
 
-    
+
 
     function setControls() {
         myKeyboard.register("Escape", togglePause);

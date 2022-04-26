@@ -142,6 +142,11 @@ MyGame.objects.Magic = function (graphics) {
         return Math.atan2(vel.y, vel.x);
     }
 
+    // returns a velocity when given an angle
+    function computeFromRot(rot){
+        return {x: Math.cos(rot), y: Math.sin(rot)}
+    }
+
     function setGridSize(size) {
         GRID_SIZE = size;
         CELL_SIZE = graphics.canvas.height / GRID_SIZE;
@@ -166,6 +171,7 @@ MyGame.objects.Magic = function (graphics) {
         testTolerance: testTolerance,
         computeVelocity: computeVelocity,
         computeRotation: computeRotation,
+        computeFromRot: computeFromRot,
         setGridSize: setGridSize,
         get spawnPoints() { return spawnPoints },
         get GRID_SIZE() { return GRID_SIZE; },

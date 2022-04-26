@@ -38,18 +38,17 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
             },
             renderPreview: renderPreview, // the piction image
             needTarget: true, // if the tower needs to turn to target before activating
-            targetAir: true,
+            targetAir: false,
             targetGround: true,
             activate: function (tower, targets) {
                 let color = assets.laser_basic;
                 let virus = function (enemy, data) {
                     enemy.takeHit(enemy, data.damage)
-                    console.log(data.message);
                 }
                 let data = {
                     damage: tower.damage,
-                    message: ""
                 }
+                let vel = magic.computeVelocity(tower.center, targets[0].center);
 
                 if (tower.level >= 2) {
                     if (tower.path == 0) {
@@ -57,7 +56,6 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     }
                     else if (tower.path == 1) {
                         color = assets.laser_ice;
-                        data.message = "Enemy Frozen"
 
                         virus = function (enemy, data) {
                             // add status effect here
@@ -68,7 +66,6 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     }
                     else if (tower.path == 2) {
                         color = assets.laser_acid;
-                        data.message = "Enemy on Acid"
                         virus = function (enemy, data) {
                             // add status effect here
                             let status = {type:"poison", time: 2500, interval:500, dmg: tower.damage}
@@ -77,7 +74,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                         }
                     }
                 }
-                lasers.createLaser(targets[0], JSON.parse(JSON.stringify(tower.center)), virus, data, color);
+                lasers.createLaser(vel, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
 
             },
         },
@@ -111,13 +108,14 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
             targetGround: false,
             activate: function (tower, targets) {
                 let color = assets.laser_basic;
+                let vel = magic.computeVelocity(tower.center, targets[0].center);
                 let virus = function (enemy, data) {
                     enemy.takeHit(enemy, data.damage);
                 }
                 let data = {
                     damage: tower.damage,
                 }
-                lasers.createLaser(targets[0], JSON.parse(JSON.stringify(tower.center)), virus, data, color);
+                lasers.createLaser(vel, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
             },
         },
         Launcher: {
@@ -264,13 +262,14 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
             targetGround: true,
             activate: function (tower, targets) {
                 let color = assets.laser_basic;
+                let vel = magic.computeVelocity(tower.center, targets[0].center);
                 let virus = function (enemy, data) {
                     enemy.takeHit(enemy, data.damage);
                 }
                 let data = {
                     damage: tower.damage,
                 }
-                lasers.createLaser(targets[0], JSON.parse(JSON.stringify(tower.center)), virus, data, color);
+                lasers.createLaser(vel, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
             },
         },
         Trigun: {
@@ -303,19 +302,21 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
             targetGround: true,
             activate: function (tower, targets) {
                 let color = assets.laser_basic;
+                let vel = magic.computeVelocity(tower.center, targets[0].center);
+                let rot = magic.computeRotation(vel);
+                let vel2 = magic.computeFromRot(rot + Math.PI / 8);
+                let vel3 = magic.computeFromRot(rot - Math.PI / 8);
                 let virus = function (enemy, data) {
                     enemy.takeHit(enemy, data.damage);
                 }
                 let data = {
                     damage: tower.damage,
                 }
-                if (targets.length >= 2)
-                    lasers.createLaser(targets[1], JSON.parse(JSON.stringify(tower.center)), virus, data, color);
                 if (tower.level == 3) {
-                    if (targets.length >= 3)
-                        lasers.createLaser(targets[2], JSON.parse(JSON.stringify(tower.center)), virus, data, color);
                 }
-                lasers.createLaser(targets[0], JSON.parse(JSON.stringify(tower.center)), virus, data, color);
+                lasers.createLaser(vel, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
+                lasers.createLaser(vel2, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
+                lasers.createLaser(vel3, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
             },
         },
     };

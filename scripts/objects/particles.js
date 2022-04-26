@@ -74,12 +74,13 @@ MyGame.objects.Particles = function (assets, graphics, magic) {
     }
   }
 
+  let arcLength = Math.PI / 8
+
   function makeTrail(pos, amount, colors, velocity) {
+    let rot = magic.computeRotation({x: -velocity.x, y: -velocity.y})
     for (let i = 0; i < amount; i++) {
-      let x = -velocity.x + (Math.random() * .5) - .375; 
-      let y = -velocity.y + (Math.random() * .5) - .375;
-      let center = {x: pos.x + x * magic.CELL_SIZE *.4, y:pos.y + y * magic.CELL_SIZE * .4}; 
-      let vel = {x: x, y: y};
+      let vel = magic.computeFromRot(rot + Math.random() * arcLength - arcLength / 2);
+      let center = {x: pos.x + vel.x * magic.CELL_SIZE *.4, y:pos.y + vel.y * magic.CELL_SIZE * .4}; 
       let size = { x: Math.random() * 4 + 2, y: Math.random() * 4 + 2 }
       let color = colors[Math.floor(Math.random() * colors.length)]
       addSprite({
