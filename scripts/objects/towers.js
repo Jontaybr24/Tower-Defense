@@ -202,7 +202,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
             activate: function (tower, targets) {
 
                 // need to add paths
-                particles.makeFireRing(tower.center);
+                particles.makeRing(tower.center, (tower.radius / magic.CELL_SIZE - .5), magic.pallets.fire);
                 for (let enemy in targets) {
                     targets[enemy].takeHit(targets[enemy], tower.damage)
                 }
@@ -257,7 +257,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius);
                     vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
                     bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius);
-                    particles.makeExplosion(bomb.center)
+                    particles.makeExplosion(bomb.center, magic.pallets.fire)
                 }
                 let data = {
                     damage: tower.damage,
@@ -266,7 +266,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     size: {x: size.x / 2, y: size.y / 2},
                     radius: sradius,
                     sideEffect: function(bomb){
-                        particles.makeExplosion(bomb.center);
+                        particles.makeExplosion(bomb.center, magic.pallets.fire);
                     }
                 }
                 bombs.createBomb(vel, pos, virus, sideEffect, data, assets.bomb, size, radius);

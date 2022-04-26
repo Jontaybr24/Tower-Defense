@@ -143,8 +143,8 @@ MyGame.objects.Magic = function (graphics) {
     }
 
     // returns a velocity when given an angle
-    function computeFromRot(rot){
-        return {x: Math.cos(rot), y: Math.sin(rot)}
+    function computeFromRot(rot) {
+        return { x: Math.cos(rot), y: Math.sin(rot) }
     }
 
     function setGridSize(size) {
@@ -158,6 +158,36 @@ MyGame.objects.Magic = function (graphics) {
         }
     }
 
+    let pallets = {
+        fire: [
+            "#c44910",
+            "#ff5b0f",
+            "#545454",
+            "#ed7300",
+            "#ff8c21"
+        ],
+        smoke: [
+            "#c44910",
+            "#ff5b0f",
+            "#545454",
+            "#ff8c21",
+            "#454545",
+            "#38312b",
+            "#1c1c1c"
+        ],
+        ice: [
+            "#0586ff",
+            "#b0d9ff",
+            "#5890c4",
+            "#5cb0ff"
+        ],
+        acid: [
+            "#0cfa00",
+            "#079400",
+            "#58db2c",
+            "#53bf00"
+        ]
+    }
 
     let api = {
         gridToPixel: gridToPixel,
@@ -181,6 +211,7 @@ MyGame.objects.Magic = function (graphics) {
         get RPS() { return RPS; },
         get CANVAS_SIZE() { return CANVAS_SIZE; },
         get SELL_PRICE() { return SELL_PRICE; },
+        get pallets() { return pallets; },
     };
 
     return api;

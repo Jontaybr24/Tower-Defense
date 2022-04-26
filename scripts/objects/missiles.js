@@ -5,6 +5,7 @@ MyGame.objects.Missile = function (assets, graphics, magic, sounds, particles) {
     let size = magic.CELL_SIZE * .3; // The size of the hitbox for the missiles
     let maxSpeed = 1000 / 1000;
     let spinRate = magic.RPS;
+    let decay = 2500;
 
     function render() {
         for (let idx in missiles) {
@@ -34,9 +35,9 @@ MyGame.objects.Missile = function (assets, graphics, magic, sounds, particles) {
                 missile.moveSpeed *= 1.05;
             missile.center.x += missile.velocity.x * missile.moveSpeed * elapsedTime;
             missile.center.y += missile.velocity.y * missile.moveSpeed * elapsedTime;
-            particles.makeBoomTrail(missile.center, missile.velocity);
+            particles.makeTrail(missile.center, missile.velocity, magic.pallets.smoke);
             magic.sethitbox(missile, { x: size, y: size })
-            if (missile.center.x < 0 || missile.center.x > graphics.canvas.height || missile.center.y < 0 || missile.center.y > graphics.canvas.height) {
+            if (missile.center.x < 0 || missile.center.x > graphics.canvas.height || missile.center.y < 0 || missile.center.y > graphics.canvas.height || missile.lifetime > decay) {
                 deleteMissile(missile);
             }
         }
@@ -73,6 +74,7 @@ MyGame.objects.Missile = function (assets, graphics, magic, sounds, particles) {
             image: image,
             rotation: res,
             hitbox: { xmin: 0, xmax: 0, ymin: 0, ymax: 0 },
+            lifetime: 0,
         };
 
     }

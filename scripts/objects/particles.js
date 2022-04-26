@@ -55,18 +55,15 @@ MyGame.objects.Particles = function (assets, graphics, magic) {
     }
   }
 
-  function makeRing(pos, amount, colors) {
-    for (let i = 0; i < amount; i++) {
-      let x = Math.random() * 2 - 1;
-      let sign = Math.sign(Math.random() - .5)
-      let y = Math.sqrt(1 - x * x) * sign;
-      let vel = { x: x, y: y };
+  function ring(pos, radius, amount, colors) {
+    for (let i = 0; i < (amount * radius); i++) {
+      let vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
       let size = { x: Math.random() * 4 + 2, y: Math.random() * 4 + 2 }
       let color = colors[Math.floor(Math.random() * colors.length)]
       addSprite({
         center: JSON.parse(JSON.stringify(pos)),
         velocity: vel,
-        speed: (Math.random() * 50 + 50) / 1000,
+        speed: (Math.random() * 50 + 50) / 1000 * radius,
         decay: Math.random() * 800 + 200, //time in ms
         color: color,
         size: size,
@@ -75,11 +72,11 @@ MyGame.objects.Particles = function (assets, graphics, magic) {
   }
 
   let arcLength = Math.PI / 8;
-  function makeTrail(pos, amount, colors, velocity) {
-    let rot = magic.computeRotation({x: -velocity.x, y: -velocity.y})
+  function trail(pos, amount, colors, velocity) {
+    let rot = magic.computeRotation({ x: -velocity.x, y: -velocity.y })
     for (let i = 0; i < amount; i++) {
       let vel = magic.computeFromRot(rot + Math.random() * arcLength - arcLength / 2);
-      let center = {x: pos.x + vel.x * magic.CELL_SIZE *.4, y:pos.y + vel.y * magic.CELL_SIZE * .4}; 
+      let center = { x: pos.x + vel.x * magic.CELL_SIZE * .4, y: pos.y + vel.y * magic.CELL_SIZE * .4 };
       let size = { x: Math.random() * 4 + 2, y: Math.random() * 4 + 2 }
       let color = colors[Math.floor(Math.random() * colors.length)]
       addSprite({
@@ -91,62 +88,18 @@ MyGame.objects.Particles = function (assets, graphics, magic) {
         size: size,
       });
     }
+  }  
+
+  function makeExplosion(pos, pallet) {
+    makeBoom(pos, 150, pallet)
   }
 
-  let firePallet = [
-    "#c44910",
-    "#ff5b0f",
-    "#545454",
-    "#ed7300",
-    "#ff8c21"
-  ];
-
-  let smokePallet = [
-    "#c44910",
-    "#ff5b0f",
-    "#545454",
-    "#ff8c21",
-    "#454545",
-    "#38312b",
-    "#1c1c1c"
-  ];
-
-  let icePallet = [
-    "#0586ff",
-    "#b0d9ff",
-    "#5890c4",
-    "#5cb0ff"
-  ];
-
-  let acidPallet = [
-    "#0cfa00",
-    "#079400",
-    "#58db2c",
-    "#53bf00"
-  ]
-
-  function makeExplosion(pos) {
-    makeBoom(pos, 150, firePallet)
+  function makeRing(pos, radius, pallet) {
+    ring(pos, radius, 150, pallet)
   }
 
-  function makeAcidExplosion(pos) {
-    makeBoom(pos, 150, acidPallet)
-  }
-
-  function makeFireRing(pos) {
-    makeRing(pos, 150, firePallet)
-  }
-
-  function makeIceRing(pos) {
-    makeRing(pos, 150, icePallet)
-  }
-
-  function makeAcidRing(pos) {
-    makeRing(pos, 150, acidPallet)
-  }
-
-  function makeBoomTrail(pos, vel) {
-    makeTrail(pos, 5, smokePallet, vel);
+  function makeTrail(pos, vel, pallet) {
+    trail(pos, 5, pallet, vel);
   }
 
   let api = {
@@ -154,11 +107,8 @@ MyGame.objects.Particles = function (assets, graphics, magic) {
     update: update,
     render: render,
     makeExplosion: makeExplosion,
-    makeFireRing: makeFireRing,
-    makeIceRing: makeIceRing,
-    makeAcidRing: makeAcidRing,
-    makeAcidExplosion: makeAcidExplosion,
-    makeBoomTrail: makeBoomTrail,
+    makeRing: makeRing,
+    makeTrail: makeTrail,
   };
 
   return api;
