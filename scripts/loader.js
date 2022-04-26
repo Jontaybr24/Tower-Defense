@@ -664,6 +664,8 @@ MyGame.loader = (function () {
                     path: { label: 'Toggle Path', key: 'p' },
                 },
                 volume: .3,
+                togglePath: true,
+                toggleGrid: true,
                 score: {},
             }
             for (let level in MyGame.levels) {

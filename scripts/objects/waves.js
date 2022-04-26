@@ -9,7 +9,7 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets, sounds) {
     let waveData = { N: [], W: [], E: [], S: [] };
     let renderData = { N: {}, W: {}, E: {}, S: {} };
     let currentWave = null;
-    let pathOn = true;
+    let pathOn = MyGame.data.togglePath;
     let pathTimer = 3000;
     let wispsClear = true;
 
@@ -276,6 +276,8 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets, sounds) {
 
     function togglePath() {
         pathOn = !pathOn;
+        MyGame.data.togglePath = pathOn;
+        localStorage['data'] = JSON.stringify(MyGame.data);
     }
 
     let api = {
