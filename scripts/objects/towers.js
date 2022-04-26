@@ -148,6 +148,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
             targetGround: true,
             activate: function (tower, targets) {
                 let towerHead = assets[tower.name + "_" + tower.path + "_" + tower.level];
+                let vel = magic.computeVelocity(tower.center, targets[0].center);
                 let pos = JSON.parse(JSON.stringify(tower.center));
                 let virus = function (enemy, data) {
                     enemy.takeHit(enemy, data.damage)
@@ -156,10 +157,17 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     damage: tower.damage,
                 }
                 if (tower.level >= 2 && tower.path == 2) {
-                    missiles.createMissile(targets[0], pos, virus, data, 100 / 1000, towerHead);
+                    missiles.createMissile(vel, targets[0], pos, virus, data, 100 / 1000, towerHead);
+                }
+                else if (tower.level >= 2 && tower.path == 1){
+                    let rot = magic.computeRotation(vel);
+                    let vel1 = magic.computeFromRot(rot + Math.PI / 4);
+                    let vel2 = magic.computeFromRot(rot - Math.PI / 4);
+                    missiles.createMissile(vel1, targets[0], JSON.parse(JSON.stringify(tower.center)), virus, data, 50 / 1000, towerHead);
+                    missiles.createMissile(vel2, targets[0], JSON.parse(JSON.stringify(tower.center)), virus, data, 50 / 1000, towerHead);
                 }
                 else {
-                    missiles.createMissile(targets[0], pos, virus, data, 100 / 1000, towerHead);
+                    missiles.createMissile(vel, targets[0], pos, virus, data, 50 / 1000, towerHead);
                 }
             },
         },
