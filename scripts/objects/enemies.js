@@ -218,7 +218,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
     enemy.health -= amount;
 
     enemy.spec.subIndex.y = 3;
-    enemy.wince = 15;
+    enemy.wince = 25;
 
     if (enemy.health <= 0) {
       info.addCoins(enemy.worth, enemy.center);
