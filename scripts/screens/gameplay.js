@@ -317,13 +317,15 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                         myWaves.checkPress();
                     }
                     if (e.ctrlKey) {
-                        let obj = myGameBoard.removeObject(coords);
-                        if (obj != null) {
-                            myTowers.deleteTower(obj);
-                            myInfo.addCoins(Math.floor(obj.cost * magic.SELL_PRICE), obj.center);
-                            myUpgrades.setTower(null);
-                            myEnemies.updatePath();
-                            soundManager.play(assets.sell);
+                        if (myGameBoard.checkCell(coords)) {
+                            let obj = myGameBoard.removeObject(coords);
+                            if (obj != null) {
+                                myTowers.deleteTower(obj);
+                                myInfo.addCoins(Math.floor(obj.cost * magic.SELL_PRICE), obj.center);
+                                myUpgrades.setTower(null);
+                                myEnemies.updatePath();
+                                soundManager.play(assets.sell);
+                            }
                         }
                     }
                     else if (myInfo.placing) {

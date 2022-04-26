@@ -36,6 +36,7 @@ MyGame.objects.Laser = function (assets, graphics, magic, sounds, particles) {
 
     // takes a target as an enemy, pos as a spawn point, and virus as a function to execute when the collision happens
     function createLaser(vel, targets, pos, virus, data, image) {
+        sounds.play(assets.fire);
         let res = magic.computeRotation(vel);
         lasers[++count] = {
             id: count,

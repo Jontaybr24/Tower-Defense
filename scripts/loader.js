@@ -537,6 +537,9 @@ MyGame.loader = (function () {
         },{
             key: 'boom',
             source: '/soundFX/boom.wav'
+        },{
+            key: 'fire',
+            source: '/soundFX/fire.wav'
         },
     ]
 
