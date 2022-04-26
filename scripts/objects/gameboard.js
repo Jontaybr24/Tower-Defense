@@ -8,6 +8,7 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
     let gridOn = MyGame.data.toggleGrid; // The grid is off by default
 
     function genBoard(data) {
+        gridOn = MyGame.data.toggleGrid;
         board = [];
         for (let i = 0; i < data.size; i++) {
             board.push([]);

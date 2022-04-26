@@ -8,7 +8,7 @@ body {
     margin: 0;
     background-color: lightblue;
     color: black;
-    overflow: hidden;
+    overflow: visible;
 }
 
 #canvas-main {
@@ -30,6 +30,7 @@ body {
     height: 400px;
     position: relative;
     width: 400px;
+    overflow: hidden;
 }
 
 #game-play h1 {
@@ -84,12 +85,13 @@ body {
     text-align: center;
     border: 1px solid #000000;
     padding: 5px;
-    width: 250px;
+    width: 180px;
+    font-size: 26px;
 }
 
 #settings table {
-    padding-left: 35%;
-    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #settings .screen {
@@ -97,11 +99,11 @@ body {
 }
 
 #settings tr:hover {
-    background-color: rgba(255, 0, 0, 0.568);
+    background-color: rgba(0, 0, 0, 0.568);
 }
 
 .selected {
-    background-color: #8104a0;
+    background-color: #3d3141;
 }
 
 .selecteds {
@@ -196,4 +198,13 @@ h1 {
 
 h2 {
     font-size: 30px;
+}
+
+.slidecontainer {
+    width: 100%;
+    /* Width of the outside container */
+}
+
+.toggles {
+    font-size: 16px;
 }

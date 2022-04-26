@@ -14,8 +14,8 @@ MyGame.screens['settings'] = (function (game, sounds, data, assets) {
                 node.innerHTML = 'Space';
             else
                 node.innerHTML = key;
-            for(let control in data.controls){
-                if(data.controls[control].label == id){
+            for (let control in data.controls) {
+                if (data.controls[control].label == id) {
                     data.controls[control].key = key;
                 }
             }
@@ -45,9 +45,49 @@ MyGame.screens['settings'] = (function (game, sounds, data, assets) {
         }
     }
 
+    function updateSelections() {
+        document.getElementById('grid').checked = data.toggleGrid;
+        document.getElementById('path').checked = data.togglePath;
+        document.getElementById('volume').value = data.volume * 100;
+    }
+
     localStorage['data'] = JSON.stringify(data);
 
     function initialize() {
+
+        document.getElementById('volume').addEventListener(
+            "mouseenter",
+            function () { soundManager.play(assets.menu_hover); });
+
+        document.getElementById('volume').addEventListener(
+            "input",
+            function (e) {
+                data.volume = document.getElementById('volume').value / 100;
+                localStorage['data'] = JSON.stringify(data);
+            });
+        document.getElementById('grid-box').addEventListener(
+            "mouseenter",
+            function () { soundManager.play(assets.menu_hover); });
+
+        document.getElementById('grid-box').addEventListener(
+            "click",
+            function () {
+                data.toggleGrid = document.getElementById('grid').checked;
+                localStorage['data'] = JSON.stringify(data);
+            });
+        document.getElementById('path-box').addEventListener(
+            "click",
+            function () {
+                data.togglePath = document.getElementById('path').checked;
+                localStorage['data'] = JSON.stringify(data);
+            });
+
+        document.getElementById('volume').addEventListener(
+            "input",
+            function (e) {
+                data.volume = document.getElementById('volume').value / 100;
+                localStorage['data'] = JSON.stringify(data);
+            });
 
         document.getElementById('id-settings-back').addEventListener(
             'click',
@@ -80,6 +120,7 @@ MyGame.screens['settings'] = (function (game, sounds, data, assets) {
 
     function run() {
         deselect();
+        updateSelections();
     }
 
     return {

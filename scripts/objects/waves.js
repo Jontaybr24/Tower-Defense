@@ -228,6 +228,7 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets, sounds) {
     }
 
     function loadWaves(data) {
+        pathOn = MyGame.data.togglePath;
         spawnRate = 1000 / 1.5 // time in ms for an enemy to spawn
         spawning = false;
         waveCount = 0;

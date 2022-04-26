@@ -659,12 +659,12 @@ MyGame.loader = (function () {
         else {
             MyGame.data = {
                 controls: {
-                    grid: { label: 'Toggle Grid', key: 'h' },
                     startWave: { label: 'Start Wave', key: 'g' },
-                    sell: { label: 'Sell', key: 's' },
+                    sell: { label: 'Sell Tower', key: 's' },
                     upgrade1: { label: 'Upgrade Path 1', key: '1' },
                     upgrade2: { label: 'Upgrade Path 2', key: '2' },
                     upgrade3: { label: 'Upgrade Path 3', key: '3' },
+                    grid: { label: 'Toggle Grid', key: 'h' },
                     path: { label: 'Toggle Path', key: 'p' },
                 },
                 volume: .3,

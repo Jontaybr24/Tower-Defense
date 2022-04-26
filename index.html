@@ -58,9 +58,21 @@
 		</div>
 		<div id="settings" class="screen">
 			<h1>Settings</h1>
-			<p>Controls</p>
-			<table id="controls">
-			</table>
+			<div class="slidecontainer">
+				<h2>Volume</h2>
+				<input type="range" min="0" max="100" class="slider" id="volume">
+			</div>
+			<div class="controls-table">
+				<h2>Controls</h2>
+				<table id="controls">
+				</table>
+			</div>
+			<div id="grid-box">
+				<p>Show Grid<input type="checkbox" id="grid" class="checkbox"></p>
+			</div>
+			<div id="path-box">
+				<p>Show Path<input type="checkbox" id="path" class="checkbox"></p>
+			</div>
 			<ul class="menu">
 				<li><button id="id-settings-back">Back</button></li>
 			</ul>
