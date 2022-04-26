@@ -2,7 +2,6 @@ MyGame.objects.Bombs = function (assets, graphics, magic, sounds, particles) {
     'use strict';
     let bombs = {};
     let count = 0;
-    let speed = 400 / 1000; // speed in pixels per ms
     let enemies = null;
 
     function render() {
@@ -16,7 +15,7 @@ MyGame.objects.Bombs = function (assets, graphics, magic, sounds, particles) {
     function update(elapsedTime) {
         for (let idx in bombs) {
             let bomb = bombs[idx];
-            bomb.moveSpeed *= .95;
+            bomb.moveSpeed *= .99;
             bomb.center.x += bomb.velocity.x * bomb.moveSpeed * elapsedTime;
             bomb.center.y += bomb.velocity.y * bomb.moveSpeed * elapsedTime;
             magic.sethitbox(bomb, bomb.size);
@@ -45,12 +44,14 @@ MyGame.objects.Bombs = function (assets, graphics, magic, sounds, particles) {
         deleteBomb(bomb);
     }
 
-    function createBomb(vel, pos, virus, sideEffect, data, image, size, radius) {
+    function createBomb(vel, pos, virus, sideEffect, data, image, size, radius, speed) {
         let res = magic.computeRotation(vel);
+        let mSpeed =  Math.random() * (speed / 4) + speed * 3 / 4;
+        console.log(mSpeed)
         bombs[++count] = {
             id: count,
             velocity: vel,
-            moveSpeed: speed,
+            moveSpeed: mSpeed,
             center: pos,
             virus: virus,
             sideEffect: sideEffect,

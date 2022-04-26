@@ -318,6 +318,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
             targetAir: false,
             targetGround: true,
             activate: function (tower, targets) {
+                let speed = 400 / 1000; // speed in pixels per ms
                 let pos = JSON.parse(JSON.stringify(tower.center));
                 let vel = magic.computeVelocity(tower.center, targets[0].center);
                 let size = { x: magic.CELL_SIZE * .75, y: magic.CELL_SIZE * .75 };
@@ -344,15 +345,15 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                         sideEffect = function (bomb, data) {
                             data.damage = data.damage2;
                             let vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
-                            bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius);
+                            bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius, data.speed);
                             vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
-                            bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius);
+                            bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius, data.speed);
                             vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
-                            bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius);
+                            bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius, data.speed);
                             vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
-                            bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius);
+                            bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius, data.speed);
                             vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
-                            bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius);
+                            bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius, data.speed);
                             particles.makeExplosion(bomb.center,magic.pallets.fire);
                         }
                         virus = function (enemy, data) {
@@ -367,6 +368,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                 let data = {
                     damage: tower.damage,
                     damage2: tower.damage / 2,
+                    speed: speed / 3,
                     img: assets.bomb,
                     size: { x: size.x / 2, y: size.y / 2 },
                     radius: sradius,
@@ -374,7 +376,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                         particles.makeExplosion(bomb.center,magic.pallets.fire);
                     }
                 }
-                bombs.createBomb(vel, pos, virus, sideEffect, data, assets.bomb, size, radius);
+                bombs.createBomb(vel, pos, virus, sideEffect, data, assets.bomb, size, radius, speed);
             },
         },
         MachineGun: {
