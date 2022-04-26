@@ -441,10 +441,7 @@ MyGame.loader = (function () {
     },{
         key: 'missile',
         source: '/assets/missile.png'
-    }, {
-        key: 'menu_hover',
-        source: '/soundFX/menu-hover.wav'
-    }, {
+    },  {
         key: 'playBtnHover',
         source: '/assets/play-hover.png'
     }, {
@@ -462,24 +459,6 @@ MyGame.loader = (function () {
     }, {
         key: 'waveHover',
         source: '/assets/play-hover.png'
-    },{
-        key: 'deny',
-        source: '/soundFX/deny.wav'
-    },{
-        key: 'sell',
-        source: '/soundFX/sell.wav'
-    },{
-        key: 'death',
-        source: '/soundFX/death.wav'
-    },{
-        key: 'upgrade1',
-        source: '/soundFX/upgrade1.wav'
-    },{
-        key: 'upgrade2',
-        source: '/soundFX/upgrade2.wav'
-    },{
-        key: 'upgrade3',
-        source: '/soundFX/upgrade3.wav'
     },
     ];
 
@@ -529,6 +508,31 @@ MyGame.loader = (function () {
         key: 'level15',
         source: 'levels/level5.json'
     },]
+
+    let soundOder = [
+        {
+            key: 'menu_hover',
+            source: '/soundFX/menu-hover.wav'
+        },{
+            key: 'deny',
+            source: '/soundFX/deny.wav'
+        },{
+            key: 'sell',
+            source: '/soundFX/sell.wav'
+        },{
+            key: 'death',
+            source: '/soundFX/death.wav'
+        },{
+            key: 'upgrade1',
+            source: '/soundFX/upgrade1.wav'
+        },{
+            key: 'upgrade2',
+            source: '/soundFX/upgrade2.wav'
+        },{
+            key: 'upgrade3',
+            source: '/soundFX/upgrade3.wav'
+        },
+    ]
 
     //------------------------------------------------------------------
     //
@@ -737,8 +741,15 @@ MyGame.loader = (function () {
             console.log("All levels loaded");
             console.log('Loading saved data');
             loadData();
+            loadSounds(soundOder);
         }
     );
+
+    function loadSounds(soundOder){
+        for (let idx in soundOder){
+            MyGame.assets[soundOder[idx].key] = soundOder[idx].source;
+        }
+    }
     
 
     //
