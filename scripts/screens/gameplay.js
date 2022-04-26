@@ -138,6 +138,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     function hideMenu() {
         paused = false;
+        myWaves.paused = false;
         document.getElementById('pause-menu').style.display = "none";
         soundManager.playAll();
     }
@@ -203,8 +204,10 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     function update(elapsedTime) {
         collinsions();
-
         myWaves.update(elapsedTime);
+        if(myWaves.paused){
+            togglePause();
+        }
         myParticles.update(elapsedTime);
         myCoins.update(elapsedTime);
         myEnemies.update(elapsedTime);

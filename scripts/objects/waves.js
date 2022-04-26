@@ -13,6 +13,7 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets, sounds) {
     let pathTimer = 3000;
     let wispsClear = true;
 
+    let paused = false;
     let spawning = false;
 
     let boxSize = magic.CELL_SIZE;
@@ -42,15 +43,16 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets, sounds) {
             if (isWaveDone()) {
                 if (pathTimer < 0) {
                     pathTimer = 3000
-                    if((length(renderData["N"]) != 0))
+                    if(enemies.wlength == 0){
+                    if((length(renderData["N"]) != 0) )
                         enemies.spawnEnemy("Wisp", "N");
-                    if((length(renderData["S"]) != 0))
+                    if((length(renderData["S"]) != 0) )
                         enemies.spawnEnemy("Wisp", "S");
-                    if((length(renderData["W"]) != 0))
+                    if((length(renderData["W"]) != 0) )
                         enemies.spawnEnemy("Wisp", "W");
-                    if((length(renderData["E"]) != 0))
+                    if((length(renderData["E"]) != 0) )
                         enemies.spawnEnemy("Wisp", "E");    
-                    
+                    }
                     wispsClear = false;
                 }
             }
@@ -193,8 +195,10 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets, sounds) {
         if (button.selected) {
             if (!spawning && enemies.length == 0)
                 nextWave();
-            else
+            else{
                 console.log("Paused");
+                paused = true;
+            }
         }
     }
 
@@ -284,6 +288,8 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets, sounds) {
         checkPress: checkPress,
         isWaveDone: isWaveDone,
         togglePath: togglePath,
+        set paused(val) {paused = val}, 
+        get paused() {return paused},
         get spawning() { return spawning; },
         get waveCount() { return waveCount; },
     };

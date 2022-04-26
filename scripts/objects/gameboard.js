@@ -76,13 +76,16 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
 
     function addObject(point, obj) {
         if (point.x < board.length && point.y < board.length) {
+            
+            
             board[point.x][point.y].object = obj;
         }
     }
 
     function removeObject(point) {
         let copy = null;
-        if (point.x < board.length - 1 && point.y < board.length - 1 && point.x > 0 && point.y > 0) {
+        if (point.x < board.length - 1 && point.y < board.length - 1 && point.x > 0 && point.y > 0 || board[point.x][point.y].object == "Cursor") {
+            
             copy = JSON.parse(JSON.stringify(board[point.x][point.y].object));
             board[point.x][point.y].object = null;
         }

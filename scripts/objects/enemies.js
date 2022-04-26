@@ -18,29 +18,67 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       moveRate: 300 / 1000,
       health: 1000,
       worth: 500,
+      size:1,
       spec: {
         spriteSheet: assets.Cube,
         subIndex: { x: 0, y: 0 },
         subTextureWidth: { x: 32, y: 32 },
         spriteCount: 11,
-        spriteTime: 100
-      }  // ms per frame
-
+        spriteTime: 100,
+        
+      },  // ms per frame
+      dmg:10,
     },
     Spider: {
       name: "Spider",
       type: "ground",
-      moveRate: 100 / 1000,
+      moveRate: 150 / 1000,
       health: 20,
       worth: 5,
+      size:1,
       spec: {
         spriteSheet: assets.Spider,
         subIndex: { x: 0, y: 0 },
         subTextureWidth: { x: 32, y: 32 },
         spriteCount: 4,
-        spriteTime: 70
-      }  // ms per frame
-
+        spriteTime: 70,
+        
+      },  // ms per frame
+      dmg:3,
+    },
+    Small_Spider: {
+      name: "Small_Spider",
+      type: "ground",
+      moveRate: 300 / 1000,
+      health: 5,
+      worth: 5,
+      size:.5,
+      spec: {
+        spriteSheet: assets.Spider,
+        subIndex: { x: 0, y: 0 },
+        subTextureWidth: { x: 32, y: 32 },
+        spriteCount: 4,
+        spriteTime: 30,
+        
+      },  // ms per frame
+      dmg:1,
+    },
+    Big_Spider: {
+      name: "Big_Spider",
+      type: "ground",
+      moveRate: 100 / 1000,
+      health: 40,
+      worth: 5,
+      size:1.25,
+      spec: {
+        spriteSheet: assets.Spider,
+        subIndex: { x: 0, y: 0 },
+        subTextureWidth: { x: 32, y: 32 },
+        spriteCount: 4,
+        spriteTime: 120,
+        
+      },  // ms per frame
+      dmg:5,
     },
     Drone: {
       name: "Drone",
@@ -48,13 +86,49 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       moveRate: 200 / 1000,
       health: 20,
       worth: 50,
+      size:1,
       spec: {
         spriteSheet: assets.Drone,
         subIndex: { x: 0, y: 0 },
         subTextureWidth: { x: 32, y: 32 },
         spriteCount: 4,
-        spriteTime: 60
+        spriteTime: 60,
       },
+      
+      dmg:3,
+    },
+    Big_Drone: {
+      name: "Big_Drone",
+      type: "flying",
+      moveRate: 100 / 1000,
+      health: 40,
+      worth: 50,
+      size:1.5,
+      spec: {
+        spriteSheet: assets.Drone,
+        subIndex: { x: 0, y: 0 },
+        subTextureWidth: { x: 32, y: 32 },
+        spriteCount: 4,
+        spriteTime: 80,
+      },
+      
+      dmg:5,
+    },
+    Small_Drone: {
+      name: "Small_Drone",
+      type: "flying",
+      moveRate: 300 / 1000,
+      health: 10,
+      worth: 50,
+      size:.5,
+      spec: {
+        spriteSheet: assets.Drone,
+        subIndex: { x: 0, y: 0 },
+        subTextureWidth: { x: 32, y: 32 },
+        spriteCount: 4,
+        spriteTime: 40,
+      },
+      dmg:1,
 
     },
     Wisp: {
@@ -103,6 +177,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
 
     let cpath = Pathfinder.findPath(spawn, end, enemy.type)
     enemy.spec = enemiesDictionary[name].spec;
+    enemy.size = enemiesDictionary[name].size;
     enemy.target = spawn;
     enemy.center = spawn;
     enemy.rotation = 0;
@@ -115,6 +190,8 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
     enemy.path = cpath;
     enemy.rig = new model(enemy.spec, graphics)
     enemy.hitbox = { xmin: 0, xmax: 0, ymin: 0, ymax: 0 }
+    //console.log(magic.CELL_SIZE)
+    
     magic.sethitbox(enemy, { x: magic.CELL_SIZE, y: magic.CELL_SIZE })
     bars.newHealthbar(enemy);
     if (name == "Wisp") {
@@ -219,8 +296,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
 
       if (magnitude < threshold) {
         if (enemies[index].path == null || enemies[index].path.length == 0) {
-          if (!(enemies[index].name == "Wisp"))
-            info.loseLife(1);
+          info.loseLife(enemies[index].dmg);
           kill(enemies[index]);
         }
         else {
@@ -261,7 +337,8 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       wisps[index].rig.render({ center: wisps[index].center, rotation: wisps[index].rotation, subSize: { x: magic.CELL_SIZE, y: magic.CELL_SIZE }, suby: 0 });
     }
     for (let index in enemies) {
-      enemies[index].rig.render({ center: enemies[index].center, rotation: enemies[index].rotation, subSize: { x: magic.CELL_SIZE, y: magic.CELL_SIZE }, suby: enemies[index].spec.subIndex.y });
+      //console.log(enemies[index].spec.size);
+      enemies[index].rig.render({ center: enemies[index].center, rotation: enemies[index].rotation, subSize: { x:magic.CELL_SIZE* enemies[index].size, y: magic.CELL_SIZE*enemies[index].size }, suby: enemies[index].spec.subIndex.y });
 
       //graphics.drawRectangle({center:{x:(enemies[index].hitbox.xmin +enemies[index].hitbox.xmax)/2,y:(enemies[index].hitbox.ymin +enemies[index].hitbox.ymax)/2}, size:{x:enemies[index].hitbox.xmin - enemies[index].hitbox.xmax, y:enemies[index].hitbox.ymin - enemies[index].hitbox.ymax}}, "red","red");
     }
@@ -288,6 +365,8 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
     clearAll: clearAll,
     clearWisps: clearWisps,
     get enemies() { return enemies; },
+    get wisps() { return wisps; },
+    get wlength() { return Object.keys(wisps).length },
     get length() { return Object.keys(enemies).length },
     get score() { return score; }
   };
