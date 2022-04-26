@@ -21,7 +21,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       size:1,
       spec: {
         spriteSheet: assets.Cube,
-        subIndex: { x: 0, y: 0 },
+        //subIndex: { x: 0, y: 0 },
         subTextureWidth: { x: 32, y: 32 },
         spriteCount: 11,
         spriteTime: 100,
@@ -38,7 +38,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       size:1,
       spec: {
         spriteSheet: assets.Spider,
-        subIndex: { x: 0, y: 0 },
+        //subIndex: { x: 0, y: 0 },
         subTextureWidth: { x: 32, y: 32 },
         spriteCount: 4,
         spriteTime: 70,
@@ -55,7 +55,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       size:.5,
       spec: {
         spriteSheet: assets.Spider,
-        subIndex: { x: 0, y: 0 },
+        //subIndex: { x: 0, y: 0 },
         subTextureWidth: { x: 32, y: 32 },
         spriteCount: 4,
         spriteTime: 30,
@@ -72,7 +72,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       size:1.25,
       spec: {
         spriteSheet: assets.Spider,
-        subIndex: { x: 0, y: 0 },
+        //subIndex: { x: 0, y: 0 },
         subTextureWidth: { x: 32, y: 32 },
         spriteCount: 4,
         spriteTime: 120,
@@ -89,7 +89,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       size:1,
       spec: {
         spriteSheet: assets.Drone,
-        subIndex: { x: 0, y: 0 },
+        //subIndex: { x: 0, y: 0 },
         subTextureWidth: { x: 32, y: 32 },
         spriteCount: 4,
         spriteTime: 60,
@@ -106,7 +106,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       size:1.5,
       spec: {
         spriteSheet: assets.Drone,
-        subIndex: { x: 0, y: 0 },
+        //subIndex: { x: 0, y: 0 },
         subTextureWidth: { x: 32, y: 32 },
         spriteCount: 4,
         spriteTime: 80,
@@ -123,7 +123,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       size:.5,
       spec: {
         spriteSheet: assets.Drone,
-        subIndex: { x: 0, y: 0 },
+        //subIndex: { x: 0, y: 0 },
         subTextureWidth: { x: 32, y: 32 },
         spriteCount: 4,
         spriteTime: 40,
@@ -139,7 +139,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       worth: 0,
       spec: {
         spriteSheet: assets.Wisp,
-        subIndex: { x: 0, y: 0 },
+        //subIndex: { x: 0, y: 0 },
         subTextureWidth: { x: 32, y: 32 },
         spriteCount: 1,
         spriteTime: 100
@@ -176,7 +176,11 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
     //console.log(spawn, end);
 
     let cpath = Pathfinder.findPath(spawn, end, enemy.type)
-    enemy.spec = enemiesDictionary[name].spec;
+    
+    //enemy.spec = enemiesDictionary[name].spec;
+    enemy.spec = JSON.parse(JSON.stringify(enemiesDictionary[name].spec))
+    enemy.spec.spriteSheet = enemiesDictionary[name].spec.spriteSheet;
+    enemy.spec.subIndex = { x: 0, y: 0 };
     enemy.size = enemiesDictionary[name].size;
     enemy.target = spawn;
     enemy.center = spawn;
@@ -186,7 +190,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
     enemy.takeHit = takeHit;
     enemy.setStatus = setStatus;
     enemy.wince = 0;
-    enemy.status = { ice: 0, poison: { timeRemaing: 0, interval: 0, timeHit: 0, dmg: 0 } }
+    enemy.status = { ice: 0, poison: { timeRemaing: 0, interval: 0, timeHit: 0, dmg: 0 },  slow:{ time: 0, amount: 1}}
     enemy.path = cpath;
     enemy.rig = new model(enemy.spec, graphics)
     enemy.hitbox = { xmin: 0, xmax: 0, ymin: 0, ymax: 0 }
@@ -210,6 +214,12 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       enemy.status.poison.timeRemaing = status.time;
       enemy.status.poison.interval = status.interval;
       enemy.status.poison.dmg = status.dmg;
+    }
+    if (status.type == "slow") {
+      if(enemy.name != "Cube"){
+        enemy.status.slow.time = status.time;
+        enemy.status.slow.amount = status.amount;
+      }
     }
   }
 
@@ -272,6 +282,15 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
 
     timePassed += elapsedTime;
     for (let index in enemies) {
+      
+      if (enemies[index].status.slow.time > 0) {
+        enemies[index].status.slow.time -= elapsedTime;
+        enemies[index].spec.subIndex.y = 4;
+      }
+      else{
+        enemies[index].status.slow.amount = 1;
+        //enemies[index].status.slow.time =0;
+      }
       if (enemies[index].status.poison.timeRemaing > 0) {
         enemies[index].status.poison.timeRemaing -= elapsedTime
         enemies[index].status.poison.timeHit += elapsedTime
@@ -281,7 +300,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
         enemies[index].status.ice -= elapsedTime
         enemies[index].spec.subIndex.y = 1;
       }
-      if (!(enemies[index].status.ice > 0) && !(enemies[index].status.poison.timeRemaing > 0) && (enemies[index].wince < 0)) {
+      if (!(enemies[index].status.ice > 0) && !(enemies[index].status.poison.timeRemaing > 0) && !(enemies[index].status.slow.time > 0) && (enemies[index].wince < 0)) {
         enemies[index].spec.subIndex.y = 0;
       }
       enemies[index].wince --;
@@ -308,8 +327,8 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       else {
         if (!(enemies[index].status.ice > 0)) {
           if ((enemies[index].name != "Cube" || enemies[index].name == "Cube" && [9, 10, 11].includes(enemies[index].rig.xIndex))) {
-            enemies[index].center.x += (enemies[index].moveRate * elapsedTime * enemies[index].velocity.x)
-            enemies[index].center.y += (enemies[index].moveRate * elapsedTime * enemies[index].velocity.y)
+            enemies[index].center.x += ((enemies[index].status.slow.amount * enemies[index].moveRate) * elapsedTime * enemies[index].velocity.x)
+            enemies[index].center.y += ((enemies[index].status.slow.amount * enemies[index].moveRate) * elapsedTime * enemies[index].velocity.y)
           }
         }
         //console.log(enemies[index])

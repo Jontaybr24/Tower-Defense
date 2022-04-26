@@ -38,7 +38,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
             },
             renderPreview: renderPreview, // the piction image
             needTarget: true, // if the tower needs to turn to target before activating
-            targetAir: false,
+            targetAir: true,
             targetGround: true,
             activate: function (tower, targets) {
                 let color = assets.laser_basic;
@@ -52,7 +52,12 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
 
                 if (tower.level >= 2) {
                     if (tower.path == 0) {
-
+                        virus = function (enemy, data) {
+                            // add status effect here
+                            let status = { type: "slow", time: 5000, amount: .5 }
+                            enemy.takeHit(enemy, data.damage)
+                            enemy.setStatus(enemy, status);
+                        }
                     }
                     else if (tower.path == 1) {
                         color = assets.laser_ice;
