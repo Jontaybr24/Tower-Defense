@@ -39,10 +39,12 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let myUpgrades = objects.Menu(assets, graphics, magic, myTowers, myInfo, soundManager);
 
     function cursorCollision() {
-        myCursor.blocked(!myGameBoard.checkCell(magic.pixelToGrid(myCursor.cursor.center)));
+        if (!myGameBoard.checkCell(magic.pixelToGrid(myCursor.cursor.center))){
+            myCursor.blocked();
+        }
         for (let index in myEnemies.enemies) {
             if (magic.collision(myCursor.cursor.hitbox, myEnemies.enemies[index].hitbox)) {
-                myCursor.blocked(true);
+                myCursor.blocked();
                 break;
             }
         }

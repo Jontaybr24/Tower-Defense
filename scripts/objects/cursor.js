@@ -52,10 +52,8 @@ MyGame.objects.Cursor = function (assets, graphics, magic) {
         return (cursor.state == "clear");
     }
 
-    function blocked(status) {
-        if (status)
-            cursor.state = "blocked";
-
+    function blocked() {
+        cursor.state = "blocked";
     }
 
     function hideCursor() {

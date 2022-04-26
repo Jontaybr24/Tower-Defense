@@ -55,7 +55,8 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor, sounds, aPartic
     }
 
     function update(elapsedTime) {
-        cursor.blocked(currentTower?.cost > coins);
+        if (currentTower?.cost > coins)
+            cursor.blocked();
     }
 
     function addCoins(amount, location) {
