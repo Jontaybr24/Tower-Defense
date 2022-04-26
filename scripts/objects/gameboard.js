@@ -5,7 +5,7 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
     let timePassed = 0;
 
     let board = [];
-    let gridOn = false; // The grid is off by default
+    let gridOn = MyGame.data.toggleGrid; // The grid is off by default
 
     function genBoard(data) {
         board = [];
@@ -67,6 +67,8 @@ MyGame.objects.Gameboard = function (assets, graphics, magic) {
 
     function toggleGrid() {
         gridOn = !gridOn;
+        MyGame.data.toggleGrid = gridOn;
+        localStorage['data'] = JSON.stringify(MyGame.data);
     }
 
     function update(elapsedTime) {

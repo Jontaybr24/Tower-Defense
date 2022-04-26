@@ -39,7 +39,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let myUpgrades = objects.Menu(assets, graphics, magic, myTowers, myInfo, soundManager);
 
     function cursorCollision() {
-        if (!myGameBoard.checkCell(magic.pixelToGrid(myCursor.cursor.center))){
+        if (!myGameBoard.checkCell(magic.pixelToGrid(myCursor.cursor.center))) {
             myCursor.blocked();
         }
         for (let index in myEnemies.enemies) {
@@ -209,7 +209,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     function update(elapsedTime) {
         collinsions();
         myWaves.update(elapsedTime);
-        if(myWaves.paused){
+        if (myWaves.paused) {
             togglePause();
         }
         myParticles.update(elapsedTime);
@@ -248,15 +248,17 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     }
 
     function sellaTower() {
-        let tower = myUpgrades.tower;
-        if (tower != null) {
-            let coords = magic.pixelToGrid(tower.center);
-            let obj = myGameBoard.removeObject(coords);
-            myTowers.deleteTower(obj);
-            myInfo.addCoins(Math.floor(obj.cost * magic.SELL_PRICE), tower.center);
-            myUpgrades.setTower(null);
-            myEnemies.updatePath();
-            soundManager.play(assets.sell);
+        if (!paused) {
+            let tower = myUpgrades.tower;
+            if (tower != null) {
+                let coords = magic.pixelToGrid(tower.center);
+                let obj = myGameBoard.removeObject(coords);
+                myTowers.deleteTower(obj);
+                myInfo.addCoins(Math.floor(obj.cost * magic.SELL_PRICE), tower.center);
+                myUpgrades.setTower(null);
+                myEnemies.updatePath();
+                soundManager.play(assets.sell);
+            }
         }
     }
 
@@ -266,73 +268,83 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myKeyboard.register("Escape", togglePause);
         myKeyboard.register(data.controls.grid.key, myGameBoard.toggleGrid);
         myKeyboard.register(data.controls.upgrade1.key, function () {
-            if (myInfo.coins >= myUpgrades.tower?.upgrades["cost"][0][0]) {
-                myInfo.addCoins(-myTowers.upgrade(myUpgrades.tower, 0), myUpgrades.tower.center);
+            if (!paused) {
+                if (myInfo.coins >= myUpgrades.tower?.upgrades["cost"][0][0]) {
+                    myInfo.addCoins(-myTowers.upgrade(myUpgrades.tower, 0), myUpgrades.tower.center);
+                }
             }
         });
         myKeyboard.register(data.controls.upgrade2.key, function () {
-            if (myInfo.coins >= myUpgrades.tower?.upgrades["cost"][1][0]) {
-                myInfo.addCoins(-myTowers.upgrade(myUpgrades.tower, 1), myUpgrades.tower.center);
+            if (!paused) {
+                if (myInfo.coins >= myUpgrades.tower?.upgrades["cost"][1][0]) {
+                    myInfo.addCoins(-myTowers.upgrade(myUpgrades.tower, 1), myUpgrades.tower.center);
+                }
             }
         });
         myKeyboard.register(data.controls.upgrade3.key, function () {
-            if (myInfo.coins >= myUpgrades.tower?.upgrades["cost"][2][0]) {
-                myInfo.addCoins(-myTowers.upgrade(myUpgrades.tower, 2), myUpgrades.tower.center);
+            if (!paused) {
+                if (myInfo.coins >= myUpgrades.tower?.upgrades["cost"][2][0]) {
+                    myInfo.addCoins(-myTowers.upgrade(myUpgrades.tower, 2), myUpgrades.tower.center);
+                }
             }
         });
         myKeyboard.register(data.controls.path.key, function () {
-            myWaves.togglePath();
+            if (!paused) {
+                myWaves.togglePath();
+            }
         });
         myKeyboard.register(data.controls.sell.key, sellaTower);
         myKeyboard.register(data.controls.startWave.key, myWaves.nextWave);
         myMouse.register('mousedown', function (e) {
-            if (e.button == 2) {
-                myInfo.cancelTower();
-                myUpgrades.setTower(null);
-            }
-            else {
-                let coords = magic.mouseToGrid({ x: e.clientX, y: e.clientY })
-                let pixelCoords = magic.gridToPixel(coords);
-
-                if (coords.x < magic.GRID_SIZE - 1 && coords.y < magic.GRID_SIZE - 1) {
+            if (!paused) {
+                if (e.button == 2) {
+                    myInfo.cancelTower();
                     myUpgrades.setTower(null);
                 }
-
-                if (coords.x >= magic.GRID_SIZE) {
-                    myInfo.checkBuy();
-                    myInfo.addCoins(-myUpgrades.buyUpgrade(), pixelCoords);
-                    if (myUpgrades.sellTower())
-                        sellaTower();
-                    myWaves.checkPress();
-                }
-                if (e.ctrlKey) {
-                    let obj = myGameBoard.removeObject(coords);
-                    if (obj != null) {
-                        myTowers.deleteTower(obj);
-                        myInfo.addCoins(Math.floor(obj.cost * magic.SELL_PRICE), obj.center);
-                        myUpgrades.setTower(null);
-                        myEnemies.updatePath();
-                        soundManager.play(assets.sell);
-                    }
-                }
-                else if (myInfo.placing) {
-                    if (myCursor.isClear() && myGameBoard.checkCell(coords)) {
-                        let tower = myTowers.getTower(myCursor.tower.name);
-                        if (myInfo.hasFunds(tower.cost)) {
-                            myInfo.addCoins(-tower.cost, pixelCoords)
-                            tower = myTowers.makeTower(pixelCoords, myCursor.tower.name);
-                            myGameBoard.addObject(coords, tower);
-                        }
-                        myEnemies.updatePath();
-                    }
-                    else if (!myCursor.isClear() && coords.x < magic.GRID_SIZE) {
-                        soundManager.play(assets.deny);
-                    }
-                }
                 else {
-                    let tower = myGameBoard.getObject(coords);
-                    if (tower?.type == "tower") {
-                        myUpgrades.setTower(tower);
+                    let coords = magic.mouseToGrid({ x: e.clientX, y: e.clientY })
+                    let pixelCoords = magic.gridToPixel(coords);
+
+                    if (coords.x < magic.GRID_SIZE - 1 && coords.y < magic.GRID_SIZE - 1) {
+                        myUpgrades.setTower(null);
+                    }
+
+                    if (coords.x >= magic.GRID_SIZE) {
+                        myInfo.checkBuy();
+                        myInfo.addCoins(-myUpgrades.buyUpgrade(), pixelCoords);
+                        if (myUpgrades.sellTower())
+                            sellaTower();
+                        myWaves.checkPress();
+                    }
+                    if (e.ctrlKey) {
+                        let obj = myGameBoard.removeObject(coords);
+                        if (obj != null) {
+                            myTowers.deleteTower(obj);
+                            myInfo.addCoins(Math.floor(obj.cost * magic.SELL_PRICE), obj.center);
+                            myUpgrades.setTower(null);
+                            myEnemies.updatePath();
+                            soundManager.play(assets.sell);
+                        }
+                    }
+                    else if (myInfo.placing) {
+                        if (myCursor.isClear() && myGameBoard.checkCell(coords)) {
+                            let tower = myTowers.getTower(myCursor.tower.name);
+                            if (myInfo.hasFunds(tower.cost)) {
+                                myInfo.addCoins(-tower.cost, pixelCoords)
+                                tower = myTowers.makeTower(pixelCoords, myCursor.tower.name);
+                                myGameBoard.addObject(coords, tower);
+                            }
+                            myEnemies.updatePath();
+                        }
+                        else if (!myCursor.isClear() && coords.x < magic.GRID_SIZE) {
+                            soundManager.play(assets.deny);
+                        }
+                    }
+                    else {
+                        let tower = myGameBoard.getObject(coords);
+                        if (tower?.type == "tower") {
+                            myUpgrades.setTower(tower);
+                        }
                     }
                 }
             }
@@ -340,37 +352,39 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         let lastGrid = null;
         graphics.canvas.addEventListener(
             'mousemove', function (e) {
-                let coords = magic.mouseToGrid({ x: e.clientX, y: e.clientY })
+                if (!paused) {
+                    let coords = magic.mouseToGrid({ x: e.clientX, y: e.clientY })
 
-                let pixelCoords = magic.gridToPixel(coords);
-                let moreCoords = magic.mouseToPixel({ x: e.clientX, y: e.clientY })
-                myInfo.checkHover(moreCoords);
-                myUpgrades.checkHover(moreCoords);
-                myWaves.checkHover(moreCoords);
-                myCursor.setCursor(pixelCoords);
-                if (myInfo.placing) {
-                    if ((coords.x < magic.GRID_SIZE && coords.y < magic.GRID_SIZE)) {
-                        if (!(coords.x <= 0 || coords.y <= 0)) {
-                            if (lastGrid == null) {
-                                if (myGameBoard.checkCell(coords)) {
-                                    myGameBoard.addObject(coords, "Cursor")
-                                    if (myPathfinder.findPath(magic.spawnPoints.W, magic.spawnPoints.E, "Cursor") != null && myPathfinder.findPath(magic.spawnPoints.N, magic.spawnPoints.S, "Cursor") != null) {
-                                        myGameBoard.removeObject(coords)
+                    let pixelCoords = magic.gridToPixel(coords);
+                    let moreCoords = magic.mouseToPixel({ x: e.clientX, y: e.clientY })
+                    myInfo.checkHover(moreCoords);
+                    myUpgrades.checkHover(moreCoords);
+                    myWaves.checkHover(moreCoords);
+                    myCursor.setCursor(pixelCoords);
+                    if (myInfo.placing) {
+                        if ((coords.x < magic.GRID_SIZE && coords.y < magic.GRID_SIZE)) {
+                            if (!(coords.x <= 0 || coords.y <= 0)) {
+                                if (lastGrid == null) {
+                                    if (myGameBoard.checkCell(coords)) {
+                                        myGameBoard.addObject(coords, "Cursor")
+                                        if (myPathfinder.findPath(magic.spawnPoints.W, magic.spawnPoints.E, "Cursor") != null && myPathfinder.findPath(magic.spawnPoints.N, magic.spawnPoints.S, "Cursor") != null) {
+                                            myGameBoard.removeObject(coords)
+                                        }
                                     }
+                                    lastGrid = coords;
                                 }
-                                lastGrid = coords;
-                            }
-                            if (lastGrid != null && (lastGrid.x != coords.x || lastGrid.y != coords.y)) {
-                                if (myGameBoard.board[lastGrid.x][lastGrid.y].object == "Cursor") {
-                                    myGameBoard.removeObject(lastGrid)
-                                }
-                                if (myGameBoard.checkCell(coords)) {
-                                    myGameBoard.addObject(coords, "Cursor")
-                                    if (myPathfinder.findPath(magic.spawnPoints.W, magic.spawnPoints.E, "Cursor") != null && myPathfinder.findPath(magic.spawnPoints.N, magic.spawnPoints.S, "Cursor") != null) {
-                                        myGameBoard.removeObject(coords)
+                                if (lastGrid != null && (lastGrid.x != coords.x || lastGrid.y != coords.y)) {
+                                    if (myGameBoard.board[lastGrid.x][lastGrid.y].object == "Cursor") {
+                                        myGameBoard.removeObject(lastGrid)
                                     }
+                                    if (myGameBoard.checkCell(coords)) {
+                                        myGameBoard.addObject(coords, "Cursor")
+                                        if (myPathfinder.findPath(magic.spawnPoints.W, magic.spawnPoints.E, "Cursor") != null && myPathfinder.findPath(magic.spawnPoints.N, magic.spawnPoints.S, "Cursor") != null) {
+                                            myGameBoard.removeObject(coords)
+                                        }
+                                    }
+                                    lastGrid = coords;
                                 }
-                                lastGrid = coords;
                             }
                         }
                     }
@@ -379,7 +393,9 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         );
         graphics.canvas.addEventListener(
             'mouseleave', function (e) {
-                myCursor.hideCursor();
+                if (!paused) {
+                    myCursor.hideCursor();
+                }
             }
         );
     }

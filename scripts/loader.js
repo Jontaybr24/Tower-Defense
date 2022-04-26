@@ -658,12 +658,14 @@ MyGame.loader = (function () {
                     grid: { label: 'Toggle Grid', key: 'h' },
                     startWave: { label: 'Start Wave', key: 'g' },
                     sell: { label: 'Sell', key: 's' },
-                    upgrade1: { label: 'Upgrade Path 1', key: 'u' },
+                    upgrade1: { label: 'Upgrade Path 1', key: '1' },
                     upgrade2: { label: 'Upgrade Path 2', key: '2' },
                     upgrade3: { label: 'Upgrade Path 3', key: '3' },
                     path: { label: 'Toggle Path', key: 'p' },
                 },
                 volume: .3,
+                togglePath: true,
+                toggleGrid: true,
                 score: {},
             }
             for (let level in MyGame.levels) {
