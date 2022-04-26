@@ -55,10 +55,10 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                         virus = function (enemy, data) {
                             // add status effect here
                             let status = { type: "slow", time: 5000, amount: .5 }
-                            if(tower.level == 3 )
+                            if (tower.level == 3)
                                 status = { type: "slow", time: 10000, amount: .2 }
-                               
-                            
+
+
                             enemy.takeHit(enemy, data.damage)
                             enemy.setStatus(enemy, status);
                         }
@@ -69,7 +69,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                         virus = function (enemy, data) {
                             // add status effect here
                             let status = { type: "ice", time: 500 }
-                            if(tower.level == 3 )
+                            if (tower.level == 3)
                                 status = { type: "ice", time: 1200 }
                             enemy.takeHit(enemy, data.damage)
                             enemy.setStatus(enemy, status);
@@ -80,7 +80,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                         virus = function (enemy, data) {
                             // add status effect here
                             let status = { type: "poison", time: 2500, interval: 500, dmg: tower.damage }
-                            if(tower.level == 3 )
+                            if (tower.level == 3)
                                 status = { type: "poison", time: 6000, interval: 250, dmg: tower.damage }
                             enemy.takeHit(enemy, data.damage)
                             enemy.setStatus(enemy, status)
@@ -108,7 +108,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [0, 0, .5],],
                 damage: [
                     [0, -2, -2.5],
-                    [0, 0, 45],
+                    [0, 10, 35],
                     [0, 1, 2],],
                 fireRate: [
                     [1, 2, 4],
@@ -130,23 +130,23 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                         virus = function (enemy, data) {
                             // add status effect here
                             let status = { type: "slow", time: 5000, amount: .5 }
-                            if(tower.level == 3 )
+                            if (tower.level == 3)
                                 status = { type: "slow", time: 15000, amount: .3 }
-                               
-                            
+
+
                             enemy.takeHit(enemy, data.damage);
                             enemy.setStatus(enemy, status);
                         }
                     }
                     else if (tower.path == 1) {
-                        color = assets.laser_ice;
+                        
 
                         virus = function (enemy, data) {
                             enemy.takeHit(enemy, data.damage);
                         }
                     }
                     else if (tower.path == 2) {
-                        color = assets.laser_acid;
+                        
                         virus = function (enemy, data) {
                             enemy.takeHit(enemy, data.damage)
                         }
@@ -174,11 +174,11 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [1, 1, 1],
                     [0, 0, 2],],
                 damage: [
-                    [0, 1, 1000],
+                    [0, 100, 800],
                     [0, 0, 50],
                     [0, 0, 0],],
                 fireRate: [
-                    [0, 0, -.4],
+                    [0, -.2, -.2],
                     [0, 1, 0],
                     [0.1, .1, 0.1],],
             },
@@ -192,20 +192,22 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                 let pos = JSON.parse(JSON.stringify(tower.center));
                 let virus = function (enemy, data) {
                     enemy.takeHit(enemy, data.damage)
+                    particles.makeExplosion(this.center,magic.pallets.fire)
                 }
                 let data = {
                     damage: tower.damage,
                 }
                 if (tower.level >= 2) {
                     if (tower.path == 0) {
-                        if(tower.level == 2 )
+                        if (tower.level == 2)
                             missiles.createMissile(vel, targets[0], pos, virus, data, 100 / 1000, towerHead);
                         else
                             missiles.createMissile(vel, targets[0], pos, virus, data, 200 / 1000, towerHead);
-                        
+                            
+
                     }
                     else if (tower.path == 1) {
-                        
+
                         let rot = magic.computeRotation(vel);
                         let vel1 = magic.computeFromRot(rot + Math.PI / 4);
                         let vel2 = magic.computeFromRot(rot - Math.PI / 4);
@@ -214,18 +216,22 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
 
                     }
                     else if (tower.path == 2) {
-                        
+
                         virus = function (enemy, data) {
                             enemy.takeHit(enemy, data.damage)
-                            let status = { type: "poison", time: 2500, interval: 500, dmg: tower.damage/10 }
-                            if(tower.level == 3 )
-                                status = { type: "poison", time: 1000, interval: 500, dmg: tower.damage/5 }
+                            let status = { type: "poison", time: 2500, interval: 500, dmg: tower.damage / 10 }
+                            if (tower.level == 3)
+                                status = { type: "poison", time: 1000, interval: 500, dmg: tower.damage / 5 }
                             enemy.setStatus(enemy, status);
+                            particles.makeExplosion(this.center,magic.pallets.acid)
                         }
-                        
+
                         missiles.createMissile(vel, targets[0], JSON.parse(JSON.stringify(tower.center)), virus, data, 50 / 1000, towerHead);
                     }
                 }
+                else
+                    missiles.createMissile(vel, targets[0], pos, virus, data, 50 / 1000, towerHead);
+
             },
         },
         Ringtrap: {
@@ -240,17 +246,17 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [50, 100, 150],
                     [50, 100, 150],],
                 radius: [
-                    [0, 0, 0],
-                    [1, 1, 1],
+                    [0, 1, 0],
+                    [0, 0, 1],
                     [0, 0, 0],],
                 damage: [
-                    [1, 1, 3],
-                    [0, 0, 0],
-                    [0, 0, 0],],
+                    [1, 2, 10],
+                    [0, -5, 5],
+                    [0, -15, 0],],
                 fireRate: [
                     [0, 0, 0],
-                    [0, 0, 0],
-                    [0.5, .5, 0.5],],
+                    [1, 2, 4],
+                    [0, 0, 0],],
             },
             renderPreview: renderPreview, // the piction image
             needTarget: false, // if the tower needs to turn to target before activating
@@ -258,10 +264,30 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
             targetGround: true,
             activate: function (tower, targets) {
 
-                // need to add paths
-                particles.makeFireRing(tower.center);
-                for (let enemy in targets) {
-                    targets[enemy].takeHit(targets[enemy], tower.damage)
+                if (tower.level >= 2) {
+                    if (tower.path == 0) {
+                        particles.makeRing(tower.center, (tower.radius / magic.CELL_SIZE - .5), magic.pallets.fire);
+                        for (let enemy in targets) {
+                            targets[enemy].takeHit(targets[enemy], tower.damage)
+                        }
+                    }
+                    else if (tower.path == 1) {
+                        particles.makeRing(tower.center, (tower.radius / magic.CELL_SIZE - .5), magic.pallets.smoke);
+                        for (let enemy in targets) {
+                            targets[enemy].takeHit(targets[enemy], tower.damage)
+                        }
+                    }
+                    else if (tower.path == 2) {
+
+                        particles.makeRing(tower.center, (tower.radius / magic.CELL_SIZE - .5), magic.pallets.ice);
+                        for (let enemy in targets) {
+                            targets[enemy].takeHit(targets[enemy], tower.damage)
+                            let status = { type: "ice", time: 200 }
+                            if (tower.level == 3)
+                                status = { type: "ice", time: 500 }
+                            targets[enemy].setStatus(targets[enemy], status);
+                        }
+                    }
                 }
             },
         },
@@ -296,34 +322,58 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
             activate: function (tower, targets) {
                 let pos = JSON.parse(JSON.stringify(tower.center));
                 let vel = magic.computeVelocity(tower.center, targets[0].center);
-                let size = {x: magic.CELL_SIZE * .75, y: magic.CELL_SIZE * .75};
+                let size = { x: magic.CELL_SIZE * .75, y: magic.CELL_SIZE * .75 };
                 let radius = magic.CELL_SIZE * 2.5;
                 let sradius = magic.CELL_SIZE * 1.5;
                 let virus = function (enemy, data) {
                     enemy.takeHit(enemy, data.damage)
                 }
-                let sideEffect = function(bomb, data){
-                    data.damage = data.damage2;
-                    let vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
-                    bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius);
-                    vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
-                    bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius);
-                    vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
-                    bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius);
-                    vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
-                    bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius);
-                    vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
-                    bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius);
-                    particles.makeExplosion(bomb.center)
+                let sideEffect = function (bomb, data) { particles.makeExplosion(bomb.center,magic.pallets.fire); };
+                if (tower.level >= 2) {
+                    if (tower.path == 0) {
+                        virus = function (enemy, data) {
+                            // add status effect here
+                            let status = { type: "poison", time: 1000, interval: 500, dmg: tower.damage / 2 }
+                            if (tower.level == 3)
+                                status = { type: "poison", time: 1500, interval: 500, dmg: tower.damage }
+                            enemy.setStatus(enemy, status);
+                            enemy.takeHit(enemy, data.damage);
+                        }
+                        sideEffect = function (bomb, data) { particles.makeExplosion(bomb.center,magic.pallets.acid); };
+                    }
+                    else if (tower.path == 1) {
+
+                        sideEffect = function (bomb, data) {
+                            data.damage = data.damage2;
+                            let vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
+                            bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius);
+                            vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
+                            bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius);
+                            vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
+                            bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius);
+                            vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
+                            bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius);
+                            vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
+                            bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius);
+                            particles.makeExplosion(bomb.center,magic.pallets.fire);
+                        }
+                        virus = function (enemy, data) {
+                            enemy.takeHit(enemy, data.damage);
+                        }
+                    }
+                    else if (tower.path == 2) {
+                        
+                    }
+
                 }
                 let data = {
                     damage: tower.damage,
                     damage2: tower.damage / 2,
                     img: assets.bomb,
-                    size: {x: size.x / 2, y: size.y / 2},
+                    size: { x: size.x / 2, y: size.y / 2 },
                     radius: sradius,
-                    sideEffect: function(bomb){
-                        particles.makeExplosion(bomb.center);
+                    sideEffect: function (bomb) {
+                        particles.makeExplosion(bomb.center,magic.pallets.fire);
                     }
                 }
                 bombs.createBomb(vel, pos, virus, sideEffect, data, assets.bomb, size, radius);
@@ -341,11 +391,11 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [50, 100, 150],
                     [50, 100, 150],],
                 radius: [
-                    [0, 0, 0],
+                    [1, 1, 0],
                     [1, 1, 1],
-                    [0, 0, 0],],
+                    [1, 0, 1],],
                 damage: [
-                    [1, 1, 1],
+                    [1, 3, 5],
                     [0, 0, 0],
                     [0, 0, 0],],
                 fireRate: [
@@ -366,6 +416,27 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                 let data = {
                     damage: tower.damage,
                 }
+                if (tower.level >= 2) {
+                    if (tower.path == 0) {
+                        
+                    }
+                    else if (tower.path == 1) {
+                       
+
+                        virus = function (enemy, data) {
+                            let status = { type: "slow", time: 5000, amount: .7 }
+                            if (tower.level == 3)
+                                status = { type: "slow", time: 15000, amount: .5 }
+
+
+                            enemy.takeHit(enemy, data.damage);
+                            enemy.setStatus(enemy, status);
+                        }
+                    }
+                    else if (tower.path == 2) {
+                        this.targetAir = true;
+                    }
+                }
                 lasers.createLaser(vel, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
             },
         },
@@ -381,17 +452,17 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [50, 100, 150],
                     [50, 100, 150],],
                 radius: [
-                    [1, 0, 0],
-                    [1, 1, 1],
+                    [1, 1, 0],
+                    [1, 1, 0],
                     [0, 0, .5],],
                 damage: [
-                    [0, 1, 0],
+                    [0, 2, 5],
                     [0, 0, 50],
-                    [5, 0, 0],],
+                    [0, 0, 0],],
                 fireRate: [
                     [0, 0, 1],
                     [0, 1, 0],
-                    [0.1, .1, 0.1],],
+                    [1, 1, 3],],
             },
             renderPreview: renderPreview, // the piction image
             needTarget: true, // if the tower needs to turn to target before activating
@@ -408,6 +479,18 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                 }
                 let data = {
                     damage: tower.damage,
+                }
+                if (tower.level >= 2) {
+                    if (tower.path == 0) {
+                        this.targetAir = true;
+                    }
+                    else if (tower.path == 1) {
+                       //more shots 
+
+                    }
+                    else if (tower.path == 2) {
+                        //tighter spred
+                    }
                 }
                 if (tower.level == 3) {
                 }

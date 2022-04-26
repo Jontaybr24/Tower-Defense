@@ -20,6 +20,7 @@ MyGame.objects.Bombs = function (assets, graphics, magic, sounds, particles) {
             bomb.center.x += bomb.velocity.x * bomb.moveSpeed * elapsedTime;
             bomb.center.y += bomb.velocity.y * bomb.moveSpeed * elapsedTime;
             magic.sethitbox(bomb, bomb.size);
+            particles.makeTrail(bomb.center, bomb.velocity, magic.pallets.smoke, 1);
             if (bomb.center.x < 0 || bomb.center.x > graphics.canvas.height || bomb.center.y < 0 || bomb.center.y > graphics.canvas.height || Math.floor(bomb.moveSpeed * 10) == 0) {
                 hitBomb(bomb);
             }

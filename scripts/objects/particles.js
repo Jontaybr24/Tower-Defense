@@ -98,8 +98,8 @@ MyGame.objects.Particles = function (assets, graphics, magic) {
     ring(pos, radius, 150, pallet)
   }
 
-  function makeTrail(pos, vel, pallet) {
-    trail(pos, 5, pallet, vel);
+  function makeTrail(pos, vel, pallet, amount) {
+    trail(pos, amount, pallet, vel);
   }
 
   let api = {

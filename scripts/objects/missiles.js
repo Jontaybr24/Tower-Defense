@@ -35,7 +35,7 @@ MyGame.objects.Missile = function (assets, graphics, magic, sounds, particles) {
                 missile.moveSpeed *= 1.05;
             missile.center.x += missile.velocity.x * missile.moveSpeed * elapsedTime;
             missile.center.y += missile.velocity.y * missile.moveSpeed * elapsedTime;
-            particles.makeTrail(missile.center, missile.velocity, magic.pallets.smoke);
+            particles.makeTrail(missile.center, missile.velocity, magic.pallets.smoke,5);
             magic.sethitbox(missile, { x: size, y: size })
             if (missile.center.x < 0 || missile.center.x > graphics.canvas.height || missile.center.y < 0 || missile.center.y > graphics.canvas.height || missile.lifetime > decay) {
                 deleteMissile(missile);
