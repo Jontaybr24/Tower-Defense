@@ -218,7 +218,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
     enemy.health -= amount;
 
     enemy.spec.subIndex.y = 3;
-    enemy.wince = 25;
+    enemy.wince = 5;
 
     if (enemy.health <= 0) {
       info.addCoins(enemy.worth, enemy.center);
@@ -284,7 +284,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       if (!(enemies[index].status.ice > 0) && !(enemies[index].status.poison.timeRemaing > 0) && (enemies[index].wince < 0)) {
         enemies[index].spec.subIndex.y = 0;
       }
-      enemies[index].wince -= elapsedTime
+      enemies[index].wince --;
       //console.log(enemies[index].status);
       enemies[index].rig.update(elapsedTime);
       enemies[index].velocity = magic.computeVelocity(enemies[index].center, enemies[index].target);
