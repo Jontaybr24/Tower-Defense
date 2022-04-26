@@ -69,17 +69,10 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     }
 
     function enemiesToMissile() {
-        for (let enemy in myEnemies.enemies) {
-            for (let missile in myMissiles.missiles) {
-                if (myEnemies.enemies[enemy] !== undefined) {
-                    if (magic.collision(myMissiles.missiles[missile].hitbox, myEnemies.enemies[enemy].hitbox)) {
-                        if (myMissiles.missiles[missile].target.id == myEnemies.enemies[enemy].id) {
-                            myMissiles.hitMissile(myMissiles.missiles[missile], myEnemies.enemies[enemy]);
-                        }
-                    }
-                }
-            }
-        }
+        for (let missile in myMissiles.missiles)
+            if (magic.collision(myMissiles.missiles[missile].hitbox, myMissiles.missiles[missile].target.hitbox))
+                myMissiles.hitMissile(myMissiles.missiles[missile], myMissiles.missiles[missile].target);
+
     }
 
     function collinsions() {

@@ -74,8 +74,7 @@ MyGame.objects.Particles = function (assets, graphics, magic) {
     }
   }
 
-  let arcLength = Math.PI / 8
-
+  let arcLength = Math.PI / 8;
   function makeTrail(pos, amount, colors, velocity) {
     let rot = magic.computeRotation({x: -velocity.x, y: -velocity.y})
     for (let i = 0; i < amount; i++) {
