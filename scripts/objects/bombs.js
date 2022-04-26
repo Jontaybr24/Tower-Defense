@@ -32,6 +32,7 @@ MyGame.objects.Bombs = function (assets, graphics, magic, sounds, particles) {
     }
 
     function hitBomb(bomb) {
+        sounds.play(assets.boom);
         for (let enemy in enemies) {
             if (enemies[enemy] != undefined) {
                 let vector = { x: bomb.center.x - enemies[enemy].center.x, y: bomb.center.y - enemies[enemy].center.y }

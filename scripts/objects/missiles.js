@@ -35,7 +35,7 @@ MyGame.objects.Missile = function (assets, graphics, magic, sounds, particles) {
                 missile.moveSpeed *= 1.05;
             missile.center.x += missile.velocity.x * missile.moveSpeed * elapsedTime;
             missile.center.y += missile.velocity.y * missile.moveSpeed * elapsedTime;
-            particles.makeTrail(missile.center, missile.velocity, magic.pallets.smoke,5);
+            particles.makeTrail(missile.center, missile.velocity, missile.pallet, 5);
             magic.sethitbox(missile, { x: size, y: size })
             if (missile.center.x < 0 || missile.center.x > graphics.canvas.height || missile.center.y < 0 || missile.center.y > graphics.canvas.height || missile.lifetime > decay) {
                 deleteMissile(missile);
@@ -49,6 +49,8 @@ MyGame.objects.Missile = function (assets, graphics, magic, sounds, particles) {
 
     function hitMissile(missile, enemy) {
         missile.virus(enemy, missile.data);
+        sounds.play(assets.boom);        
+        particles.makeExplosion(missile.center, missile.pallet)
         deleteMissile(missile);
     }
 
@@ -61,7 +63,7 @@ MyGame.objects.Missile = function (assets, graphics, magic, sounds, particles) {
     }
 
     // takes a target as an enemy, pos as a spawn point, and virus as a function to execute when the collision happens
-    function createMissile(vel, target, pos, virus, data, speed, image) {
+    function createMissile(vel, target, pos, virus, data, speed, image, pallet) {
         let res = magic.computeRotation(vel);
         missiles[++count] = {
             id: count,
@@ -73,6 +75,7 @@ MyGame.objects.Missile = function (assets, graphics, magic, sounds, particles) {
             target: target,
             image: image,
             rotation: res,
+            pallet: pallet,
             hitbox: { xmin: 0, xmax: 0, ymin: 0, ymax: 0 },
             lifetime: 0,
         };

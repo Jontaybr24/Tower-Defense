@@ -192,7 +192,6 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                 let pos = JSON.parse(JSON.stringify(tower.center));
                 let virus = function (enemy, data) {
                     enemy.takeHit(enemy, data.damage)
-                    particles.makeExplosion(this.center,magic.pallets.fire)
                 }
                 let data = {
                     damage: tower.damage,
@@ -200,9 +199,9 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                 if (tower.level >= 2) {
                     if (tower.path == 0) {
                         if (tower.level == 2)
-                            missiles.createMissile(vel, targets[0], pos, virus, data, 100 / 1000, towerHead);
+                            missiles.createMissile(vel, targets[0], pos, virus, data, 100 / 1000, towerHead, magic.pallets.smoke);
                         else
-                            missiles.createMissile(vel, targets[0], pos, virus, data, 200 / 1000, towerHead);
+                            missiles.createMissile(vel, targets[0], pos, virus, data, 200 / 1000, towerHead, magic.pallets.smoke);
                             
 
                     }
@@ -211,8 +210,8 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                         let rot = magic.computeRotation(vel);
                         let vel1 = magic.computeFromRot(rot + Math.PI / 4);
                         let vel2 = magic.computeFromRot(rot - Math.PI / 4);
-                        missiles.createMissile(vel1, targets[0], JSON.parse(JSON.stringify(tower.center)), virus, data, 50 / 1000, towerHead);
-                        missiles.createMissile(vel2, targets[0], JSON.parse(JSON.stringify(tower.center)), virus, data, 50 / 1000, towerHead);
+                        missiles.createMissile(vel1, targets[0], JSON.parse(JSON.stringify(tower.center)), virus, data, 50 / 1000, towerHead, magic.pallets.smoke);
+                        missiles.createMissile(vel2, targets[0], JSON.parse(JSON.stringify(tower.center)), virus, data, 50 / 1000, towerHead, magic.pallets.smoke);
 
                     }
                     else if (tower.path == 2) {
@@ -223,14 +222,13 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                             if (tower.level == 3)
                                 status = { type: "poison", time: 1000, interval: 500, dmg: tower.damage / 5 }
                             enemy.setStatus(enemy, status);
-                            particles.makeExplosion(this.center,magic.pallets.acid)
                         }
 
-                        missiles.createMissile(vel, targets[0], JSON.parse(JSON.stringify(tower.center)), virus, data, 50 / 1000, towerHead);
+                        missiles.createMissile(vel, targets[0], JSON.parse(JSON.stringify(tower.center)), virus, data, 50 / 1000, towerHead, magic.pallets.acid);
                     }
                 }
                 else
-                    missiles.createMissile(vel, targets[0], pos, virus, data, 50 / 1000, towerHead);
+                    missiles.createMissile(vel, targets[0], pos, virus, data, 50 / 1000, towerHead, magic.pallets.smoke);
 
             },
         },
@@ -582,6 +580,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
     }
 
     function makeTower(pos, name) {
+        sounds.play(assets.place)
         let tower = JSON.parse(JSON.stringify(towerDictionary[name]));
         tower.center = pos;
         tower.level = 0;

@@ -531,6 +531,12 @@ MyGame.loader = (function () {
         },{
             key: 'upgrade3',
             source: '/soundFX/upgrade3.wav'
+        },{
+            key: 'place',
+            source: '/soundFX/towerplace.wav'
+        },{
+            key: 'boom',
+            source: '/soundFX/boom.wav'
         },
     ]
 
