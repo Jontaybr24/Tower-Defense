@@ -29,10 +29,12 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     let myLasers = objects.Laser(assets, graphics, magic, soundManager, myParticles);
     let myMissiles = objects.Missile(assets, graphics, magic, soundManager, myParticles);
-    let myTowers = objects.Towers(assets, graphics, magic, myLasers, soundManager, myMissiles, myParticles);
+    let myBombs = objects.Bombs(assets, graphics, magic, soundManager, myParticles);
+    let myTowers = objects.Towers(assets, graphics, magic, myLasers, soundManager, myMissiles, myParticles, myBombs);
     let myEnemies = objects.Enemies(assets, graphics, magic, myPathfinder, myInfo, myParticles, myHealthbars, renderer.AnimatedModel, myTowers, soundManager, myMissiles);
     let myWaves = objects.Waves(myEnemies, graphics, magic, assets, soundManager);
     myInfo.plusWave(myWaves);
+    myBombs.getEnemies(myEnemies.enemies);
 
     let myUpgrades = objects.Menu(assets, graphics, magic, myTowers, myInfo, soundManager);
 
@@ -75,10 +77,22 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     }
 
+    function enemiesToBomb() {
+        for (let enemy in myEnemies.enemies) {
+            for (let bomb in myBombs.bombs) {
+                if (myBombs.bombs[bomb] !== undefined && myEnemies.enemies[enemy] !== undefined)
+                    if (magic.collision(myBombs.bombs[bomb].hitbox, myEnemies.enemies[enemy].hitbox)) {
+                        myBombs.hitBomb(myBombs.bombs[bomb]);
+                    }
+            }
+        }
+    }
+
     function collinsions() {
         enemiesInRadius();
         enemiesToLaser();
         enemiesToMissile();
+        enemiesToBomb();
     }
 
     // clears all data in objects and sets the data to the level parameters
@@ -202,6 +216,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myUpgrades.update(elapsedTime);
         myLasers.update(elapsedTime);
         myMissiles.update(elapsedTime);
+        myBombs.update(elapsedTime);
 
         checkWin();
         checkLoss();
@@ -217,6 +232,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myHealthbars.render();
         myLasers.render();
         myMissiles.render();
+        myBombs.render();
         myInfo.render();
         myUpgrades.render();
         myWaves.render();

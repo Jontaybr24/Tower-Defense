@@ -111,6 +111,11 @@ MyGame.loader = (function () {
         onComplete: null
     },
     {
+        scripts: ['objects/bombs'],
+        message: 'Bombs Loaded',
+        onComplete: null
+    },
+    {
         scripts: ['objects/menu'],
         message: 'Menu Loaded',
         onComplete: null
@@ -409,6 +414,10 @@ MyGame.loader = (function () {
     },{
         key: 'Wisp',
         source: '/assets/wisp.png'
+        
+    },{
+        key: 'bomb',
+        source: '/assets/bomb.png'
         
     },{
         key: 'Drone',

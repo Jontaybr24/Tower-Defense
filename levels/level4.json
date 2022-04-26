@@ -7,13 +7,7 @@
     "waveData":[
         [
             ["Spider", 20, "W"],
-            ["Spider", 20, "E"],
-            ["Spider", 20, "S"],
-            ["Drone", 10, "N"],
-            ["Drone", 10, "E"],
-            ["Drone", 10, "S"],
-            ["Drone", 10, "W"],
-            ["Spider", 20, "N"]
+            ["Cube", 1, "N"]
         ],
         [
             ["Spider", 20, "W"],
