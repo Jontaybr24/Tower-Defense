@@ -23,15 +23,15 @@ MyGame.objects.Missile = function (assets, graphics, magic, sounds, particles) {
                 // checks if the angle between the target is below the tollerance otherwise keep turning
                 if (magic.testTolerance(result.angle, 0, .04) === false) {
                     if (result.crossProduct > 0) {
-                        missile.rotation += spinRate * elapsedTime;
+                        missile.rotation += (missile.moveSpeed / maxSpeed ) * spinRate * elapsedTime;
                     } else {
-                        missile.rotation -= spinRate * elapsedTime;
+                        missile.rotation -= (missile.moveSpeed / maxSpeed ) * spinRate * elapsedTime;
                     }
                 }
             }
             missile.velocity = magic.computeFromRot(missile.rotation);
             if (missile.moveSpeed < maxSpeed)
-                missile.moveSpeed *= 1.06;
+                missile.moveSpeed *= 1.05;
             missile.center.x += missile.velocity.x * missile.moveSpeed * elapsedTime;
             missile.center.y += missile.velocity.y * missile.moveSpeed * elapsedTime;
             particles.makeBoomTrail(missile.center, missile.velocity);

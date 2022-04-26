@@ -159,8 +159,15 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                 if (tower.level >= 2 && tower.path == 2) {
                     missiles.createMissile(vel, targets[0], pos, virus, data, 100 / 1000, towerHead);
                 }
+                else if (tower.level >= 2 && tower.path == 1){
+                    let rot = magic.computeRotation(vel);
+                    let vel1 = magic.computeFromRot(rot + Math.PI / 4);
+                    let vel2 = magic.computeFromRot(rot - Math.PI / 4);
+                    missiles.createMissile(vel1, targets[0], JSON.parse(JSON.stringify(tower.center)), virus, data, 50 / 1000, towerHead);
+                    missiles.createMissile(vel2, targets[0], JSON.parse(JSON.stringify(tower.center)), virus, data, 50 / 1000, towerHead);
+                }
                 else {
-                    missiles.createMissile(vel, targets[0], pos, virus, data, 100 / 1000, towerHead);
+                    missiles.createMissile(vel, targets[0], pos, virus, data, 50 / 1000, towerHead);
                 }
             },
         },
