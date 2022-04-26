@@ -47,7 +47,6 @@ MyGame.objects.Bombs = function (assets, graphics, magic, sounds, particles) {
     function createBomb(vel, pos, virus, sideEffect, data, image, size, radius, speed) {
         let res = magic.computeRotation(vel);
         let mSpeed =  Math.random() * (speed / 4) + speed * 3 / 4;
-        console.log(mSpeed)
         bombs[++count] = {
             id: count,
             velocity: vel,
