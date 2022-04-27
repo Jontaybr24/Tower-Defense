@@ -100,6 +100,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
 
     // clears all data in objects and sets the data to the level parameters
     function loadLevel(level) {
+        soundManager.play(assets.ice_cave, true);
         score = 0;
         hideMenu();
         hideMenu2();
