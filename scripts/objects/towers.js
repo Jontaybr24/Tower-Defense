@@ -368,77 +368,10 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                 bombs.createBomb(vel, pos, virus, sideEffect, data, assets.bomb, size, radius, speed);
             },
         },
-        MachineGun: {
-            name: "MachineGun",
-            description: "Low damage, high shooting speed",
-            cost: 500,
-            radius: 1.5,
-            damage: 1,
-            fireRate: 10, // times per second it can shoot in ms 
-            upgrades: {
-                cost: [
-                    [75, 150, 200],
-                    [50, 100, 150],
-                    [50, 100, 150],],
-                radius: [
-                    [1, 1, 0],
-                    [1, 1, 1],
-                    [1, 0, 1],],
-                damage: [
-                    [1, 3, 5],
-                    [0, 0, 0],
-                    [0, 0, 0],],
-                fireRate: [
-                    [0, 0, 0],
-                    [0, 1, 0],
-                    [5, 5, 10],],
-                des: [
-                    ["Increses Range and Damage", "Increses Range and \n big increse to Damage", "big increse to Damage"],
-                    ["Incresses Range", "Adds slow effect", "Stronges slow effect"],
-                    ["Incresses FireRate", "Incresses FireRate \n Now targets air", "Massive increse to FireRate"],
-                ]
-            },
-            renderPreview: renderPreview, // the piction image
-            needTarget: true, // if the tower needs to turn to target before activating
-            targetAir: false,
-            targetGround: true,
-            activate: function (tower, targets) {
-                let color = assets.laser_basic;
-                let vel = magic.computeVelocity(tower.center, targets[0].center);
-                let virus = function (enemy, data) {
-                    enemy.takeHit(enemy, data.damage);
-                }
-                let data = {
-                    damage: tower.damage,
-                }
-                if (tower.level >= 2) {
-                    if (tower.path == 0) {
-
-                    }
-                    else if (tower.path == 1) {
-
-
-                        virus = function (enemy, data) {
-                            let status = { type: "slow", time: 5000, amount: .7 }
-                            if (tower.level == 3)
-                                status = { type: "slow", time: 15000, amount: .5 }
-
-
-                            enemy.takeHit(enemy, data.damage);
-                            enemy.setStatus(enemy, status);
-                        }
-                    }
-                    else if (tower.path == 2) {
-                        this.targetAir = true;
-                    }
-                }
-                lasers.createLaser(vel, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
-            },
-        },
         Trigun: {
             name: "Trigun",
             description: "Fires a spread of three lasers",
-            cost: 500,
+            cost: 200,
             radius: 1.5,
             damage: 5,
             fireRate: 2, // times per second it can shoot in ms 
@@ -526,6 +459,73 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                 }
             },
         },
+        MachineGun: {
+            name: "MachineGun",
+            description: "Low damage, high shooting speed",
+            cost: 250,
+            radius: 1.5,
+            damage: 2,
+            fireRate: 10, // times per second it can shoot in ms 
+            upgrades: {
+                cost: [
+                    [75, 150, 200],
+                    [50, 100, 150],
+                    [50, 100, 150],],
+                radius: [
+                    [1, 1, 0],
+                    [1, 1, 1],
+                    [1, 0, 1],],
+                damage: [
+                    [1, 3, 5],
+                    [0, 0, 0],
+                    [0, 0, 0],],
+                fireRate: [
+                    [0, 0, 0],
+                    [0, 1, 0],
+                    [5, 5, 10],],
+                des: [
+                    ["Increses Range and Damage", "Increses Range and \n big increse to Damage", "big increse to Damage"],
+                    ["Incresses Range", "Adds slow effect", "Stronges slow effect"],
+                    ["Incresses FireRate", "Incresses FireRate \n Now targets air", "Massive increse to FireRate"],
+                ]
+            },
+            renderPreview: renderPreview, // the piction image
+            needTarget: true, // if the tower needs to turn to target before activating
+            targetAir: false,
+            targetGround: true,
+            activate: function (tower, targets) {
+                let color = assets.laser_basic;
+                let vel = magic.computeVelocity(tower.center, targets[0].center);
+                let virus = function (enemy, data) {
+                    enemy.takeHit(enemy, data.damage);
+                }
+                let data = {
+                    damage: tower.damage,
+                }
+                if (tower.level >= 2) {
+                    if (tower.path == 0) {
+
+                    }
+                    else if (tower.path == 1) {
+
+
+                        virus = function (enemy, data) {
+                            let status = { type: "slow", time: 5000, amount: .7 }
+                            if (tower.level == 3)
+                                status = { type: "slow", time: 15000, amount: .5 }
+
+
+                            enemy.takeHit(enemy, data.damage);
+                            enemy.setStatus(enemy, status);
+                        }
+                    }
+                    else if (tower.path == 2) {
+                        this.targetAir = true;
+                    }
+                }
+                lasers.createLaser(vel, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
+            },
+        },
         Launcher: {
             name: "Launcher",
             description: "Fires a homing missile that follows \nits target \ntargets both air and ground",
@@ -543,7 +543,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [1, 1, 1],
                     [0, 0, 2],],
                 damage: [
-                    [0, 100, 800],
+                    [0, 100, 8000],
                     [0, 0, 50],
                     [0, 0, 0],],
                 fireRate: [

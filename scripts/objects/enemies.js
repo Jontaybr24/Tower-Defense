@@ -16,7 +16,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       name: "Cube",
       type: "ground",
       moveRate: 300 / 1000,
-      health: 1000,
+      health: 2000,
       worth: 500,
       size:1,
       spec: {

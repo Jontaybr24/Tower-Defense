@@ -480,36 +480,6 @@ MyGame.loader = (function () {
     },{
         key: 'level5',
         source: 'levels/level5.json'
-    },{
-        key: 'level6',
-        source: 'levels/level5.json'
-    },{
-        key: 'level7',
-        source: 'levels/level5.json'
-    },{
-        key: 'level8',
-        source: 'levels/level5.json'
-    },{
-        key: 'level9',
-        source: 'levels/level5.json'
-    },{
-        key: 'level10',
-        source: 'levels/level5.json'
-    },{
-        key: 'level11',
-        source: 'levels/level5.json'
-    },{
-        key: 'level12',
-        source: 'levels/level5.json'
-    },{
-        key: 'level13',
-        source: 'levels/level5.json'
-    },{
-        key: 'level14',
-        source: 'levels/level5.json'
-    },{
-        key: 'level15',
-        source: 'levels/level5.json'
     },]
 
     let soundOder = [
