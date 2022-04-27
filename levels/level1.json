@@ -3,7 +3,7 @@
     "unlocked": true,
     "board": {"size":11, "gap":3},
     "towerCount": 2,
-    "info": {"coins": 300, "lives": 50},
+    "info": {"coins": 350, "lives": 50},
     "waveData":[
         [
             ["Spider", 2, "W"]
