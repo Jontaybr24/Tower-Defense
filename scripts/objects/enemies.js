@@ -118,7 +118,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       name: "Small_Drone",
       type: "flying",
       moveRate: 300 / 1000,
-      health: 10,
+      health: 2,
       worth: 50,
       size:.5,
       spec: {
