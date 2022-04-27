@@ -37,6 +37,11 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [0, 0, 0],
                     [0, -.5, 0],
                     [0, 0, -.8],],
+                des: [
+                    ["Small increase to damage and \nrange", "Increases damage", "Big increase to range and damage"],
+                    ["Increase Radius", "Now freezes enemies, but lowers \nfire rate and damage", "Improves freeze effect"],
+                    ["path 3", "", ""],
+                ]
             },
             renderPreview: renderPreview, // the piction image
             needTarget: true, // if the tower needs to turn to target before activating
@@ -117,6 +122,11 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [1, 2, 4],
                     [0, -1, -.75],
                     [0.5, .5, 0.5],],
+                des: [
+                    ["", "", ""],
+                    ["", "", ""],
+                    ["", "", ""],
+                ]
             },
             renderPreview: renderPreview, // the piction image
             needTarget: true, // if the tower needs to turn to target before activating
@@ -142,14 +152,14 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                         }
                     }
                     else if (tower.path == 1) {
-                        
+
 
                         virus = function (enemy, data) {
                             enemy.takeHit(enemy, data.damage);
                         }
                     }
                     else if (tower.path == 2) {
-                        
+
                         virus = function (enemy, data) {
                             enemy.takeHit(enemy, data.damage)
                         }
@@ -185,6 +195,11 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [0, -.2, -.2],
                     [0, 1, 0],
                     [0.1, .1, 0.1],],
+                des: [
+                    ["", "", ""],
+                    ["", "", ""],
+                    ["", "", ""],
+                ]
             },
             renderPreview: renderPreview, // the piction image
             needTarget: true, // if the tower needs to turn to target before activating
@@ -206,7 +221,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                             missiles.createMissile(vel, targets[0], pos, virus, data, 100 / 1000, towerHead, magic.pallets.smoke);
                         else
                             missiles.createMissile(vel, targets[0], pos, virus, data, 200 / 1000, towerHead, magic.pallets.smoke);
-                            
+
 
                     }
                     else if (tower.path == 1) {
@@ -260,6 +275,11 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [0, 0, 0],
                     [1, 2, 4],
                     [0, 0, 0],],
+                des: [
+                    ["", "", ""],
+                    ["", "", ""],
+                    ["", "", ""],
+                ]
             },
             renderPreview: renderPreview, // the piction image
             needTarget: false, // if the tower needs to turn to target before activating
@@ -318,6 +338,11 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [0, 0, 1],
                     [0, 1, 0],
                     [0.1, .1, 0.1],],
+                des: [
+                    ["", "", ""],
+                    ["", "", ""],
+                    ["", "", ""],
+                ]
             },
             renderPreview: renderPreview, // the piction image
             needTarget: true, // if the tower needs to turn to target before activating
@@ -333,7 +358,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                 let virus = function (enemy, data) {
                     enemy.takeHit(enemy, data.damage)
                 }
-                let sideEffect = function (bomb, data) { particles.makeExplosion(bomb.center,magic.pallets.fire); };
+                let sideEffect = function (bomb, data) { particles.makeExplosion(bomb.center, magic.pallets.fire); };
                 if (tower.level >= 2) {
                     if (tower.path == 0) {
                         virus = function (enemy, data) {
@@ -344,7 +369,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                             enemy.setStatus(enemy, status);
                             enemy.takeHit(enemy, data.damage);
                         }
-                        sideEffect = function (bomb, data) { particles.makeExplosion(bomb.center,magic.pallets.acid); };
+                        sideEffect = function (bomb, data) { particles.makeExplosion(bomb.center, magic.pallets.acid); };
                     }
                     else if (tower.path == 1) {
 
@@ -360,14 +385,14 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                             bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius, data.speed);
                             vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
                             bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius, data.speed);
-                            particles.makeExplosion(bomb.center,magic.pallets.fire);
+                            particles.makeExplosion(bomb.center, magic.pallets.fire);
                         }
                         virus = function (enemy, data) {
                             enemy.takeHit(enemy, data.damage);
                         }
                     }
                     else if (tower.path == 2) {
-                        
+
                     }
 
                 }
@@ -379,7 +404,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     size: { x: size.x / 2, y: size.y / 2 },
                     radius: sradius,
                     sideEffect: function (bomb) {
-                        particles.makeExplosion(bomb.center,magic.pallets.fire);
+                        particles.makeExplosion(bomb.center, magic.pallets.fire);
                     }
                 }
                 bombs.createBomb(vel, pos, virus, sideEffect, data, assets.bomb, size, radius, speed);
@@ -409,6 +434,11 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [0, 0, 0],
                     [0, 1, 0],
                     [5, 5, 10],],
+                des: [
+                    ["", "", ""],
+                    ["", "", ""],
+                    ["", "", ""],
+                ]
             },
             renderPreview: renderPreview, // the piction image
             needTarget: true, // if the tower needs to turn to target before activating
@@ -425,10 +455,10 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                 }
                 if (tower.level >= 2) {
                     if (tower.path == 0) {
-                        
+
                     }
                     else if (tower.path == 1) {
-                       
+
 
                         virus = function (enemy, data) {
                             let status = { type: "slow", time: 5000, amount: .7 }
@@ -471,6 +501,11 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [0, 0, 1],
                     [0, 1, 0],
                     [1, 1, 3],],
+                des: [
+                    ["", "", ""],
+                    ["", "", ""],
+                    ["", "", ""],
+                ]
             },
             renderPreview: renderPreview, // the piction image
             needTarget: true, // if the tower needs to turn to target before activating
@@ -493,7 +528,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                         this.targetAir = true;
                     }
                     else if (tower.path == 1) {
-                       //more shots 
+                        //more shots 
 
                     }
                     else if (tower.path == 2) {
@@ -641,6 +676,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                 tower.damage += tower.upgrades["damage"][path].shift();
                 tower.fireRate += tower.upgrades["fireRate"][path].shift();
                 tower.radius += tower.upgrades["radius"][path].shift() * magic.CELL_SIZE;
+                tower.upgrades["des"][path].shift();
             }
         }
         return spent;

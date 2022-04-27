@@ -61,6 +61,11 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers, info, sounds) {
         ymax: sellBox.center.y + sellBox.size.y / 2,
     };
 
+    let hoverBox = { center: { x: 0, y: 0 }, size: { x: 300, y: 120 }, name: "Test", message: "Test" };
+    let pBoxStyle = "rgba(255, 195, 143, .5)";
+    let hpadding = 25;
+    let anySelected = false;
+
     let bgColor = "#6e3e1b";
     let highlight = "rgba(69, 69, 69, .5)";
     let rhighlight = "rgba(255, 69, 69, .5)";
@@ -93,7 +98,7 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers, info, sounds) {
                     }
                     else {
                         graphics.drawEllipse({ center: tower.center, radius: tower.radius + (tower.upgrades["radius"][0][0] * magic.CELL_SIZE) }, "rgba(0, 225, 0, .25)", "black");
-                        graphics.drawText((tower.radius / magic.CELL_SIZE+ tower.upgrades["radius"][0][0] - .5).toFixed(1) , { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "green", "16px Arial");
+                        graphics.drawText((tower.radius / magic.CELL_SIZE + tower.upgrades["radius"][0][0] - .5).toFixed(1), { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "green", "16px Arial");
                     }
                     if (tower.upgrades["damage"][0][0] == 0) {
                         graphics.drawText(tower.damage, { x: dataBox.center.x - 10, y: dataBox.center.y }, "white", "16px Arial");
@@ -115,7 +120,7 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers, info, sounds) {
                     }
                     else {
                         graphics.drawEllipse({ center: tower.center, radius: tower.radius + (tower.upgrades["radius"][1][0] * magic.CELL_SIZE) }, "rgba(0, 225, 0, .25)", "black");
-                        graphics.drawText((tower.radius / magic.CELL_SIZE+ tower.upgrades["radius"][1][0] - .5).toFixed(1) , { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "green", "16px Arial");
+                        graphics.drawText((tower.radius / magic.CELL_SIZE + tower.upgrades["radius"][1][0] - .5).toFixed(1), { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "green", "16px Arial");
                     }
                     if (tower.upgrades["damage"][1][0] == 0) {
                         graphics.drawText(tower.damage, { x: dataBox.center.x - 10, y: dataBox.center.y }, "white", "16px Arial");
@@ -137,7 +142,7 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers, info, sounds) {
                     }
                     else {
                         graphics.drawEllipse({ center: tower.center, radius: tower.radius + (tower.upgrades["radius"][2][0] * magic.CELL_SIZE) }, "rgba(0, 225, 0, .25)", "black");
-                        graphics.drawText((tower.radius / magic.CELL_SIZE+ tower.upgrades["radius"][2][0] - .5).toFixed(1) , { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "green", "16px Arial");
+                        graphics.drawText((tower.radius / magic.CELL_SIZE + tower.upgrades["radius"][2][0] - .5).toFixed(1), { x: dataBox.center.x - 20, y: dataBox.center.y + textPadding * 2 }, "green", "16px Arial");
                     }
                     if (tower.upgrades["damage"][2][0] == 0) {
                         graphics.drawText(tower.damage, { x: dataBox.center.x - 10, y: dataBox.center.y }, "white", "16px Arial");
@@ -209,6 +214,11 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers, info, sounds) {
                     graphics.drawRectangle({ center: box1.center, size: box1.size }, "#693a19", "black");
                     graphics.drawRectangle({ center: box2.center, size: box2.size }, "#693a19", "black");
                 }
+                if (anySelected && tower.level < 3) {
+                    graphics.drawRectangle(hoverBox, pBoxStyle, "black");
+                    graphics.drawText(hoverBox.message, { x: hoverBox.center.x - hoverBox.size.x / 2 + hpadding / 2, y: hoverBox.center.y - hoverBox.size.y / 2 + hpadding }, "black", "18px Arial", false, hpadding);
+
+                }
             }
         }
     }
@@ -230,25 +240,28 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers, info, sounds) {
         if (tower != null && tower.level < 3) {
             if (box1.selected && tower.path != 1 && tower.path != 2) {
                 if (info.coins >= tower.upgrades["cost"][0][0]) {
+                    hoverBox.message = tower["upgrades"]["des"][0][1];
                     return towers.upgrade(tower, 0)
                 }
-                else{
+                else {
                     sounds.play(assets.deny);
                 }
             }
             if (box2.selected && tower.path != 0 && tower.path != 2) {
                 if (info.coins >= tower.upgrades["cost"][1][0]) {
+                    hoverBox.message = tower["upgrades"]["des"][1][1];
                     return towers.upgrade(tower, 1)
                 }
-                else{
+                else {
                     sounds.play(assets.deny);
                 }
             }
             if (box3.selected && tower.path != 0 && tower.path != 1) {
                 if (info.coins >= tower.upgrades["cost"][2][0]) {
+                    hoverBox.message = tower["upgrades"]["des"][2][1];
                     return towers.upgrade(tower, 2)
                 }
-                else{
+                else {
                     sounds.play(assets.deny);
                 }
             }
@@ -264,6 +277,9 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers, info, sounds) {
     }
 
     function checkHover(point) {
+        hoverBox.center.x = point.x - hoverBox.size.x / 2;
+        hoverBox.center.y = point.y - hoverBox.size.y / 2;
+        anySelected = false;
         if (tower != null) {
             point = { xmin: point.x, xmax: point.x, ymin: point.y, ymax: point.y }
             if (!box1.selected && magic.collision(point, box1.hitbox) && (tower.path == 3 || tower.path == 0) && "upgrades" in tower)
@@ -274,14 +290,24 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers, info, sounds) {
                 sounds.play(assets.menu_hover);
             if (!sellBox.selected && magic.collision(point, sellBox.hitbox))
                 sounds.play(assets.menu_hover);
-            box1.selected = magic.collision(point, box1.hitbox);
-            box2.selected = magic.collision(point, box2.hitbox);
-            box3.selected = magic.collision(point, box3.hitbox);
+            box1.selected = (magic.collision(point, box1.hitbox) && (tower.path == 3 || tower.path == 0));
+            box2.selected = (magic.collision(point, box2.hitbox) && (tower.path == 3 || tower.path == 1));
+            box3.selected = (magic.collision(point, box3.hitbox) && (tower.path == 3 || tower.path == 2));
+            if (box1.selected || box2.selected || box3.selected) {
+                anySelected = true;
+                let path = 0;
+                if (box2.selected)
+                    path = 1;
+                if (box3.selected)
+                    path = 2;
+                hoverBox.message = tower["upgrades"]["des"][path][0];
+                console.log(hoverBox.message)
+            }
             sellBox.selected = magic.collision(point, sellBox.hitbox);
         }
     }
 
-    function loadUpgrades(){
+    function loadUpgrades() {
         tower = null;
     }
 
