@@ -31,13 +31,16 @@ MyGame.objects.Bombs = function (assets, graphics, magic, sounds, particles) {
     }
 
     function hitBomb(bomb) {
-        sounds.play(assets.boom);
+        
         for (let enemy in enemies) {
             if (enemies[enemy] != undefined) {
                 let vector = { x: bomb.center.x - enemies[enemy].center.x, y: bomb.center.y - enemies[enemy].center.y }
                 let magnitude = Math.sqrt((vector.x * vector.x) + (vector.y * vector.y));
-                if (magnitude <= bomb.radius)
-                    bomb.virus(enemies[enemy], bomb.data);
+                if (magnitude <= bomb.radius){
+                    if(enemies[enemy].type != "flying"){
+                        bomb.virus(enemies[enemy], bomb.data);
+                    }
+                }
             }
         }
         bomb.sideEffect(bomb, bomb.data);

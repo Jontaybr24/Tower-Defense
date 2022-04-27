@@ -1,6 +1,8 @@
 MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missiles, particles, bombs) {
     'use strict';
 
+    let enemies = null; 
+
     let towerDictionary = {
         Wall: {
             name: "Wall",
@@ -16,8 +18,8 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
             name: "Turret",
             cost: 50,
             radius: 2.5,
-            damage: 1,
-            fireRate: 1, // times per second it can shoot in ms 
+            damage: 5,
+            fireRate: 2, // times per second it can shoot in ms 
             upgrades: {
                 cost: [
                     [50, 100, 150],
@@ -33,7 +35,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [0, 1, 10],],
                 fireRate: [
                     [0, 0, 0],
-                    [0, -.5, 0],
+                    [0, -.5, -1],
                     [0, 0, -.8],],
             },
             renderPreview: renderPreview, // the piction image
@@ -139,14 +141,14 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                         }
                     }
                     else if (tower.path == 1) {
-                        
+
 
                         virus = function (enemy, data) {
                             enemy.takeHit(enemy, data.damage);
                         }
                     }
                     else if (tower.path == 2) {
-                        
+
                         virus = function (enemy, data) {
                             enemy.takeHit(enemy, data.damage)
                         }
@@ -202,7 +204,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                             missiles.createMissile(vel, targets[0], pos, virus, data, 100 / 1000, towerHead, magic.pallets.smoke);
                         else
                             missiles.createMissile(vel, targets[0], pos, virus, data, 200 / 1000, towerHead, magic.pallets.smoke);
-                            
+
 
                     }
                     else if (tower.path == 1) {
@@ -319,6 +321,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
             targetGround: true,
             activate: function (tower, targets) {
                 let speed = 400 / 1000; // speed in pixels per ms
+                let color = assets.laser_black;
                 let pos = JSON.parse(JSON.stringify(tower.center));
                 let vel = magic.computeVelocity(tower.center, targets[0].center);
                 let size = { x: magic.CELL_SIZE * .75, y: magic.CELL_SIZE * .75 };
@@ -326,42 +329,70 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                 let sradius = magic.CELL_SIZE * 1.5;
                 let virus = function (enemy, data) {
                     enemy.takeHit(enemy, data.damage)
+                    //sounds.play(assets.boom);
                 }
-                let sideEffect = function (bomb, data) { particles.makeExplosion(bomb.center,magic.pallets.fire); };
+                let sideEffect = function (bomb, data) {
+                    sounds.play(assets.boom);
+                    particles.makeExplosion(bomb.center, magic.pallets.fire);
+                };
                 if (tower.level >= 2) {
                     if (tower.path == 0) {
                         virus = function (enemy, data) {
                             // add status effect here
+                            //sounds.play(assets.boom);
                             let status = { type: "poison", time: 1000, interval: 500, dmg: tower.damage / 2 }
                             if (tower.level == 3)
                                 status = { type: "poison", time: 1500, interval: 500, dmg: tower.damage }
                             enemy.setStatus(enemy, status);
                             enemy.takeHit(enemy, data.damage);
                         }
-                        sideEffect = function (bomb, data) { particles.makeExplosion(bomb.center,magic.pallets.acid); };
+                        sideEffect = function (bomb, data) {
+                            sounds.play(assets.boom);
+                            particles.makeExplosion(bomb.center, magic.pallets.acid);
+                        };
                     }
                     else if (tower.path == 1) {
-
                         sideEffect = function (bomb, data) {
                             data.damage = data.damage2;
+                            sounds.play(assets.boom);
+                            
+                            //lasers.createLaser(vel, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
                             let vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
-                            bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius, data.speed);
+                            lasers.createLaser(vel, enemies ,JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data, color);
                             vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
-                            bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius, data.speed);
+                            lasers.createLaser(vel, enemies ,JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data, color);
                             vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
-                            bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius, data.speed);
+                            lasers.createLaser(vel, enemies ,JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data, color);
                             vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
-                            bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius, data.speed);
+                            lasers.createLaser(vel, enemies,JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data, color);
                             vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
-                            bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius, data.speed);
+                            lasers.createLaser(vel, enemies ,JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data, color);
                             particles.makeExplosion(bomb.center,magic.pallets.fire);
                         }
+                        if (tower.level == 3) {
+                            sideEffect = function (bomb, data) {
+                                data.damage = data.damage2;
+                                sounds.play(assets.boom);
+                                let vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
+                                bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius, data.speed);
+                                vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
+                                bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius, data.speed);
+                                vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
+                                bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius, data.speed);
+                                vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
+                                bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius, data.speed);
+                                vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
+                                bombs.createBomb(vel, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data.sideEffect, data, data.img, data.size, data.radius, data.speed);
+                                particles.makeExplosion(bomb.center, magic.pallets.fire);
+                            }
+                        }
                         virus = function (enemy, data) {
+
                             enemy.takeHit(enemy, data.damage);
                         }
                     }
                     else if (tower.path == 2) {
-                        
+
                     }
 
                 }
@@ -373,7 +404,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     size: { x: size.x / 2, y: size.y / 2 },
                     radius: sradius,
                     sideEffect: function (bomb) {
-                        particles.makeExplosion(bomb.center,magic.pallets.fire);
+                        particles.makeExplosion(bomb.center, magic.pallets.fire);
                     }
                 }
                 bombs.createBomb(vel, pos, virus, sideEffect, data, assets.bomb, size, radius, speed);
@@ -418,10 +449,10 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                 }
                 if (tower.level >= 2) {
                     if (tower.path == 0) {
-                        
+
                     }
                     else if (tower.path == 1) {
-                       
+
 
                         virus = function (enemy, data) {
                             let status = { type: "slow", time: 5000, amount: .7 }
@@ -485,7 +516,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                         this.targetAir = true;
                     }
                     else if (tower.path == 1) {
-                       //more shots 
+                        //more shots 
 
                     }
                     else if (tower.path == 2) {
@@ -675,6 +706,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
         clearAll: clearAll,
         loadTowers: loadTowers,
         getTowerValue: getTowerValue,
+        set enemies(val) {enemies = val},
         get towerDictionary() { return partialDict; },
         get towers() { return towers; },
     };

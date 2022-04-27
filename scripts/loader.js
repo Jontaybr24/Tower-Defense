@@ -433,6 +433,9 @@ MyGame.loader = (function () {
         key: 'laser_basic',
         source: '/assets/laser.png'
     }, {
+        key: 'laser_black',
+        source: '/assets/laser-black.png'
+    },{
         key: 'laser_ice',
         source: '/assets/laser-ice.png'
     }, {
