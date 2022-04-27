@@ -513,6 +513,9 @@ MyGame.loader = (function () {
         },{
             key: 'fire',
             source: '/soundFX/fire.wav'
+        },{
+            key: 'ice_cave',
+            source: '/soundFX/IceCaveV6.wav'
         },
     ]
 
