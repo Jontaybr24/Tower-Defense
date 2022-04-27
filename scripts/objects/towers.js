@@ -100,6 +100,75 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
 
             },
         },
+        Ringtrap: {
+            name: "Ringtrap",
+            description: "Shoots a ring of fire damaging all \nground enemies in its radius",
+            cost: 75,
+            radius: 1.5,
+            damage: 15,
+            fireRate: .5, // times per second it can shoot in ms 
+            upgrades: {
+                cost: [
+                    [50, 100, 150],
+                    [50, 100, 150],
+                    [50, 100, 150],],
+                radius: [
+                    [0, 1, 0],
+                    [0, 0, 1],
+                    [0, 0, 0],],
+                damage: [
+                    [1, 2, 10],
+                    [0, -5, 5],
+                    [0, -15, 0],],
+                fireRate: [
+                    [0, 0, 0],
+                    [1, 2, 4],
+                    [0, 0, 0],],
+                des: [
+                    ["Increses dmg", "Increses dmg\n Increses Range", " Massive Increse to dmg"],
+                    ["Incresses fire rate", " Big Incresses to fire rate\n at the cost of dmg", "removes dmg penalty"],
+                    ["Incresses range", "Converts fire into an Ice wave \nfrezing enimes at the \n cost of all dmg", "Incresses freaze duration"],
+                ]
+            },
+            renderPreview: renderPreview, // the piction image
+            needTarget: false, // if the tower needs to turn to target before activating
+            targetAir: false,
+            targetGround: true,
+            activate: function (tower, targets) {
+
+                if (tower.level >= 2) {
+                    if (tower.path == 0) {
+                        particles.makeRing(tower.center, (tower.radius / magic.CELL_SIZE - .5), magic.pallets.fire);
+                        for (let enemy in targets) {
+                            targets[enemy].takeHit(targets[enemy], tower.damage)
+                        }
+                    }
+                    else if (tower.path == 1) {
+                        particles.makeRing(tower.center, (tower.radius / magic.CELL_SIZE - .5), magic.pallets.smoke);
+                        for (let enemy in targets) {
+                            targets[enemy].takeHit(targets[enemy], tower.damage)
+                        }
+                    }
+                    else if (tower.path == 2) {
+
+                        particles.makeRing(tower.center, (tower.radius / magic.CELL_SIZE - .5), magic.pallets.ice);
+                        for (let enemy in targets) {
+                            targets[enemy].takeHit(targets[enemy], tower.damage)
+                            let status = { type: "ice", time: 200 }
+                            if (tower.level == 3)
+                                status = { type: "ice", time: 500 }
+                            targets[enemy].setStatus(targets[enemy], status);
+                        }
+                    }
+                }
+                else {             
+                    particles.makeRing(tower.center, (tower.radius / magic.CELL_SIZE - .5), magic.pallets.fire);       
+                    for (let enemy in targets) {
+                        targets[enemy].takeHit(targets[enemy], tower.damage)
+                    }
+                }
+            },
+        },
         AirTower: {
             name: "AirTower",
             description: "Only targets air enemies",
@@ -173,159 +242,10 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                 lasers.createLaser(vel, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
             },
         },
-        Launcher: {
-            name: "Launcher",
-            description: "Fires a homing missile that follows \nits target \ntargets both air and ground",
-            cost: 100,
-            radius: 9.5,
-            damage: 100,
-            fireRate: .5, // times per second it can shoot in ms 
-            upgrades: {
-                cost: [
-                    [75, 150, 200],
-                    [50, 100, 150],
-                    [50, 100, 150],],
-                radius: [
-                    [1, 1, 2],
-                    [1, 1, 1],
-                    [0, 0, 2],],
-                damage: [
-                    [0, 100, 800],
-                    [0, 0, 50],
-                    [0, 0, 0],],
-                fireRate: [
-                    [0, -.2, -.2],
-                    [0, 1, 0],
-                    [0.1, .1, 0.1],],
-                des: [
-                    ["Incresses radius ", "Big incress to dmg at \n the cost of fire rate\n rocket speed icressed", "Rocket will one shot anything \n the cost of fire rate\n rocket speed icressed"],
-                    ["Incresses radius", "Shoots twin rockets at half dmg insted of one", "incresses damage of twin rockets to full damage"],
-                    ["slight incress to fire rate", "Adds a corosive effect on impact", " Stronger corosive effect"],
-                ]
-            },
-            renderPreview: renderPreview, // the piction image
-            needTarget: true, // if the tower needs to turn to target before activating
-            targetAir: true,
-            targetGround: true,
-            activate: function (tower, targets) {
-                let towerHead = assets[tower.name + "_" + tower.path + "_" + tower.level];
-                let vel = magic.computeVelocity(tower.center, targets[0].center);
-                let pos = JSON.parse(JSON.stringify(tower.center));
-                let virus = function (enemy, data) {
-                    enemy.takeHit(enemy, data.damage)
-                }
-                let data = {
-                    damage: tower.damage,
-                }
-                if (tower.level >= 2) {
-                    if (tower.path == 0) {
-                        if (tower.level == 2)
-                            missiles.createMissile(vel, targets[0], pos, virus, data, 100 / 1000, towerHead, magic.pallets.smoke);
-                        else
-                            missiles.createMissile(vel, targets[0], pos, virus, data, 200 / 1000, towerHead, magic.pallets.smoke);
-
-
-                    }
-                    else if (tower.path == 1) {
-
-                        let rot = magic.computeRotation(vel);
-                        let vel1 = magic.computeFromRot(rot + Math.PI / 4);
-                        let vel2 = magic.computeFromRot(rot - Math.PI / 4);
-                        missiles.createMissile(vel1, targets[0], JSON.parse(JSON.stringify(tower.center)), virus, data, 50 / 1000, towerHead, magic.pallets.smoke);
-                        missiles.createMissile(vel2, targets[0], JSON.parse(JSON.stringify(tower.center)), virus, data, 50 / 1000, towerHead, magic.pallets.smoke);
-
-                    }
-                    else if (tower.path == 2) {
-
-                        virus = function (enemy, data) {
-                            enemy.takeHit(enemy, data.damage)
-                            let status = { type: "poison", time: 2500, interval: 500, dmg: tower.damage / 10 }
-                            if (tower.level == 3)
-                                status = { type: "poison", time: 1000, interval: 500, dmg: tower.damage / 5 }
-                            enemy.setStatus(enemy, status);
-                        }
-
-                        missiles.createMissile(vel, targets[0], JSON.parse(JSON.stringify(tower.center)), virus, data, 50 / 1000, towerHead, magic.pallets.acid);
-                    }
-                }
-                else
-                    missiles.createMissile(vel, targets[0], pos, virus, data, 50 / 1000, towerHead, magic.pallets.smoke);
-
-            },
-        },
-        Ringtrap: {
-            name: "Ringtrap",
-            description: "Shoots a ring of fire damaging all \nground enemies in its radius",
-            cost: 75,
-            radius: 1.5,
-            damage: 15,
-            fireRate: .5, // times per second it can shoot in ms 
-            upgrades: {
-                cost: [
-                    [50, 100, 150],
-                    [50, 100, 150],
-                    [50, 100, 150],],
-                radius: [
-                    [0, 1, 0],
-                    [0, 0, 1],
-                    [0, 0, 0],],
-                damage: [
-                    [1, 2, 10],
-                    [0, -5, 5],
-                    [0, -15, 0],],
-                fireRate: [
-                    [0, 0, 0],
-                    [1, 2, 4],
-                    [0, 0, 0],],
-                des: [
-                    ["Increses dmg", "Increses dmg\n Increses Range", " Massive Increse to dmg"],
-                    ["Incresses fire rate", " Big Incresses to fire rate\n at the cost of dmg", "removes dmg penalty"],
-                    ["Incresses range", "Converts fire into an Ice wave \nfrezing enimes at the \n cost of all dmg", "Incresses freaze duration"],
-                ]
-            },
-            renderPreview: renderPreview, // the piction image
-            needTarget: false, // if the tower needs to turn to target before activating
-            targetAir: false,
-            targetGround: true,
-            activate: function (tower, targets) {
-
-                if (tower.level >= 2) {
-                    if (tower.path == 0) {
-                        particles.makeRing(tower.center, (tower.radius / magic.CELL_SIZE - .5), magic.pallets.fire);
-                        for (let enemy in targets) {
-                            targets[enemy].takeHit(targets[enemy], tower.damage)
-                        }
-                    }
-                    else if (tower.path == 1) {
-                        particles.makeRing(tower.center, (tower.radius / magic.CELL_SIZE - .5), magic.pallets.smoke);
-                        for (let enemy in targets) {
-                            targets[enemy].takeHit(targets[enemy], tower.damage)
-                        }
-                    }
-                    else if (tower.path == 2) {
-
-                        particles.makeRing(tower.center, (tower.radius / magic.CELL_SIZE - .5), magic.pallets.ice);
-                        for (let enemy in targets) {
-                            targets[enemy].takeHit(targets[enemy], tower.damage)
-                            let status = { type: "ice", time: 200 }
-                            if (tower.level == 3)
-                                status = { type: "ice", time: 500 }
-                            targets[enemy].setStatus(targets[enemy], status);
-                        }
-                    }
-                }
-                else {             
-                    particles.makeRing(tower.center, (tower.radius / magic.CELL_SIZE - .5), magic.pallets.fire);       
-                    for (let enemy in targets) {
-                        targets[enemy].takeHit(targets[enemy], tower.damage)
-                    }
-                }
-            },
-        },
         Bomb: {
             name: "Bomb",
             description: "Shoots a bomb that explodes on \nimpact damaging all ground troops \nin the explosion",
-            cost: 500,
+            cost: 150,
             radius: 1.5,
             damage: 10,
             fireRate: .5, // times per second it can shoot in ms 
@@ -604,6 +524,86 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     lasers.createLaser(vel2, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
                     lasers.createLaser(vel3, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
                 }
+            },
+        },
+        Launcher: {
+            name: "Launcher",
+            description: "Fires a homing missile that follows \nits target \ntargets both air and ground",
+            cost: 100,
+            radius: 9.5,
+            damage: 100,
+            fireRate: .5, // times per second it can shoot in ms 
+            upgrades: {
+                cost: [
+                    [75, 150, 200],
+                    [50, 100, 150],
+                    [50, 100, 150],],
+                radius: [
+                    [1, 1, 2],
+                    [1, 1, 1],
+                    [0, 0, 2],],
+                damage: [
+                    [0, 100, 800],
+                    [0, 0, 50],
+                    [0, 0, 0],],
+                fireRate: [
+                    [0, -.2, -.2],
+                    [0, 1, 0],
+                    [0.1, .1, 0.1],],
+                des: [
+                    ["Incresses radius ", "Big incress to dmg at \n the cost of fire rate\n rocket speed icressed", "Rocket will one shot anything \n the cost of fire rate\n rocket speed icressed"],
+                    ["Incresses radius", "Shoots twin rockets at half dmg insted of one", "incresses damage of twin rockets to full damage"],
+                    ["slight incress to fire rate", "Adds a corosive effect on impact", " Stronger corosive effect"],
+                ]
+            },
+            renderPreview: renderPreview, // the piction image
+            needTarget: true, // if the tower needs to turn to target before activating
+            targetAir: true,
+            targetGround: true,
+            activate: function (tower, targets) {
+                let towerHead = assets[tower.name + "_" + tower.path + "_" + tower.level];
+                let vel = magic.computeVelocity(tower.center, targets[0].center);
+                let pos = JSON.parse(JSON.stringify(tower.center));
+                let virus = function (enemy, data) {
+                    enemy.takeHit(enemy, data.damage)
+                }
+                let data = {
+                    damage: tower.damage,
+                }
+                if (tower.level >= 2) {
+                    if (tower.path == 0) {
+                        if (tower.level == 2)
+                            missiles.createMissile(vel, targets[0], pos, virus, data, 100 / 1000, towerHead, magic.pallets.smoke);
+                        else
+                            missiles.createMissile(vel, targets[0], pos, virus, data, 200 / 1000, towerHead, magic.pallets.smoke);
+
+
+                    }
+                    else if (tower.path == 1) {
+
+                        let rot = magic.computeRotation(vel);
+                        let vel1 = magic.computeFromRot(rot + Math.PI / 4);
+                        let vel2 = magic.computeFromRot(rot - Math.PI / 4);
+                        missiles.createMissile(vel1, targets[0], JSON.parse(JSON.stringify(tower.center)), virus, data, 50 / 1000, towerHead, magic.pallets.smoke);
+                        missiles.createMissile(vel2, targets[0], JSON.parse(JSON.stringify(tower.center)), virus, data, 50 / 1000, towerHead, magic.pallets.smoke);
+
+                    }
+                    else if (tower.path == 2) {
+
+                        virus = function (enemy, data) {
+                            enemy.takeHit(enemy, data.damage)
+                            let status = { type: "poison", time: 2500, interval: 500, dmg: tower.damage / 10 }
+                            if (tower.level == 3)
+                                status = { type: "poison", time: 1000, interval: 500, dmg: tower.damage / 5 }
+                            enemy.setStatus(enemy, status);
+                        }
+
+                        missiles.createMissile(vel, targets[0], JSON.parse(JSON.stringify(tower.center)), virus, data, 50 / 1000, towerHead, magic.pallets.acid);
+                    }
+                }
+                else
+                    missiles.createMissile(vel, targets[0], pos, virus, data, 50 / 1000, towerHead, magic.pallets.smoke);
+
             },
         },
     };

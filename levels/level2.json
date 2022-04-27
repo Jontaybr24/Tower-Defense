@@ -29,6 +29,34 @@
             ["Small_Spider", 5, "W"],
             ["Small_Spider", 5, "N"],  
             ["Drone", 5, "N"]     
+        ],
+        [ 
+            ["Drone", 5, "W"],
+            ["Spider", 10, "W"],
+            ["Spider", 10, "N"],
+            ["Small_Spider", 5, "W"],
+            ["Small_Spider", 5, "N"],
+            ["Drone", 5, "W"],
+            ["Spider", 10, "N"],
+            ["Small_Spider", 5, "W"],
+            ["Small_Spider", 5, "N"],  
+            ["Drone", 5, "N"]     
+        ],
+        [ 
+            ["Spider", 10, "N"],
+            ["Spider", 10, "W"],
+            ["Drone", 15, "W"],
+            ["Drone", 15, "W"],  
+            ["Spider", 10, "W"],
+            ["Spider", 10, "N"],
+            ["Small_Spider", 5, "W"],
+            ["Small_Spider", 5, "N"],
+            ["Drone", 15, "N"],
+            ["Spider", 10, "N"],
+            ["Spider", 10, "W"],
+            ["Small_Spider", 5, "W"],
+            ["Small_Spider", 5, "N"],  
+            ["Drone", 15, "N"]     
         ]
     ]
 }
