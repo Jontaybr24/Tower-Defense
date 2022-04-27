@@ -15,6 +15,11 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor, sounds, aPartic
     let placing = false;
     let towerDictionary = [];
     let currentTower = null;
+    let anySelected = false;
+    let hoverBox = { center: { x: 0, y: 0 }, size: { x: 300, y: 120 }, name: "Test", message: "Test" };
+    let pBoxStyle = "rgba(255, 195, 143, .5)";
+    let hpadding = 25;
+
 
     function render() {
         if (placing) {
@@ -32,8 +37,6 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor, sounds, aPartic
         text = ": " + lives;
         graphics.drawTexture(assets.life, { x: x + asset_offset_x, y: y + asset_offset_y + padding * 2 }, 0, { x: magic.MENU_SIZE / 2, y: magic.MENU_SIZE / 2 })
         graphics.drawText(text, { x: x, y: y + padding * 2 }, "white", "30px Arial");
-
-
         renderTowers();
     }
 
@@ -49,6 +52,11 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor, sounds, aPartic
                     graphics.drawRectangle({ size: { x: magic.MENU_SIZE, y: magic.MENU_SIZE }, center: tower.center, rotation: 0 }, "rgba(255, 255, 255, .5)", "black");
                 else
                     graphics.drawRectangle({ size: { x: magic.MENU_SIZE, y: magic.MENU_SIZE }, center: tower.center, rotation: 0 }, "rgba(255, 0, 0, .5)", "black");
+            }
+            if (anySelected) {
+                graphics.drawRectangle(hoverBox, pBoxStyle, "black");
+                graphics.drawText(hoverBox.name, { x: hoverBox.center.x, y: hoverBox.center.y - hoverBox.size.y / 2 + hpadding}, "black", "24px Arial", true);
+                graphics.drawText(hoverBox.message, { x: hoverBox.center.x - hoverBox.size.x / 2 + hpadding / 2, y: hoverBox.center.y - hoverBox.size.y / 2 + hpadding * 2.2}, "black", "18px Arial", false, hpadding);
             }
 
         }
@@ -117,6 +125,9 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor, sounds, aPartic
     }
 
     function checkHover(point) {
+        hoverBox.center.x = point.x - hoverBox.size.x / 2;
+        hoverBox.center.y = point.y - hoverBox.size.y / 2;
+        anySelected = false;
         for (let idx in towerDictionary) {
             let tower = towerDictionary[idx];
             let box1 = tower.hitbox;
@@ -128,6 +139,11 @@ MyGame.objects.Info = function (assets, graphics, magic, cursor, sounds, aPartic
                 point.y < box1.ymin);
             if (!towerDictionary[idx].selected && collision)
                 sounds.play(assets.menu_hover);
+            if (collision){
+                anySelected = true;
+                hoverBox.name = tower.name;
+                hoverBox.message = tower.description;
+            }
             towerDictionary[idx].selected = collision;
         }
     }

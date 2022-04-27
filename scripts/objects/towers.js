@@ -4,6 +4,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
     let towerDictionary = {
         Wall: {
             name: "Wall",
+            description: "A Wall for guiding enemies",
             cost: 5,
             radius: 0,
             damage: 0,
@@ -14,6 +15,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
         },
         Turret: {
             name: "Turret",
+            description: "A Simple Turret with",
             cost: 50,
             radius: 2.5,
             damage: 1,
@@ -93,6 +95,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
         },
         AirTower: {
             name: "AirTower",
+            description: "Only targets air enemies",
             cost: 60,
             radius: 1.5,
             damage: 5,
@@ -160,6 +163,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
         },
         Launcher: {
             name: "Launcher",
+            description: "Fires a homing missile that follows \nits target",
             cost: 100,
             radius: 9.5,
             damage: 100,
@@ -234,6 +238,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
         },
         Ringtrap: {
             name: "Ringtrap",
+            description: "Shoots a ring of fire damaging all \nground enemies in its radius",
             cost: 500,
             radius: 1.5,
             damage: 15,
@@ -291,6 +296,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
         },
         Bomb: {
             name: "Bomb",
+            description: "Shoots a bomb that explodes on \nimpact damaging all ground troops \nin the explosion",
             cost: 500,
             radius: 1.5,
             damage: 10,
@@ -381,6 +387,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
         },
         MachineGun: {
             name: "MachineGun",
+            description: "Low damage, high shooting speed",
             cost: 500,
             radius: 1.5,
             damage: 1,
@@ -442,6 +449,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
         },
         Trigun: {
             name: "Trigun",
+            description: "Fires a spread of three lasers",
             cost: 500,
             radius: 1.5,
             damage: 5,

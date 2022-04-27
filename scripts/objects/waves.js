@@ -196,7 +196,6 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets, sounds) {
             if (!spawning && enemies.length == 0)
                 nextWave();
             else{
-                console.log("Paused");
                 paused = true;
             }
         }
