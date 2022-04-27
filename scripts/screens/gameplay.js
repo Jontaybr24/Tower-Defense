@@ -8,8 +8,6 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
     let levelD = null;
     let score = 0;
 
-
-
     let myKeyboard = input.Keyboard();
     let myMouse = input.Mouse();
 
@@ -88,7 +86,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                     if (magic.collision(myBombs.bombs[bomb].hitbox, myEnemies.enemies[enemy].hitbox)) {
                         myBombs.hitBomb(myBombs.bombs[bomb]);
                     }
-                    
+
             }
         }
     }
@@ -116,7 +114,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         myWaves.loadWaves(JSON.parse(JSON.stringify(level.waveData)));
         myTowers.loadTowers(level.towerCount);
         myCursor.loadCursor();
-        myUpgrades.loadUpgrades();
+        myUpgrades = objects.Menu(assets, graphics, magic, myTowers, myInfo, soundManager);
         myInfo.loadTowers(myTowers.towerDictionary);
         myInfo.loadInfo(level.info);
         myEnemies.clearAll();
@@ -263,8 +261,6 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         }
     }
 
-
-
     function setControls() {
         myKeyboard.register("Escape", togglePause);
         myKeyboard.register(data.controls.grid.key, myGameBoard.toggleGrid);
@@ -296,6 +292,74 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
         });
         myKeyboard.register(data.controls.sell.key, sellaTower);
         myKeyboard.register(data.controls.startWave.key, myWaves.nextWave);
+
+    }
+
+    function gameLoop(time) {
+        let elapsedTime = time - lastTimeStamp;
+        lastTimeStamp = time;
+        if (!paused) {
+            update(elapsedTime);
+        }
+        processInput(elapsedTime);
+        render();
+
+        if (!cancelNextRequest) {
+            requestAnimationFrame(gameLoop);
+        }
+    }
+
+    function initialize() {
+        document.getElementById('id-pause-back').addEventListener(
+            'click',
+            function () {
+                endGame("back");
+            });
+        document.getElementById('id-pause-main').addEventListener(
+            'click',
+            function () {
+                endGame("main");
+            });
+        document.getElementById('id-pause-back').addEventListener(
+            "mouseenter",
+            function () { soundManager.play(assets.menu_hover); });
+        document.getElementById('id-pause-main').addEventListener(
+            "mouseenter",
+            function () { soundManager.play(assets.menu_hover); });
+        document.getElementById('id-resume').addEventListener(
+            'click',
+            function () { hideMenu(); });
+        document.getElementById('id-resume').addEventListener(
+            "mouseenter",
+            function () { soundManager.play(assets.menu_hover); });
+
+        document.getElementById('id-death-back').addEventListener(
+            'click',
+            function () {
+                endGame("main");
+            });
+        document.getElementById('id-death-back').addEventListener(
+            "mouseenter",
+            function () { soundManager.play(assets.menu_hover); });
+        document.getElementById('id-retry').addEventListener(
+            'click',
+            function () { loadLevel(levelD); });
+        document.getElementById('id-retry').addEventListener(
+            "mouseenter",
+            function () { soundManager.play(assets.menu_hover); });
+
+        document.getElementById('id-win-back').addEventListener(
+            'click',
+            function () { endGame("back"); });
+        document.getElementById('id-win-back').addEventListener(
+            "mouseenter",
+            function () { soundManager.play(assets.menu_hover); });
+        document.getElementById('id-win-main').addEventListener(
+            'click',
+            function () { endGame("main"); });
+        document.getElementById('id-win-main').addEventListener(
+            "mouseenter",
+            function () { soundManager.play(assets.menu_hover); });
         myMouse.register('mousedown', function (e) {
             if (!paused) {
                 if (e.button == 2) {
@@ -318,7 +382,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                         myWaves.checkPress();
                     }
                     if (e.ctrlKey) {
-                        if (myGameBoard.checkCell(coords)) {
+                        if (coords.x < magic.GRID_SIZE - 1) {
                             let obj = myGameBoard.removeObject(coords);
                             if (obj != null) {
                                 myTowers.deleteTower(obj);
@@ -401,73 +465,6 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                 }
             }
         );
-    }
-
-    function gameLoop(time) {
-        let elapsedTime = time - lastTimeStamp;
-        lastTimeStamp = time;
-        if (!paused) {
-            update(elapsedTime);
-        }
-        processInput(elapsedTime);
-        render();
-
-        if (!cancelNextRequest) {
-            requestAnimationFrame(gameLoop);
-        }
-    }
-
-    function initialize() {
-        document.getElementById('id-pause-back').addEventListener(
-            'click',
-            function () {
-                endGame("back");
-            });
-        document.getElementById('id-pause-main').addEventListener(
-            'click',
-            function () {
-                endGame("main");
-            });
-        document.getElementById('id-pause-back').addEventListener(
-            "mouseenter",
-            function () { soundManager.play(assets.menu_hover); });
-        document.getElementById('id-pause-main').addEventListener(
-            "mouseenter",
-            function () { soundManager.play(assets.menu_hover); });
-        document.getElementById('id-resume').addEventListener(
-            'click',
-            function () { hideMenu(); });
-        document.getElementById('id-resume').addEventListener(
-            "mouseenter",
-            function () { soundManager.play(assets.menu_hover); });
-
-        document.getElementById('id-death-back').addEventListener(
-            'click',
-            function () {
-                endGame("main");
-            });
-        document.getElementById('id-death-back').addEventListener(
-            "mouseenter",
-            function () { soundManager.play(assets.menu_hover); });
-        document.getElementById('id-retry').addEventListener(
-            'click',
-            function () { loadLevel(levelD); });
-        document.getElementById('id-retry').addEventListener(
-            "mouseenter",
-            function () { soundManager.play(assets.menu_hover); });
-
-        document.getElementById('id-win-back').addEventListener(
-            'click',
-            function () { endGame("back"); });
-        document.getElementById('id-win-back').addEventListener(
-            "mouseenter",
-            function () { soundManager.play(assets.menu_hover); });
-        document.getElementById('id-win-main').addEventListener(
-            'click',
-            function () { endGame("main"); });
-        document.getElementById('id-win-main').addEventListener(
-            "mouseenter",
-            function () { soundManager.play(assets.menu_hover); });
     }
 
     function run(level) {

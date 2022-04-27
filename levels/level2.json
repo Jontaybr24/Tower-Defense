@@ -1,7 +1,7 @@
 {
     "id": "level2",
     "unlocked": true,
-    "board": {"size":17, "gap":3},
+    "board": {"size":15, "gap":3},
     "towerCount": 5,
     "info": {"coins": 550, "lives": 50},
     "waveData":[

@@ -308,6 +308,9 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers, info, sounds) {
 
     function loadUpgrades() {
         tower = null;
+        box1.selected = false;
+        box2.selected = false;
+        box3.selected = false;
     }
 
     let api = {
