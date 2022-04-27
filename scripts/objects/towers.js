@@ -1,7 +1,7 @@
 MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missiles, particles, bombs) {
     'use strict';
 
-    let enemies = null; 
+    let enemies = null;
 
     let towerDictionary = {
         Wall: {
@@ -387,19 +387,19 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                         sideEffect = function (bomb, data) {
                             data.damage = data.damage2;
                             sounds.play(assets.boom);
-                            
+
                             //lasers.createLaser(vel, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
                             let vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
-                            lasers.createLaser(vel, enemies ,JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data, color);
+                            lasers.createLaser(vel, enemies, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data, color);
                             vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
-                            lasers.createLaser(vel, enemies ,JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data, color);
+                            lasers.createLaser(vel, enemies, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data, color);
                             vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
-                            lasers.createLaser(vel, enemies ,JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data, color);
+                            lasers.createLaser(vel, enemies, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data, color);
                             vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
-                            lasers.createLaser(vel, enemies,JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data, color);
+                            lasers.createLaser(vel, enemies, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data, color);
                             vel = magic.computeFromRot((Math.random() * 360) * Math.PI / 180);
-                            lasers.createLaser(vel, enemies ,JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data, color);
-                            particles.makeExplosion(bomb.center,magic.pallets.fire);
+                            lasers.createLaser(vel, enemies, JSON.parse(JSON.stringify(bomb.center)), bomb.virus, data, color);
+                            particles.makeExplosion(bomb.center, magic.pallets.fire);
                         }
                         if (tower.level == 3) {
                             sideEffect = function (bomb, data) {
@@ -555,23 +555,49 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                 let data = {
                     damage: tower.damage,
                 }
-                if (tower.level >= 2) {
+                if (tower.level >= 1) {
                     if (tower.path == 0) {
                         this.targetAir = true;
+                        lasers.createLaser(vel, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
+                        lasers.createLaser(vel2, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
+                        lasers.createLaser(vel3, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
                     }
                     else if (tower.path == 1) {
                         //more shots 
+                        if (tower.level == 1 || tower.level == 2) {
+                            vel = magic.computeFromRot(rot + Math.PI / 20);
+                            let vel4 = magic.computeFromRot(rot - Math.PI / 20);
+                            lasers.createLaser(vel4, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
+                        }
+                        else if (tower.level == 3) {
+                            let vel5 = magic.computeFromRot(rot + Math.PI / 20);
+                            let vel4 = magic.computeFromRot(rot - Math.PI / 20);
+                            lasers.createLaser(vel4, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
+                            lasers.createLaser(vel5, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
+                        }
+                        lasers.createLaser(vel, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
+                        lasers.createLaser(vel2, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
+                        lasers.createLaser(vel3, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
 
                     }
                     else if (tower.path == 2) {
                         //tighter spred
+                        if (tower.level >= 2) {
+                            vel2 = magic.computeFromRot(rot + Math.PI / 16);
+                            vel3 = magic.computeFromRot(rot - Math.PI / 16);
+                        }
+                        else {
+                        }
+                        lasers.createLaser(vel, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
+                        lasers.createLaser(vel2, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
+                        lasers.createLaser(vel3, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
                     }
                 }
-                if (tower.level == 3) {
+                else {
+                    lasers.createLaser(vel, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
+                    lasers.createLaser(vel2, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
+                    lasers.createLaser(vel3, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
                 }
-                lasers.createLaser(vel, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
-                lasers.createLaser(vel2, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
-                lasers.createLaser(vel3, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
             },
         },
     };
@@ -751,7 +777,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
         clearAll: clearAll,
         loadTowers: loadTowers,
         getTowerValue: getTowerValue,
-        set enemies(val) {enemies = val},
+        set enemies(val) { enemies = val },
         get towerDictionary() { return partialDict; },
         get towers() { return towers; },
     };

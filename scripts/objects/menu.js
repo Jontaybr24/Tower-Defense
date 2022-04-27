@@ -301,7 +301,6 @@ MyGame.objects.Menu = function (assets, graphics, magic, towers, info, sounds) {
                 if (box3.selected)
                     path = 2;
                 hoverBox.message = tower["upgrades"]["des"][path][0];
-                console.log(hoverBox.message)
             }
             sellBox.selected = magic.collision(point, sellBox.hitbox);
         }
