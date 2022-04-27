@@ -85,7 +85,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       type: "flying",
       moveRate: 200 / 1000,
       health: 10,
-      worth: 50,
+      worth: 15,
       size:1,
       spec: {
         spriteSheet: assets.Drone,
@@ -93,9 +93,8 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
         subTextureWidth: { x: 32, y: 32 },
         spriteCount: 4,
         spriteTime: 60,
-      },
-      
-      dmg:3,
+      },      
+      dmg:1,
     },
     Big_Drone: {
       name: "Big_Drone",

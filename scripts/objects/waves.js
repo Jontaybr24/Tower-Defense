@@ -262,7 +262,7 @@ MyGame.objects.Waves = function (enemies, graphics, magic, assets, sounds) {
     function nextWave() {
         if (!spawning && enemies.length == 0) {
             waveCount++;
-            spawnRate *= .98;
+            spawnRate *= .95; // enemies spawn 5% faster each wave
             spawning = true;
             for (let enemy in currentWave) {
                 for (let i = 0; i < currentWave[enemy][1]; i++) {
