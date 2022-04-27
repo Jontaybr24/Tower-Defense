@@ -340,7 +340,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       }
 
     }
-
+    towers.enemies = enemies;
   }
 
   function updatePath() {

@@ -3,37 +3,24 @@
     "unlocked": true,
     "board": {"size":11, "gap":3},
     "towerCount": 2,
-    "info": {"coins": 100, "lives": 50},
+    "info": {"coins": 300, "lives": 50},
     "waveData":[
         [
-            ["Spider", 5, "W"]
+            ["Spider", 2, "W"]
+            
+        ],
+        [
+            ["Spider", 15, "W"]
         ],
         [
             ["Spider", 10, "W"]
-        ],
-        [
-            ["Spider", 20, "W"]
         ],
         [
             ["Spider", 25, "W"]
         ],
         [
             ["Spider", 10, "N"]
-        ],
-        [
-            ["Spider", 50, "W"]
-        ],
-        [
-            ["Spider", 50, "W"],
-            ["Spider", 20, "N"]
-        ],
-        [
-            ["Spider", 50, "W"],
-            ["Spider", 50, "N"]
-        ],
-        [
-            ["Spider", 100, "W"],
-            ["Spider", 100, "N"]
         ]
+        
     ]
 }

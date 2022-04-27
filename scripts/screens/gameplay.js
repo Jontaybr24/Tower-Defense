@@ -88,6 +88,7 @@ MyGame.screens['game-play'] = (function (game, objects, assets, renderer, graphi
                     if (magic.collision(myBombs.bombs[bomb].hitbox, myEnemies.enemies[enemy].hitbox)) {
                         myBombs.hitBomb(myBombs.bombs[bomb]);
                     }
+                    
             }
         }
     }
