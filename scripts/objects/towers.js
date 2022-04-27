@@ -115,15 +115,15 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                 radius: [
                     [0, 1, 0],
                     [0, 0, 1],
-                    [0, 0, 0],],
+                    [1, 0, 0],],
                 damage: [
                     [1, 2, 10],
-                    [0, -5, 5],
+                    [0, -7, 7],
                     [0, -15, 0],],
                 fireRate: [
                     [0, 0, 0],
-                    [1, 2, 4],
-                    [0, 0, 0],],
+                    [.5, 2, 0],
+                    [0, 0, .3],],
                 des: [
                     ["Increses damage", "Increses damage\nIncreses Range", " Massive increase to damage"],
                     ["Incresses fire rate", " Big Incresses to fire rate\nat the cost of damage", "Removes damage penalty"],
@@ -182,17 +182,17 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [50, 100, 150],
                     [50, 100, 150],],
                 radius: [
-                    [0, 0, 0],
+                    [0, -1, 0],
                     [1, 2, 4],
-                    [2, 2, 2],],
+                    [2, 4, 4],],
                 damage: [
                     [0, -2, -2.5],
                     [0, 10, 35],
                     [0, 1, 2],],
                 fireRate: [
                     [1, 2, 4],
-                    [0, -1, -.75],
-                    [0, 1, 2],],
+                    [0, -1, -.5],
+                    [0, 0, .5],],
                 des: [
                     ["Incresses fire rate", "Increase fire rate at the \ncost of damage\nAdds a slow effect", "Massive increase to fire rate\nat cost of damage\nStronger slow"],
                     ["Incresses Range", "Big increase to damage \nat cost of fire rate", "Massive increase to damage at cost of fire rate"],
@@ -261,11 +261,11 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                 damage: [
                     [0, 1, 0],
                     [0, 0, 0],
-                    [5, 0, 0],],
+                    [1, 3, 5],],
                 fireRate: [
-                    [0, 0, 1],
-                    [0, 1, 0],
-                    [0.1, .1, 0.1],],
+                    [0, .5, 0],
+                    [0, 0, 0],
+                    [0.1, .1, 0.2],],
                 des: [
                     ["Incresses Radius", "Adds corosive effect\nto bombs blast radius", "Stronger corosive effect"],
                     ["Incresses Radius", "Explotions cause shrapnal\nto shoot out", "Explodes into more bombs"],
@@ -297,9 +297,9 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                         virus = function (enemy, data) {
                             // add status effect here
                             //sounds.play(assets.boom);
-                            let status = { type: "poison", time: 1000, interval: 500, dmg: tower.damage / 2 }
+                            let status = { type: "poison", time: 1000, interval: 500, dmg: tower.damage / 4 }
                             if (tower.level == 3)
-                                status = { type: "poison", time: 1500, interval: 500, dmg: tower.damage }
+                                status = { type: "poison", time: 1500, interval: 500, dmg: tower.damage/2 }
                             enemy.setStatus(enemy, status);
                             enemy.takeHit(enemy, data.damage);
                         }
@@ -390,7 +390,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [0, 0, 5],],
                 fireRate: [
                     [0, 2, 3],
-                    [0, 1, 1],
+                    [0, 1, .5],
                     [1, 1, 0],],
                 des: [
                     ["Increases Range and Damage", "Increases Range and\nBig increase to Damage", "Big increase to Damage"],
@@ -416,7 +416,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                 }
                 if (tower.level >= 1) {
                     if (tower.path == 0) {
-                        this.targetAir = true;
+                        //this.targetAir = true;
                         lasers.createLaser(vel, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
                         lasers.createLaser(vel2, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
                         lasers.createLaser(vel3, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
@@ -464,7 +464,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
             description: "Low damage, high shooting speed",
             cost: 500,
             radius: 1.5,
-            damage: 1,
+            damage: 5,
             fireRate: 10, // times per second it can shoot in ms 
             upgrades: {
                 cost: [
@@ -476,12 +476,12 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [1, 1, 1],
                     [1, 0, 1],],
                 damage: [
-                    [1, 3, 5],
+                    [2, 5, 8],
                     [0, 0, 0],
                     [0, 0, 0],],
                 fireRate: [
                     [0, 0, 0],
-                    [0, 1, 0],
+                    [0, 0, 0],
                     [5, 5, 10],],
                 des: [
                     ["Increses Range and Damage", "Increses Range and \n big increse to Damage", "big increse to Damage"],
@@ -520,7 +520,8 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                         }
                     }
                     else if (tower.path == 2) {
-                        this.targetAir = true;
+                        if (tower.level == 3)
+                            this.targetAir = true;
                     }
                 }
                 lasers.createLaser(vel, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
@@ -547,7 +548,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [0, 0, 50],
                     [0, 0, 0],],
                 fireRate: [
-                    [0, -.2, -.2],
+                    [0, 0, -.5],
                     [0, 1, 0],
                     [0.1, .1, 0.1],],
                 des: [
@@ -594,7 +595,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                             enemy.takeHit(enemy, data.damage)
                             let status = { type: "poison", time: 2500, interval: 500, dmg: tower.damage / 10 }
                             if (tower.level == 3)
-                                status = { type: "poison", time: 1000, interval: 500, dmg: tower.damage / 5 }
+                                status = { type: "poison", time: 2000, interval: 250, dmg: tower.damage / 5 }
                             enemy.setStatus(enemy, status);
                         }
 
