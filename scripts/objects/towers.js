@@ -7,7 +7,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
         Wall: {
             name: "Wall",
             description: "A Wall for guiding enemies",
-            cost: 5,
+            cost: 20,
             radius: 0,
             damage: 0,
             fireRate: 0, // times per second it can shoot in ms 
@@ -104,7 +104,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
             name: "AirTower",
             description: "Only targets air enemies",
             cost: 60,
-            radius: 1.5,
+            radius: 2.5,
             damage: 5,
             fireRate: 2, // times per second it can shoot in ms 
             upgrades: {
@@ -256,7 +256,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
         Ringtrap: {
             name: "Ringtrap",
             description: "Shoots a ring of fire damaging all \nground enemies in its radius",
-            cost: 500,
+            cost: 75,
             radius: 1.5,
             damage: 15,
             fireRate: .5, // times per second it can shoot in ms 
@@ -312,6 +312,12 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                                 status = { type: "ice", time: 500 }
                             targets[enemy].setStatus(targets[enemy], status);
                         }
+                    }
+                }
+                else {             
+                    particles.makeRing(tower.center, (tower.radius / magic.CELL_SIZE - .5), magic.pallets.fire);       
+                    for (let enemy in targets) {
+                        targets[enemy].takeHit(targets[enemy], tower.damage)
                     }
                 }
             },

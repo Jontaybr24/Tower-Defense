@@ -44,7 +44,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
         spriteTime: 70,
         
       },  // ms per frame
-      dmg:3,
+      dmg:1,
     },
     Small_Spider: {
       name: "Small_Spider",
@@ -84,7 +84,7 @@ MyGame.objects.Enemies = function (assets, graphics, magic, Pathfinder, info, pa
       name: "Drone",
       type: "flying",
       moveRate: 200 / 1000,
-      health: 20,
+      health: 10,
       worth: 50,
       size:1,
       spec: {
