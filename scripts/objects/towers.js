@@ -17,7 +17,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
         },
         Turret: {
             name: "Turret",
-            description: "A Simple Turret with paths focused on strong single target status effects",
+            description: "A Simple Turret with paths\n focused on strong single target \nstatus effects",
             cost: 50,
             radius: 2.5,
             damage: 5,
@@ -37,12 +37,12 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [0, 1, 10],],
                 fireRate: [
                     [0, 0, 0],
-                    [0, -.5, -1],
+                    [0, -1, -.5],
                     [0, 0, -.8],],
                 des: [
-                    ["Small increase to damage and \nrange", "Increases damage  \nadds a slow effect", "Big increase to range and damage, \n icresses amount slowed and time slowed"],
-                    ["Increase Radius", "Now freezes enemies, but lowers \nfire rate and damage", "Improves freeze effect"],
-                    ["Increase Radius", "Adds a corrosive status dealing damage over time", "Strong corrosive effect\n incresses dmg"],
+                    ["Small increase to damage and\nrange", "Increases damage\nAdds a slow effect", "Big increase to range and damage,\nIcresses amount slowed\nIncreses duration slowed"],
+                    ["Increase Radius", "Now freezes enemies in place,\nLowers fire rate and damage", "Improves freeze effect\nLowers fire rate"],
+                    ["Increase Radius", "Adds a corrosive status\nDeals damage over time", "Strong corrosive effect\nIncresses dmg"],
                 ]
             },
             renderPreview: renderPreview, // the piction image
@@ -125,9 +125,9 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [1, 2, 4],
                     [0, 0, 0],],
                 des: [
-                    ["Increses dmg", "Increses dmg\n Increses Range", " Massive Increse to dmg"],
-                    ["Incresses fire rate", " Big Incresses to fire rate\n at the cost of dmg", "removes dmg penalty"],
-                    ["Incresses range", "Converts fire into an Ice wave \nfrezing enimes at the \n cost of all dmg", "Incresses freaze duration"],
+                    ["Increses damage", "Increses damage\nIncreses Range", " Massive increase to damage"],
+                    ["Incresses fire rate", " Big Incresses to fire rate\nat the cost of damage", "Removes damage penalty"],
+                    ["Incresses range", "Converts fire into an Ice wave\nfrezing enimes at the\ncost of all damage", "Incresses freaze duration"],
                 ]
             },
             renderPreview: renderPreview, // the piction image
@@ -194,9 +194,9 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [0, -1, -.75],
                     [0, 1, 2],],
                 des: [
-                    ["Incresses fire rate", "increase fire rate at the cos of dmg\n Adds a slow effect", "Massive increase to fire rate at cost of dmg \n stronger slow"],
-                    ["Incresses Range", "big increase to dmg at cost of fire rate", "massive increase to dmg at cost of fire rate"],
-                    ["Incresses Range", "Incresses Range\n Incresses fire rate\n small dmg increse", "Incresses Range \n big increse fire rate \n increse to dmg"],
+                    ["Incresses fire rate", "Increase fire rate at the \ncost of damage\nAdds a slow effect", "Massive increase to fire rate\nat cost of damage\nStronger slow"],
+                    ["Incresses Range", "Big increase to damage \nat cost of fire rate", "Massive increase to damage at cost of fire rate"],
+                    ["Incresses Range", "Incresses Range\nIncresses fire rate\nSmall damage increase", "Incresses Range\nBig increase fire rate\nIncrease to damage"],
                 ]
             },
             renderPreview: renderPreview, // the piction image
@@ -267,9 +267,9 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [0, 1, 0],
                     [0.1, .1, 0.1],],
                 des: [
-                    ["Incresses Radius", "Adds corosive effect\n to bombs blast radius", "Stronger corosive effect"],
-                    ["Incresses Radius", "Explotions cause shrapnal to shoot out", "Explodes into more bombs"],
-                    ["incresses dmg and fire rate", "Incresses dmg", "Incresses dmg"],
+                    ["Incresses Radius", "Adds corosive effect\nto bombs blast radius", "Stronger corosive effect"],
+                    ["Incresses Radius", "Explotions cause shrapnal\nto shoot out", "Explodes into more bombs"],
+                    ["Incresses damage and fire rate", "Incresses damage", "Incresses damage"],
                 ]
             },
             renderPreview: renderPreview, // the piction image
@@ -393,9 +393,9 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [0, 1, 0],
                     [5, 5, 10],],
                 des: [
-                    ["Increses Range and Damage", "Increses Range and \n big increse to Damage", "big increse to Damage"],
+                    ["Increases Range and Damage", "Increases Range and\nBig increase to Damage", "Big increase to Damage"],
                     ["Incresses Range", "Adds slow effect", "Stronges slow effect"],
-                    ["Incresses FireRate", "Incresses FireRate \n Now targets air", "Massive increse to FireRate"],
+                    ["Incresses FireRate", "Incresses FireRate\nNow targets air", "Massive increase to FireRate"],
                 ]
             },
             renderPreview: renderPreview, // the piction image
@@ -450,19 +450,19 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                 radius: [
                     [1, 1, 0],
                     [1, 1, 0],
-                    [0, 0, .5],],
+                    [0, 1, .5],],
                 damage: [
-                    [0, 2, 5],
-                    [0, 0, 50],
-                    [0, 0, 0],],
+                    [0, 0, 2],
+                    [0, 0, 0],
+                    [0, 0, 5],],
                 fireRate: [
-                    [0, 0, 1],
-                    [0, 1, 0],
-                    [1, 1, 3],],
+                    [0, 2, 3],
+                    [0, 1, 1],
+                    [1, 1, 0],],
                 des: [
-                    ["", "", ""],
-                    ["", "", ""],
-                    ["Incresses fire Rate", "Incresses fire Rate", "Big increse to fire Rate"],
+                    ["Incresses fire Rate", "Incresses fire Rate", "Big increase to fire Rate"],
+                    ["Incresses Range", "Add an additional shot", "Add an additional shot"],
+                    ["Increses fire Rate", "Tightens spread", "Increses Damage"],
                 ]
             },
             renderPreview: renderPreview, // the piction image
@@ -551,9 +551,9 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [0, 1, 0],
                     [0.1, .1, 0.1],],
                 des: [
-                    ["Incresses radius ", "Big incress to dmg at \n the cost of fire rate\n rocket speed icressed", "Rocket will one shot anything \n the cost of fire rate\n rocket speed icressed"],
-                    ["Incresses radius", "Shoots twin rockets at half dmg insted of one", "incresses damage of twin rockets to full damage"],
-                    ["slight incress to fire rate", "Adds a corosive effect on impact", " Stronger corosive effect"],
+                    ["Incresses radius ", "Big incress to dmg at\nthe cost of fire rate\nrocket speed icressed", "Rocket will one shot anything\nthe cost of fire rate\nrocket speed icressed"],
+                    ["Incresses radius", "Shoots twin rockets at half dmg", "incresses damage of twin rockets\nto full damage"],
+                    ["Slight incress to fire rate", "Adds a corosive effect on impact", " Stronger corosive effect"],
                 ]
             },
             renderPreview: renderPreview, // the piction image
