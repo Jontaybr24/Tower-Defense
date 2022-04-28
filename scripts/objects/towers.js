@@ -7,7 +7,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
         Wall: {
             name: "Wall",
             description: "A Wall for guiding enemies",
-            cost: 20,
+            cost: 10,
             radius: 0,
             damage: 0,
             fireRate: 0, // times per second it can shoot in ms 
@@ -110,7 +110,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
             upgrades: {
                 cost: [
                     [50, 100, 150],
-                    [50, 100, 150],
+                    [50, 200, 500],
                     [50, 100, 150],],
                 radius: [
                     [0, 1, 0],
@@ -178,9 +178,9 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
             fireRate: 2, // times per second it can shoot in ms 
             upgrades: {
                 cost: [
-                    [75, 150, 200],
+                    [50, 150, 100],
                     [50, 100, 150],
-                    [50, 100, 150],],
+                    [50, 150, 300],],
                 radius: [
                     [0, -1, 0],
                     [1, 2, 4],
@@ -251,9 +251,9 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
             fireRate: .5, // times per second it can shoot in ms 
             upgrades: {
                 cost: [
+                    [75, 100, 200],
                     [75, 150, 200],
-                    [50, 100, 150],
-                    [50, 100, 150],],
+                    [75, 100, 150],],
                 radius: [
                     [1, 0, 0],
                     [1, 1, 1],
@@ -377,9 +377,9 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
             fireRate: 2, // times per second it can shoot in ms 
             upgrades: {
                 cost: [
-                    [75, 150, 200],
+                    [75, 150, 500],
                     [50, 100, 150],
-                    [50, 100, 150],],
+                    [50, 200, 250],],
                 radius: [
                     [1, 1, 0],
                     [1, 1, 0],
@@ -393,9 +393,9 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [0, 1, .5],
                     [1, 1, 0],],
                 des: [
-                    ["Increases Range and Damage", "Increases Range and\nBig increase to Damage", "Big increase to Damage"],
-                    ["Incresses Range", "Adds slow effect", "Stronges slow effect"],
-                    ["Incresses FireRate", "Incresses FireRate\nNow targets air", "Massive increase to FireRate"],
+                    ["Increases Range ", "Increases Range and\nBig increase to FireRate", "Big increase to Damage and FireRate"],
+                    ["Incresses Range", "Adds additional shot", "Adds additional shot"],
+                    ["Incresses FireRate", "Tightens spread", "Massive increase to Damage"],
                 ]
             },
             renderPreview: renderPreview, // the piction image
@@ -423,7 +423,7 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     }
                     else if (tower.path == 1) {
                         //more shots 
-                        if (tower.level == 1 || tower.level == 2) {
+                        if (tower.level == 2) {
                             vel = magic.computeFromRot(rot + Math.PI / 20);
                             let vel4 = magic.computeFromRot(rot - Math.PI / 20);
                             lasers.createLaser(vel4, targets, JSON.parse(JSON.stringify(tower.center)), virus, data, color);
@@ -462,15 +462,15 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
         MachineGun: {
             name: "MachineGun",
             description: "Low damage, high shooting speed",
-            cost: 500,
+            cost: 250,
             radius: 1.5,
             damage: 5,
             fireRate: 10, // times per second it can shoot in ms 
             upgrades: {
                 cost: [
-                    [75, 150, 200],
-                    [50, 100, 150],
-                    [50, 100, 150],],
+                    [100, 250, 500],
+                    [50, 100, 200],
+                    [50, 200, 300],],
                 radius: [
                     [1, 1, 0],
                     [1, 1, 1],
@@ -536,9 +536,9 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
             fireRate: .5, // times per second it can shoot in ms 
             upgrades: {
                 cost: [
-                    [75, 150, 200],
-                    [50, 100, 150],
-                    [50, 100, 150],],
+                    [100, 300, 1000],
+                    [100, 500, 500],
+                    [100, 300, 300],],
                 radius: [
                     [1, 1, 2],
                     [1, 1, 1],
@@ -548,11 +548,11 @@ MyGame.objects.Towers = function (assets, graphics, magic, lasers, sounds, missi
                     [0, 0, 50],
                     [0, 0, 0],],
                 fireRate: [
-                    [0, 0, -.5],
+                    [0, 0, 0],
                     [0, 1, 0],
                     [0.1, .1, 0.1],],
                 des: [
-                    ["Incresses radius ", "Big incress to dmg at\nthe cost of fire rate\nrocket speed icressed", "Rocket will one shot anything\nthe cost of fire rate\nrocket speed icressed"],
+                    ["Incresses radius ", "Big incress to dmg at\nthe cost of fire rate\nrocket speed icressed", "Rocket will one shot anything\nrocket speed icressed"],
                     ["Incresses radius", "Shoots twin rockets at half dmg", "incresses damage of twin rockets\nto full damage"],
                     ["Slight incress to fire rate", "Adds a corosive effect on impact", " Stronger corosive effect"],
                 ]
